@@ -8,8 +8,6 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
     'plugin:@typescript-eslint/recommended',
-    'airbnb',
-    'prettier',
     'plugin:prettier/recommended',
   ],
   root: true,

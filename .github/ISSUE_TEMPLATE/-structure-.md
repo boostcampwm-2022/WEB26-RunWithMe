@@ -1,6 +1,6 @@
 ---
 name: "[STRUCTURE]"
-about: 구조
+about: 구조 변경
 title: "structure"
 labels: "structure"
 assignees: ""

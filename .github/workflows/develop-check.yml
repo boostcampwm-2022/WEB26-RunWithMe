@@ -1,0 +1,29 @@
+name : build + eslint check
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install client dependencies
+        run : |
+          cd client
+          npm install
+      - name: Install server dependencies
+        run: |
+          cd server
+          npm install
+      - name: Check eslint
+        run: |
+          ./client/node_modules/.bin/eslint client/src --ext .ts,.tsx
+          ./server/node_modules/.bin/eslint server/src --ext .ts,.tsx
+      - name: Run build check
+        run: |
+          cd client
+          npm run build

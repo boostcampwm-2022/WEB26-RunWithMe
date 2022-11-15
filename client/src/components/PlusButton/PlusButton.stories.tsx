@@ -8,11 +8,11 @@ export default {
     component: PlusButton,
 } as ComponentMeta<typeof PlusButton>;
 
-export const Template: ComponentStory<typeof PlusButton> = (args) => (
+export const _PlusButton: ComponentStory<typeof PlusButton> = (args) => (
     <MemoryRouter>
         <PlusButton {...args} />
     </MemoryRouter>
 );
-Template.args = {
+_PlusButton.args = {
     to: "/user",
 };

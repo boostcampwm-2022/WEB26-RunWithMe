@@ -10,9 +10,8 @@ export default {
     component: Modal,
 } as ComponentMeta<typeof Modal>;
 
-const Template: ComponentStory<typeof Modal> = (args) => <Modal {...args} />;
+const _Modal: ComponentStory<typeof Modal> = (args) => <Modal {...args} />;
 
-export const _Modal = Template.bind({});
 _Modal.args = {
     content: (
         <div style={{ display: "flex", flexDirection: "column" }}>

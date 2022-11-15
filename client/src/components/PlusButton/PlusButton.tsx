@@ -1,4 +1,4 @@
-import { PLUS_BUTTON } from "#assets/icons";
+import { PLUS_BUTTON_ICON } from "#assets/icons";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -15,7 +15,7 @@ interface PlusButtonProps {
 }
 const PlusButton = ({ to }: PlusButtonProps) => {
     const navigate = useNavigate();
-    return <Button src={PLUS_BUTTON} onClick={() => navigate(to)} />;
+    return <Button src={PLUS_BUTTON_ICON} onClick={() => navigate(to)} />;
 };
 
 export default PlusButton;

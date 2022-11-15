@@ -8,9 +8,6 @@ import Input from "#components/Input/Input";
 export default {
     title: "Example/Modal",
     component: Modal,
-    // argTypes: {
-    //     backgroundColor: { control: "color" },
-    // },
 } as ComponentMeta<typeof Modal>;
 
 const Template: ComponentStory<typeof Modal> = (args) => <Modal {...args} />;

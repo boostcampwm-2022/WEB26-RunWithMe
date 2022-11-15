@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import Button from ".";
+import Button from "./Button";
 
 export default {
     title: "Example/Button",
@@ -15,12 +15,12 @@ const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 
 export const Fill = Template.bind({});
 Fill.args = {
-    text: "버튼",
+    children: "버튼",
     width: "fill",
 };
 
 export const Contain = Template.bind({});
 Contain.args = {
-    text: "버튼",
+    children: "버튼",
     width: "contain",
 };

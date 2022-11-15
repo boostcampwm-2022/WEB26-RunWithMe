@@ -1,21 +1,21 @@
-import React from "react";
-import { Button as Btn } from "./styles";
+import React, { ReactNode } from "react";
+import { Button as Btn } from "./Button.styles";
 import { COLOR } from "styles/color";
 
 interface ButtonProps {
     color?: string;
     backgroundColor?: string;
-    text: string;
     width?: "fill" | "contain";
     onClick: () => void;
+    children: ReactNode;
 }
 
 const Button = ({
     color = COLOR.WHITE,
     backgroundColor = COLOR.PRIMARY,
     width = "contain",
-    text = COLOR.WHITE,
     onClick,
+    children,
 }: ButtonProps) => {
     return (
         <Btn
@@ -24,7 +24,7 @@ const Button = ({
             backgroundColor={backgroundColor}
             width={width === "fill" ? "100%" : "auto"}
         >
-            {text}
+            {children}
         </Btn>
     );
 };

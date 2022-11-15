@@ -2,6 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import Modal from "./Modal";
+import Button from "#components/Button/Button";
 
 export default {
     title: "Example/Modal",
@@ -22,6 +23,22 @@ _Modal.args = {
             <input />
             <input />
             <input />
+            <div style={{ display: "flex" }}>
+                <Button
+                    onClick={() => {
+                        console.log("등록");
+                    }}
+                >
+                    등록
+                </Button>
+                <Button
+                    onClick={() => {
+                        console.log("취소");
+                    }}
+                >
+                    취소
+                </Button>
+            </div>
         </div>
     ),
 };

@@ -22,5 +22,5 @@ Fill.args = {
 export const Contain = Template.bind({});
 Contain.args = {
     children: "버튼",
-    width: "contain",
+    width: "fit",
 };

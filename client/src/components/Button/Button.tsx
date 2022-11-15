@@ -5,15 +5,15 @@ import { COLOR } from "styles/color";
 interface ButtonProps {
     color?: string;
     backgroundColor?: string;
-    width?: "fill" | "contain";
-    onClick: () => void;
+    width?: "fill" | "fit";
+    onClick?: () => void;
     children: ReactNode;
 }
 
 const Button = ({
     color = COLOR.WHITE,
     backgroundColor = COLOR.PRIMARY,
-    width = "contain",
+    width = "fit",
     onClick,
     children,
 }: ButtonProps) => {

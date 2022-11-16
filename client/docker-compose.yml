@@ -9,6 +9,8 @@ services:
             - .:/usr/src/app
             - /node_modules
         ports:
-            - 3000:3000
+            - "3000:3000"
+            - "6006:6006"
+        command: npm run dev
         environment:
             - CHOKIDAR_USEPOLLING=true

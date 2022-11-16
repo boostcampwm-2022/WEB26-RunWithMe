@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+    server:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        container_name: server
+        ports:
+            - "4000:4000"
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        command: npm run start:dev
+        networks:
+            - webnet
+        depends_on:
+            - mysqldb
+            - redis
+
+    redis:
+        container_name: redis
+        image: redis:5
+        command: redis-server
+        networks:
+            - webnet
+
+    mysqldb:
+        container_name: mysqldb
+        image: mysql:8
+        restart: always
+        ports:
+            - "3306:3306"
+        networks:
+            - webnet
+        environment:
+            - MYSQL_DATABASE=${DB_NAME}
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+            - TZ=Asia/Seoul
+            - PG_DATA=/var/lib/postgresql/data
+        command:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+        volumes:
+            - pgdata:/var/lib/mysql/data
+
+networks:
+    webnet:
+volumes:
+    pgdata:

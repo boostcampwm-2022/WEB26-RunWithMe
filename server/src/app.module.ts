@@ -6,13 +6,11 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import * as redisStore from "cache-manager-ioredis";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { UserModule } from "./user/user.module";
-import { CourseModule } from "./course/course.module";
-import { RecruitModule } from "./recruit/recruit.module";
 import { User } from "./entities/user.entity";
 import { Course } from "./entities/course.entity";
 import { Recruit } from "./entities/recruit.entity";
 import { UserRecruit } from "./entities/user_recruit.entity";
+import { UserModule } from "./user/user.module";
 
 @Module({
     imports: [
@@ -40,8 +38,6 @@ import { UserRecruit } from "./entities/user_recruit.entity";
             rootPath: join(__dirname, "..", "..", "client", "build"),
         }),
         UserModule,
-        CourseModule,
-        RecruitModule,
     ],
     controllers: [AppController],
     providers: [AppService],

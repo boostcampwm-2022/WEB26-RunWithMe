@@ -14,14 +14,11 @@ export class User {
     @Column({ type: "varchar", length: 255 })
     password: string;
 
-    @Column({ type: "varchar", length: 255 })
-    salt: string;
-
     @Column()
     pace: number;
 
-    @Column()
-    zipCode: number;
+    @Column({ type: "varchar", length: 10 })
+    zipCode: string;
 
     @OneToMany(() => Course, (course) => course.user)
     courses: Course[];
@@ -32,7 +29,7 @@ export class User {
     @OneToMany(() => UserRecruit, (userRecruit) => userRecruit.recruit)
     userRecruits: Recruit[];
 
-    static from(userId: string, password: string, pace: number, zipCode: number) {
+    static from(userId: string, password: string, pace: number, zipCode: string) {
         const user = new User();
         user.userId = userId;
         user.password = password;

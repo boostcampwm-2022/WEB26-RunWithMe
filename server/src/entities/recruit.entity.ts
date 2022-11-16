@@ -1,4 +1,3 @@
-import { CourseModule } from "src/course/course.module";
 import { User } from "src/entities/user.entity";
 import {
     Column,

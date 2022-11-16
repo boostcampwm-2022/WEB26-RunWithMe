@@ -3,6 +3,11 @@ import { css } from "styled-components";
 export const flexRowSpaceBetween = css`
     display: flex;
     justify-content: space-between;
+`;
+
+export const flexRowCenter = css`
+    display: flex;
+    justify-content: center;
     align-items: center;
 `;
 

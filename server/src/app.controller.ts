@@ -1,4 +1,4 @@
-import { Controller } from "@nestjs/common";
+import { Controller, Get } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { Cache } from "cache-manager";
 import { Inject, CACHE_MANAGER } from "@nestjs/common";

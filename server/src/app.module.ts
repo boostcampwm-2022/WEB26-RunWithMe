@@ -10,6 +10,8 @@ import { User } from "./entities/user.entity";
 import { Course } from "./entities/course.entity";
 import { Recruit } from "./entities/recruit.entity";
 import { UserRecruit } from "./entities/user_recruit.entity";
+import { UserModule } from "./user/user.module";
+import { AuthModule } from "./auth/auth.module";
 
 @Module({
     imports: [
@@ -36,6 +38,8 @@ import { UserRecruit } from "./entities/user_recruit.entity";
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, "..", "..", "client", "build"),
         }),
+        UserModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],

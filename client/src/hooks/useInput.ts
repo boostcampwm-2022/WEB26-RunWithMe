@@ -6,7 +6,9 @@ interface UseInputProps {
 
 type InputValidator = (value: string) => string;
 
-const useInput = ({ type = "string" }: UseInputProps): any => {
+const useInput = ({
+    type = "string",
+}: UseInputProps): [string | number, (validator: InputValidator) => ChangeEventHandler<HTMLInputElement>, string] => {
     const [value, setValue] = useState(type === "number" ? 0 : "");
     const [error, setError] = useState<string>("");
 

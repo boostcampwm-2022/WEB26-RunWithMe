@@ -30,7 +30,7 @@ services:
         image: mysql:8
         restart: always
         ports:
-            - "3306:3306"
+            - "3308:3306"
         networks:
             - webnet
         environment:

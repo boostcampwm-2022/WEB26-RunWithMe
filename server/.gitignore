@@ -36,3 +36,7 @@ lerna-debug.log*
 
 # .env
 .env
+
+# docker
+/mysqldata
+/db

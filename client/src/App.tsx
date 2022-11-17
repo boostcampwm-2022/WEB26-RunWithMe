@@ -1,14 +1,8 @@
 import React from "react";
-import useMap from "#hooks/useMap";
+import SignUp from "#pages/SignUp";
 
 function App() {
-    const { renderMap } = useMap({ height: "500px", center: { lat: 33.45, lng: 126.57 } });
-    return (
-        <div className="App">
-            hello boostcamp?
-            {renderMap()}
-        </div>
-    );
+    return <SignUp />;
 }
 
 export default App;

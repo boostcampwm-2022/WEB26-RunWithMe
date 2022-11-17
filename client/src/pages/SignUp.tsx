@@ -5,9 +5,12 @@ import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import Button from "#components/Button/Button";
 import axios from "axios";
+import { COLOR } from "styles/color";
+import useInput from "#hooks/useInput";
+import { idValidator } from "#utils/valitateUtils";
 
 const LogoWrapper = styled.div`
-    color: black;
+    color: ${COLOR.BLACK};
     width: 90%;
     height: 29px;
     font-size: 2.4rem;
@@ -61,7 +64,7 @@ const OptionsWrapper = styled.div`
 `;
 
 const SignUp = () => {
-    const [userId, setUserId] = useState<string>("");
+    const [userId, onChangeUserId, userError] = useInput({});
     const [password, setPassword] = useState<string>("");
     const [confirmPw, setConfirmPw] = useState<string>("");
     const [zipCode, setZipCode] = useState<string>("");
@@ -72,15 +75,6 @@ const SignUp = () => {
     const [isValidZipCode, setIsValidZipCode] = useState<boolean>(false);
 
     const navigate = useNavigate();
-
-    const onChangeId = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserId(e.target.value);
-        if (e.target.value.length > 20 || e.target.value.length < 6) {
-            setIsValidId(false);
-        } else {
-            setIsValidId(true);
-        }
-    };
 
     const onChangePw = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
@@ -138,8 +132,8 @@ const SignUp = () => {
             <Header loggedIn={false} text="회원가입"></Header>
             <LogoWrapper>RunWithMe</LogoWrapper>
             <InputWrapper>
-                <Input placeholder="아이디를 입력하세요" type="text" onChange={onChangeId}></Input>
-                {userId.length != 0 && !isValidId && <span>아이디는 6자 이상 20자 미만이여야 합니다.</span>}
+                <Input placeholder="아이디를 입력하세요" type="text" onChange={onChangeUserId(idValidator)}></Input>
+                <span>{userError}</span>
                 <Input placeholder="비밀번호를 입력하세요" type="password" onChange={onChangePw}></Input>
                 <Input placeholder="비밀번호를 한번 더 입력하세요" type="password" onChange={onChangeConfirmPw}></Input>
                 {confirmPw.length != 0 && !isValidConfirmPw && <span>비밀번호가 일치하지 않습니다.</span>}

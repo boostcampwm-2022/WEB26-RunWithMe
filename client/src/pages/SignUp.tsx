@@ -12,14 +12,16 @@ import { PLACEHOLDER } from "#constants/constants";
 const SignUp = () => {
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
     const [password, onChangePassword, passwordError] = useInput(passwordValidator);
-    const [_, onChangeConfirmPassword, confirmPasswordError] = useInput(confirmPasswordValidator(String(password)));
+    const [confirmPassword, onChangeConfirmPassword, confirmPasswordError] = useInput(
+        confirmPasswordValidator(String(password)),
+    );
     const [zipCode, onChangeZipCode, zipCodeError] = useInput(zipCodeValidator);
     const [pace, onChangePace] = useInput(() => "", true);
 
     const navigate = useNavigate();
 
     const checkFormValidation = useCallback(() => {
-        return userIdError || passwordError || confirmPasswordError;
+        return userIdError || passwordError || confirmPasswordError || !confirmPassword;
     }, [userIdError, passwordError, confirmPasswordError]);
 
     const onSubmit = () => {

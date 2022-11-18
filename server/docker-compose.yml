@@ -37,14 +37,14 @@ services:
             - MYSQL_DATABASE=${DB_NAME}
             - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
             - TZ=Asia/Seoul
-            - PG_DATA=/var/lib/postgresql/data
+            - MS_DATA=/var/lib/mysql/data
         command:
             - --character-set-server=utf8mb4
             - --collation-server=utf8mb4_unicode_ci
         volumes:
-            - pgdata:/var/lib/mysql
+            - msdata:/var/lib/mysql
 
 networks:
     webnet:
 volumes:
-    pgdata:
+    msdata:

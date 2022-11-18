@@ -1,28 +1,26 @@
-import { ChangeEventHandler, useState } from "react";
-
-interface UseInputProps {
-    type?: "string" | "number";
-}
+import { ChangeEvent, ChangeEventHandler, useCallback, useState } from "react";
 
 type InputValidator = (value: string) => string;
 
-const useInput = ({
-    type = "string",
-}: UseInputProps): [string | number, (validator: InputValidator) => ChangeEventHandler<HTMLInputElement>, string] => {
-    const [value, setValue] = useState(type === "number" ? 0 : "");
+const useInput = (
+    validator: InputValidator,
+    isNumber?: boolean,
+): [string | number, ChangeEventHandler<HTMLInputElement>, string] => {
+    const [value, setValue] = useState(isNumber ? 0 : "");
     const [error, setError] = useState<string>("");
 
-    const onChange =
-        (validator: InputValidator): ChangeEventHandler<HTMLInputElement> =>
-        (e) => {
+    const onChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
             setError("");
             const error = validator(e.target.value);
             if (error) {
                 setError(error);
                 return;
             }
-            setValue(type === "number" ? Number(e.target.value) : e.target.value);
-        };
+            setValue(isNumber ? Number(e.target.value) : e.target.value);
+        },
+        [validator],
+    );
 
     return [value, onChange, error];
 };

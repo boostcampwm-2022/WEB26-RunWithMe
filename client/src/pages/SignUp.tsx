@@ -24,7 +24,7 @@ const SignUp = () => {
         return userIdError || passwordError || confirmPasswordError || !confirmPassword;
     }, [userIdError, passwordError, confirmPasswordError]);
 
-    const onSubmit = () => {
+    const onSubmitSignUp = () => {
         if (checkFormValidation()) return;
         axios
             .post("http://localhost:4000/user", {
@@ -55,13 +55,17 @@ const SignUp = () => {
                 <Input placeholder={PLACEHOLDER.PACE} type="number" onChange={onChangePace}></Input>
                 <Input placeholder={PLACEHOLDER.ZIP_CODE} type="number" onChange={onChangeZipCode}></Input>
                 <span>{zipCodeError}</span>
-                <Button width="fill" onClick={onSubmit}>
+                <Button width="fill" onClick={onSubmitSignUp}>
                     회원가입
                 </Button>
             </InputWrapper>
             <OptionsWrapper>
-                <div onClick={() => navigate("/pwInquiry")}>비밀번호 찾기</div>
-                <div onClick={() => navigate("/login")}>로그인 하기</div>
+                <div>
+                    <span onClick={() => navigate("/pwInquiry")}>비밀번호 찾기</span>
+                </div>
+                <div>
+                    <span onClick={() => navigate("/login")}>로그인 하기</span>
+                </div>
             </OptionsWrapper>
         </>
     );

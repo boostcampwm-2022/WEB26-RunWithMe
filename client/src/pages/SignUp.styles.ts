@@ -41,16 +41,18 @@ export const OptionsWrapper = styled.div`
     color: grey;
     display: flex;
     margin: auto;
-    width: 60%;
+    width: 90%;
+    padding: 0 10rem;
 
     div {
+        display: flex;
         justify-content: center;
         flex-grow: 1;
         padding: 0.1rem 0.9rem;
         cursor: pointer;
     }
 
-    div:first-child {
+    div:not(:last-child) {
         border-right: 0.1rem solid grey;
     }
 `;

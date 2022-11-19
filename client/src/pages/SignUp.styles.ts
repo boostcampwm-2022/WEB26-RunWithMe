@@ -17,13 +17,8 @@ export const InputWrapper = styled.div`
     padding: 4rem;
     width: 90%;
     margin: auto;
-    div {
-        display: block;
-        margin: auto;
-
-        input {
-            font-size: 1.4rem;
-        }
+    input {
+        font-size: 1.4rem;
     }
 
     span {

@@ -12,11 +12,15 @@ const MainPage = () => {
     const handleSignUpClick = () => {
         navigate("/signup");
     };
+    const handleCoursesClick = () => {
+        navigate("/courses");
+    };
 
     return (
         <>
             <button onClick={handleLoginClick}>로그인</button>
             <button onClick={handleSignUpClick}>회원가입 </button>
+            <button onClick={handleCoursesClick}>코스목록</button>
         </>
     );
 };

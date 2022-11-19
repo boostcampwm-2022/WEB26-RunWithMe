@@ -13,7 +13,7 @@ export class CreateUserDto {
         return this.userId;
     }
 
-    getPassowrd() {
+    getPassword() {
         return this.password;
     }
 

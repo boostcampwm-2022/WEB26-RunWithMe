@@ -13,7 +13,7 @@ export class UserService {
         if (isPresent) {
             throw new BadRequestException();
         }
-        const hashedPassword = bcrypt.hashSync(createUserDto.getPassowrd(), 10);
+        const hashedPassword = bcrypt.hashSync(createUserDto.getPassword(), 10);
         createUserDto.setPassword(hashedPassword);
         const userEntity = createUserDto.toUserEntity();
         await this.userRepository.save(userEntity);

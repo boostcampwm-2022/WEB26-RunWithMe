@@ -6,7 +6,7 @@ export class AuthRepository {
     constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
     async saveToken(token: string, userId: string) {
-        await this.cacheManager.store.set(userId, token);
+        await this.cacheManager.set(userId, token);
     }
 
     async deleteToken(userId: string) {

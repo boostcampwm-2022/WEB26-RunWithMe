@@ -35,6 +35,7 @@ import type { ClientOpts } from "redis";
             store: redisStore,
             host: process.env.REDIS_HOST,
             port: process.env.REDIS_PORT,
+            ttl: 0,
         }),
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, "..", "..", "client", "build"),

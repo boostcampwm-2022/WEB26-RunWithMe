@@ -1,21 +1,21 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { UserService } from "src/user/user.service";
-import { LoginDTO } from "./dto/loginDTO";
+import { LoginUserDto } from "./dto/login-user.dto";
 import * as bcrypt from "bcryptjs";
 import { JwtService } from "@nestjs/jwt";
+import { UserRepository } from "src/user/user.repository";
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UserService, private jwtService: JwtService) {}
+    constructor(private userRepository: UserRepository, private jwtService: JwtService) {}
 
-    async validateUser(loginDTO: LoginDTO) {
-        const user = await this.userService.findByUserId(loginDTO.userId);
-        if (!user || !bcrypt.compareSync(loginDTO.password, user.password)) {
+    async validateUser(loginUserDto: LoginUserDto) {
+        const userEntity = await this.userRepository.findByUserId(loginUserDto.getUserId());
+        if (!userEntity || !bcrypt.compareSync(loginUserDto.getPassword(), userEntity.password)) {
             throw new UnauthorizedException();
         }
         return {
-            accessToken: this.getAccessToken(user.userId),
-            refreshToken: this.getRefreshToken(user.userId),
+            accessToken: this.getAccessToken(userEntity.userId),
+            refreshToken: this.getRefreshToken(userEntity.userId),
         };
     }
 
@@ -35,7 +35,7 @@ export class AuthService {
             { userId },
             {
                 secret: process.env.REFRESH_SECRET,
-                expiresIn: "24h",
+                expiresIn: "30d",
             },
         );
         return token;

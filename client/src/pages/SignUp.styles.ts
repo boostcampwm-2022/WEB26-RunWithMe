@@ -3,24 +3,21 @@ import { COLOR } from "styles/color";
 
 export const LogoWrapper = styled.div`
     color: ${COLOR.BLACK};
-    width: 90%;
+    width: 100%;
+    margin: 50px 0;
     height: 29px;
     font-size: 2.4rem;
     font-weight: bold;
     font-family: "Noto Sans KR";
-    margin: auto;
-    padding: 5rem;
     text-align: center;
 `;
 
 export const InputWrapper = styled.div`
-    padding: 4rem;
-    width: 90%;
-    margin: auto;
+    width: 100%;
+    padding: 0 40px;
+    margin-bottom: 40px;
     div {
         display: block;
-        margin: auto;
-
         input {
             font-size: 1.4rem;
         }
@@ -33,23 +30,18 @@ export const InputWrapper = styled.div`
     }
 
     button {
-        margin-top: 2.5rem;
+        margin-top: 25px;
     }
 `;
 
 export const OptionsWrapper = styled.div`
-    color: grey;
+    color: ${COLOR.DARK_GRAY};
     display: flex;
-    margin: auto;
-    width: 90%;
-    padding: 0 10rem;
-
+    justify-content: center;
+    width: 100%;
     div {
-        display: flex;
-        justify-content: center;
-        flex-grow: 1;
-        padding: 0.1rem 0.9rem;
         cursor: pointer;
+        padding: 0 1rem;
     }
 
     div:not(:last-child) {

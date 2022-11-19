@@ -1,5 +1,5 @@
 import { ERROR } from "#constants/errorMessage";
-import { ChangeEventHandler, FormEventHandler } from "react";
+import { ChangeEventHandler, FormEventHandler, useCallback } from "react";
 import { InputWrapper } from "../Input.style";
 
 interface PaceInputProps {
@@ -9,16 +9,20 @@ interface PaceInputProps {
 }
 
 const PaceInput = ({ width, onChangeMinute, onChangeSecond }: PaceInputProps) => {
-    const onInput: FormEventHandler<HTMLInputElement> = (e) => {
+    const onInput: FormEventHandler<HTMLInputElement> = useCallback((e) => {
         const value = e.currentTarget.value;
         if (value.length > 1 && value[0] === "0") {
             e.currentTarget.value = value.slice(1);
         }
-        if (Number(value) > 60 || Number(value) < 0) {
+        if (Number(value) > 60) {
             alert(ERROR.INVALID_MINUTE_VALUE);
             e.currentTarget.value = "60";
         }
-    };
+        if (Number(value) < 0) {
+            alert(ERROR.INVALID_MINUTE_VALUE);
+            e.currentTarget.value = "0";
+        }
+    }, []);
     return (
         <InputWrapper width={width ?? "100%"}>
             <input

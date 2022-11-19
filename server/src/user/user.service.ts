@@ -1,24 +1,24 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "src/entities/user.entity";
-import { Repository } from "typeorm";
-import { UserDTO } from "./dto/userDTO";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import * as bcrypt from "bcryptjs";
+import { UserRepository } from "./user.repository";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { User } from "src/entities/user.entity";
 
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
+    constructor(private userRepository: UserRepository) {}
 
-    async create(userDTO: UserDTO) {
-        if (await this.findByUserId(userDTO.userId)) {
-            return { status: 400 };
+    async create(createUserDTO: CreateUserDto) {
+        if (await this.findByUserId(createUserDTO.getUserId())) {
+            throw new BadRequestException();
         }
-        userDTO.password = bcrypt.hashSync(userDTO.password, 10);
-        await this.userRepository.save(userDTO);
+        createUserDTO.setPassword(bcrypt.hashSync(createUserDTO.getPassowrd(), 10));
+        const user = createUserDTO.toUserEntity();
+        await this.userRepository.save(user);
         return { status: 201 };
     }
 
-    async findByUserId(userId: string): Promise<UserDTO | undefined> {
+    async findByUserId(userId: string): Promise<User | undefined> {
         return await this.userRepository.findOneBy({ userId });
     }
 }

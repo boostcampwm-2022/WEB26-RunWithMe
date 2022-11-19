@@ -23,7 +23,11 @@ jobs:
         run: |
           ./client/node_modules/.bin/eslint client/src --ext .ts,.tsx
           ./server/node_modules/.bin/eslint server/src --ext .ts,.tsx
-      - name: Run build check
+      - name: Run client build check
         run: |
           cd client
+          npm run build
+      - name: Run server build check
+        run: |
+          cd server
           npm run build

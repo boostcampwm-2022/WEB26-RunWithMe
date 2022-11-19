@@ -4,7 +4,6 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./ 
 COPY . .
-
+RUN npm config set cache /tmp --global
 RUN npm install --silent
-
 EXPOSE 3000 6006

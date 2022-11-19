@@ -16,7 +16,7 @@ export function isValidId(property: string, validationOptions?: ValidationOption
                         typeof value === "string" &&
                         typeof relatedValue === "string" &&
                         value.length > relatedValue.length
-                    ); // you can return a Promise<boolean> here as well, if you want to make async validation
+                    );
                 },
             },
         });

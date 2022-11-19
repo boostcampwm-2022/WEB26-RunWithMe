@@ -8,17 +8,15 @@ import { User } from "src/entities/user.entity";
 export class UserService {
     constructor(private userRepository: UserRepository) {}
 
-    async create(createUserDTO: CreateUserDto) {
-        if (await this.findByUserId(createUserDTO.getUserId())) {
+    async create(createUserDto: CreateUserDto) {
+        const isPresent = await this.userRepository.findByUserId(createUserDto.getUserId());
+        if (isPresent) {
             throw new BadRequestException();
         }
-        createUserDTO.setPassword(bcrypt.hashSync(createUserDTO.getPassowrd(), 10));
-        const user = createUserDTO.toUserEntity();
-        await this.userRepository.save(user);
+        const hashedPassword = bcrypt.hashSync(createUserDto.getPassowrd(), 10);
+        createUserDto.setPassword(hashedPassword);
+        const userEntity = createUserDto.toUserEntity();
+        await this.userRepository.save(userEntity);
         return { status: 201 };
-    }
-
-    async findByUserId(userId: string): Promise<User | undefined> {
-        return await this.userRepository.findOneBy({ userId });
     }
 }

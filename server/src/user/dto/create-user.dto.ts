@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString, MinLength } from "class-validator";
+import { IsString, MinLength } from "class-validator";
 import { User } from "../../entities/user.entity";
 
 export class CreateUserDto {

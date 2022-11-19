@@ -26,8 +26,8 @@ const Login = () => {
         if (checkFormValidation()) return;
         axios
             .post("http://localhost:4000/auth/login", {
-                userId: userId,
-                password: password,
+                userId,
+                password,
             })
             .then((res) => res.status === 201 && navigate("/", { replace: true }))
             .catch(console.log);

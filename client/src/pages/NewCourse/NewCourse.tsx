@@ -3,10 +3,12 @@ import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import { PLACEHOLDER } from "#constants/constants";
 import useMap from "#hooks/useMap";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexColumn } from "styles/flex";
-
+import { LOCK_ICON, UNLOCK_ICON, UNDO_ICON } from "#assets/icons";
+import useWriteMap from "#hooks/useWriteMap";
 const CourseForm = styled.div`
     ${flexColumn};
     align-items: center;
@@ -25,10 +27,16 @@ const CourseForm = styled.div`
 `;
 
 const NewCourse = () => {
-    const { renderMap } = useMap({
+    const [pathLength, setPathLength] = useState(0);
+    const { renderMap } = useWriteMap({
         height: `${window.innerHeight - 307}px`,
         center: { lat: 33.450701, lng: 126.570667 },
     });
+
+    useEffect(() => {
+        console.log;
+    }, []);
+
     return (
         <div style={{ height: "100vh", maxHeight: "100vh" }}>
             <Header text="코스 등록" loggedIn={true} />
@@ -36,7 +44,7 @@ const NewCourse = () => {
             <CourseForm>
                 <div>
                     <span>총 거리</span>
-                    <p>3.3km</p>
+                    <p>{`${pathLength}km`}</p>
                 </div>
                 <div>
                     <span>코스명</span>

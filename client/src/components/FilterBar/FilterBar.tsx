@@ -1,14 +1,21 @@
 import styled from "styled-components";
 import { COLOR } from "styles/color";
-import { flexRowSpaceBetween } from "styles/flex";
+import { flexRow } from "styles/flex";
+import Filter from "#components/Filter/Filter";
 
 const FilterBarWrapper = styled.div`
-    ${flexRowSpaceBetween};
+    ${flexRow};
+    padding: 8px 8px;
+    gap: 2rem;
     border-bottom: ${`1px solid ${COLOR.BABY_BLUE}`};
 `;
 
-const FilterBar = () => {
-    return <></>;
+interface FilterBarProps {
+    children?: React.ReactNode;
+}
+
+const FilterBar = ({ children }: FilterBarProps) => {
+    return <FilterBarWrapper>{children}</FilterBarWrapper>;
 };
 
 export default FilterBar;

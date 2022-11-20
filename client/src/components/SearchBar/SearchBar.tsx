@@ -28,7 +28,7 @@ const SearchBar = () => {
     return (
         <>
             <SearchBarWrapper>
-                <input></input>
+                <input placeholder="검색"></input>
                 <img src={SEARCH_ICON} />
             </SearchBarWrapper>
         </>

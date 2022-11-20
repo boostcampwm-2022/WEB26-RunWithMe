@@ -6,7 +6,9 @@ import ZOOM_IN_ICON from "./zoom_in_icon.svg";
 import ZOOM_OUT_ICON from "./zoom_out_icon.svg";
 import SEARCH_ICON from "./search_icon.svg";
 import LOCATION_ICON from "./location_icon.svg";
+import ARROW_DOWN_ICON from "./arrow_down.svg";
 export {
+    ARROW_DOWN_ICON,
     LOCATION_ICON,
     USER_CIRCLE_ICON,
     ARROW_LEFT_ICON,

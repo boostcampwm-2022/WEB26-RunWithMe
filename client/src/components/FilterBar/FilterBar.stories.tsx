@@ -1,6 +1,5 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Filter from "#components/Filter/Filter.stories";
 import FilterBar from "./FilterBar";
 
 export default {

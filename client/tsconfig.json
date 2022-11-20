@@ -24,7 +24,8 @@
             "#assets/*": ["assets/*"],
             "#constants/*": ["constants/*"],
             "styles/*": ["styles/*"],
-            "#types/*": ["types/*"]
+            "#types/*": ["types/*"],
+            "#atoms/*": ["atoms/*"]
         }
     },
     "include": ["src", "craco.config.ts"]

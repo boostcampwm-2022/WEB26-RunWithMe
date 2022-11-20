@@ -25,10 +25,16 @@ const Login = () => {
     const onSubmitLogin = () => {
         if (checkFormValidation()) return;
         axios
-            .post("http://localhost:4000/auth/login", {
-                userId,
-                password,
-            })
+            .post(
+                "http://localhost:4000/auth/login",
+                {
+                    userId,
+                    password,
+                },
+                {
+                    withCredentials: true,
+                },
+            )
             .then((res) => res.status === 201 && navigate("/", { replace: true }))
             .catch(console.log);
     };

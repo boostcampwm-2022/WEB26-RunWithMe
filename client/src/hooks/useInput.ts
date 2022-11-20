@@ -14,6 +14,7 @@ const useInput = (
             setError("");
             const error = validator(e.target.value);
             if (error) {
+                setValue(isNumber ? 0 : "");
                 setError(error);
                 return;
             }

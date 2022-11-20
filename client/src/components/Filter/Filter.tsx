@@ -4,7 +4,7 @@ import { ARROW_DOWN_ICON, LOCATION_ICON } from "#assets/icons";
 import { fontMedium } from "styles/font";
 import { COLOR } from "styles/color";
 
-//does not contain dropdown logic, only primitive filter
+//does not contain dropdown logic, only primitive filter skeleton
 
 const FilterWrapper = styled.div`
     ${flexRowCenter}

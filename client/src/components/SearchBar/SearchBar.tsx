@@ -1,7 +1,14 @@
+import { ChangeEventHandler } from "react";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexRowSpaceBetween } from "styles/flex";
 import { SEARCH_ICON } from "#assets/icons";
+
+interface SearchBarProps {
+    placeholder?: string;
+    onChange?: ChangeEventHandler<HTMLInputElement>;
+    onClick?: () => void;
+}
 
 const SearchBarWrapper = styled.div`
     ${flexRowSpaceBetween};
@@ -24,12 +31,12 @@ const SearchBarWrapper = styled.div`
     }
 `;
 
-const SearchBar = () => {
+const SearchBar = ({ placeholder, onChange, onClick }: SearchBarProps) => {
     return (
         <>
             <SearchBarWrapper>
-                <input placeholder="검색"></input>
-                <img src={SEARCH_ICON} />
+                <input placeholder={placeholder} onChange={onChange}></input>
+                <img src={SEARCH_ICON} onClick={onClick} />
             </SearchBarWrapper>
         </>
     );

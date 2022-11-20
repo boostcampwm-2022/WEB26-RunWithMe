@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexRow } from "styles/flex";
-import Filter from "#components/Filter/Filter";
 
 const FilterBarWrapper = styled.div`
     ${flexRow};

@@ -12,7 +12,7 @@ async function bootstrap() {
         .addTag("app")
         .build();
     const document = SwaggerModule.createDocument(app, options);
-    app.enableCors({ origin: "http://localhost:3000", credentials: true });
+    app.enableCors({ origin: true, credentials: true });
     app.use(cookieParser());
     SwaggerModule.setup("api", app, document);
 

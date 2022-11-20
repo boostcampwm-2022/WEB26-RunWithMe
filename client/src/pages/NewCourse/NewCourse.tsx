@@ -2,12 +2,10 @@ import Button from "#components/Button/Button";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import { PLACEHOLDER } from "#constants/constants";
-import useMap from "#hooks/useMap";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexColumn } from "styles/flex";
-import { LOCK_ICON, UNLOCK_ICON, UNDO_ICON } from "#assets/icons";
 import useWriteMap from "#hooks/useWriteMap";
 const CourseForm = styled.div`
     ${flexColumn};
@@ -27,8 +25,7 @@ const CourseForm = styled.div`
 `;
 
 const NewCourse = () => {
-    const [pathLength, setPathLength] = useState(0);
-    const { renderMap } = useWriteMap({
+    const { renderMap, pathLength } = useWriteMap({
         height: `${window.innerHeight - 307}px`,
         center: { lat: 33.450701, lng: 126.570667 },
     });
@@ -44,7 +41,7 @@ const NewCourse = () => {
             <CourseForm>
                 <div>
                     <span>총 거리</span>
-                    <p>{`${pathLength}km`}</p>
+                    <p>{`${(pathLength / 1000).toFixed(1)}km`}</p>
                 </div>
                 <div>
                     <span>코스명</span>

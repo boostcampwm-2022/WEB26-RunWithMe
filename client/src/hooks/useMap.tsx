@@ -1,20 +1,7 @@
 import ZoomControl from "#components/MapControl/ZoomControl/ZoomControl";
-import { LatLng } from "#types/LatLng";
-import { useCallback, useEffect, useRef } from "react";
+import { MapProps } from "#types/MapProps";
+import { useEffect, useRef } from "react";
 import useZoomControl from "./useZoomControl";
-
-interface MapProps {
-    height?: string;
-    /**
-     * 지도 중심 좌표
-     */
-    center: LatLng;
-    /**
-     * 지도 zoom 단계
-     * 숫자가 작을수록 zoom-in
-     */
-    level?: number;
-}
 
 const useMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     const container = useRef<HTMLDivElement>(null);

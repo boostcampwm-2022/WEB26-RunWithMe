@@ -9,3 +9,4 @@ export default {
 } as ComponentMeta<typeof UndoButton>;
 
 export const _UndoButton: ComponentStory<typeof UndoButton> = (args) => <UndoButton {...args} />;
+_UndoButton.args = { position: { bottom: "14px", right: "14px" } };

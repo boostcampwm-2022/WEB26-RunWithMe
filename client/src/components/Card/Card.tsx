@@ -1,22 +1,6 @@
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { COLOR } from "styles/color";
-
-const CardWrapper = styled.div`
-    width: 100%;
-    background: ${COLOR.WHITE};
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    overflow: hidden;
-    img {
-        width: 100%;
-        max-height: 200px;
-    }
-`;
-const Summary = styled.div`
-    padding: 2px 8px;
-`;
+import { CardWrapper, Summary } from "./Card.styles";
 
 interface CardProps {
     img: string;

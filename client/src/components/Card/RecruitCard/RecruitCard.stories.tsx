@@ -1,6 +1,5 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-
 import RecruitCard from "./RecruitCard";
 import { MemoryRouter } from "react-router-dom";
 

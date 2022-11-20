@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
@@ -7,9 +7,7 @@ import useInput from "#hooks/useInput";
 import axios from "axios";
 import { PLACEHOLDER } from "#constants/constants";
 import { idValidator, passwordValidator } from "#utils/valitationUtils";
-
 import { InputWrapper, OptionsWrapper } from "./SignUp.styles";
-
 import { LogoWrapper } from "./Login.styles";
 
 const Login = () => {
@@ -18,9 +16,9 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const checkFormValidation = useCallback(() => {
-        return userIdError || passwordError;
-    }, [userIdError, passwordError]);
+    const checkFormValidation = () => {
+        return userId || password;
+    };
 
     const onSubmitLogin = () => {
         if (checkFormValidation()) return;

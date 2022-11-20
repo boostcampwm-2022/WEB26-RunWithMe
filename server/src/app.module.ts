@@ -12,6 +12,7 @@ import { Recruit } from "./entities/recruit.entity";
 import { UserRecruit } from "./entities/user_recruit.entity";
 import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
+import type { ClientOpts } from "redis";
 
 @Module({
     imports: [
@@ -29,11 +30,12 @@ import { AuthModule } from "./auth/auth.module";
             logging: true,
             entities: [User, Course, Recruit, UserRecruit],
         }),
-        CacheModule.register({
+        CacheModule.register<ClientOpts>({
             isGlobal: true,
             store: redisStore,
             host: process.env.REDIS_HOST,
             port: process.env.REDIS_PORT,
+            ttl: 0,
         }),
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, "..", "..", "client", "build"),

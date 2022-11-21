@@ -1,7 +1,7 @@
 import Button from "#components/Button/Button";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
-import { PLACEHOLDER } from "#constants/constants";
+import { PLACEHOLDER } from "#constants/placeholder";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { COLOR } from "styles/color";

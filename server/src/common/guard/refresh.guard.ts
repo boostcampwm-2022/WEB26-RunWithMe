@@ -14,6 +14,9 @@ export class RefreshGuard implements CanActivate {
 
     private validateRequest(req: Request) {
         const jwtString = req.cookies["refreshToken"];
+        if (!jwtString) {
+            return false;
+        }
         this.authService.verifyRefreshToken(jwtString);
         return true;
     }

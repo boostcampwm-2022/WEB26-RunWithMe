@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
@@ -21,12 +21,10 @@ const SignUp = () => {
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
     const navigate = useNavigate();
 
-    const checkFormValidation = useCallback(() => {
-        return userIdError || passwordError || confirmPasswordError || !confirmPassword;
-    }, [userIdError, passwordError, confirmPasswordError]);
+    const checkFormValidation = () => confirmPassword && password && userId && zipCode;
 
     const onSubmitSignUp = () => {
-        if (checkFormValidation()) return;
+        if (!checkFormValidation()) return;
         axios
             .post("http://localhost:4000/user", {
                 userId,

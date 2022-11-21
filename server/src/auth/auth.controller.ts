@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
+import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import { LoginUserDto } from "./dto/login-user.dto";
-import { Response } from "express";
 import { plainToClass } from "class-transformer";
 import { AuthGuard } from "src/common/guard/auth.guard";
 import { RefreshGuard } from "src/common/guard/refresh.guard";
@@ -19,6 +19,7 @@ export class AuthController {
         const refreshToken = this.authService.getRefreshToken(userId);
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
+            maxAge: 60 * 60 * 24 * 30,
         });
         res.send({
             status: 200,

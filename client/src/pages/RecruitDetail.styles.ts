@@ -6,7 +6,7 @@ export const Title = styled.div`
     box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.25);
     font-size: 2rem;
     font-weight: bold;
-    padding: 16px 10px 0px 10px;
+    padding: 10px 20px;
 `;
 
 export const Content = styled.div`
@@ -14,7 +14,7 @@ export const Content = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 380px;
+    height: 300px;
     padding: 15px 19px;
     div {
         margin-bottom: 10px;

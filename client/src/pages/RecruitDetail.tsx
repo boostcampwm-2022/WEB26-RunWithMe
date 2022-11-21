@@ -5,7 +5,7 @@ import { Content, Title } from "./RecruitDetail.styles";
 
 const RecruitDetail = () => {
     const { renderMap } = useMap({
-        height: `${window.innerHeight - 500}px`,
+        height: `${window.innerHeight - 400}px`,
         center: { lat: 33.450701, lng: 126.570667 },
     });
     return (

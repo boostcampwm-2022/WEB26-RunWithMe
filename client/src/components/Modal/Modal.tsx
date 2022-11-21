@@ -3,14 +3,19 @@ import { ContentWrapper, Dimmed } from "./Modal.styles";
 
 interface ModalProps {
     children: ReactNode;
+    toggled: boolean;
     toggleVisible: () => void;
 }
 
-const Modal = ({ children, toggleVisible }: ModalProps) => {
+const Modal = ({ children, toggleVisible, toggled }: ModalProps) => {
     return (
-        <Dimmed onClick={toggleVisible}>
-            <ContentWrapper onClick={(e) => e.stopPropagation()}>{children}</ContentWrapper>
-        </Dimmed>
+        <>
+            {toggled && (
+                <Dimmed onClick={toggleVisible}>
+                    <ContentWrapper onClick={(e) => e.stopPropagation()}>{children}</ContentWrapper>
+                </Dimmed>
+            )}
+        </>
     );
 };
 

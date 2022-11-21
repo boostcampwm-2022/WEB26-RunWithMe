@@ -4,7 +4,7 @@ import { flexRow } from "styles/flex";
 
 const FilterBarWrapper = styled.div`
     ${flexRow};
-    padding: 8px 8px;
+    padding: 4px 4px;
     gap: 2rem;
     border-bottom: ${`1px solid ${COLOR.BABY_BLUE}`};
 `;

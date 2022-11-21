@@ -8,6 +8,8 @@ import { COLOR } from "styles/color";
 
 const FilterWrapper = styled.div`
     ${flexRowCenter}
+    padding: 4px;
+    border-radius: 20px;
     cursor: pointer;
     p {
         white-space: nowrap;
@@ -18,15 +20,20 @@ const FilterWrapper = styled.div`
     img {
         height: 18px;
     }
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.05);
+    }
 `;
 
 interface FilterProps {
     text: string;
+    modalToggler: () => void;
 }
 
-const Filter = ({ text }: FilterProps) => {
+const Filter = ({ text, modalToggler }: FilterProps) => {
     return (
-        <FilterWrapper>
+        <FilterWrapper onClick={modalToggler}>
             <img src={LOCATION_ICON} />
             <p>{text}</p>
             <img src={ARROW_DOWN_ICON} />

@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
 import { TIME } from "#constants/time";
 import NewCourse from "#pages/NewCourse/NewCourse";
+import RecruitDetail from "#pages/RecruitDetail";
 
 function App() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -51,6 +52,9 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="course">
                 <Route path="new" element={<NewCourse />} />
+            </Route>
+            <Route path="recruit">
+                <Route path="detail" element={<RecruitDetail />} />
             </Route>
         </Routes>
     );

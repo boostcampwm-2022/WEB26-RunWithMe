@@ -1,12 +1,20 @@
-import { IsString, MinLength } from "class-validator";
+import { Type } from "class-transformer";
+import { IsNumber, IsNumberString } from "class-validator";
+import { IsValidId, IsValidPassword } from "src/common/decorator";
 import { User } from "../../entities/user.entity";
 
 export class CreateUserDto {
-    @IsString()
-    @MinLength(6)
+    @IsValidId()
     private userId: string;
+
+    @IsValidPassword()
     private password: string;
+
+    @Type(() => Number)
+    @IsNumber()
     private pace: number;
+
+    @IsNumberString()
     private zipCode: string;
 
     getUserId() {

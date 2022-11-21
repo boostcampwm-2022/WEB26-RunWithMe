@@ -8,14 +8,16 @@ import axios from "axios";
 import { PLACEHOLDER } from "#constants/constants";
 import { idValidator, passwordValidator } from "#utils/valitationUtils";
 
+import { useSetRecoilState } from "recoil";
 import { InputWrapper, OptionsWrapper } from "./SignUp.styles";
+import { userState } from "#atoms/userState";
 
 import { LogoWrapper } from "./Login.styles";
 
 const Login = () => {
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
     const [password, onChangePassword, passwordError] = useInput(passwordValidator);
-
+    const setUserInfo = useSetRecoilState(userState);
     const navigate = useNavigate();
 
     const checkFormValidation = useCallback(() => {
@@ -35,7 +37,10 @@ const Login = () => {
                     withCredentials: true,
                 },
             )
-            .then((res) => res.status === 201 && navigate("/", { replace: true }))
+            .then((res) => {
+                setUserInfo({ accessToken: res.data.data.accessToken, userId: res.data.data.userId });
+                res.status === 201 && navigate("/", { replace: true });
+            })
             .catch(console.log);
     };
 

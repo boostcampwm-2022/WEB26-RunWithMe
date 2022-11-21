@@ -3,8 +3,10 @@ import SignUp from "#pages/SignUp";
 import Login from "#pages/Login";
 import MainPage from "#pages/MainPage";
 import { useRecoilState } from "recoil";
-import { userState } from "#atoms/userInfo";
+import { userState } from "#atoms/userState";
 import { Route, Routes } from "react-router-dom";
+import axios, { AxiosResponse } from "axios";
+import { TIME } from "#constants/time";
 
 function App() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -14,16 +16,21 @@ function App() {
         const silentLogin = () => {
             setRefreshRequestTimer(
                 setTimeout(() => {
-                    fetch("/auth/refresh", {
-                        method: "GET",
-                        credentials: "include",
-                    })
-                        .then((response) => response.json())
-                        .then((response) => {
-                            setUserInfo({ accessToken: response.data.accessToken, userId: response.data.userId });
+                    axios
+                        .get("http://localhost:4000/auth/refresh", {
+                            withCredentials: true,
+                            headers: {
+                                Authorization: `Bearer ${userInfo.accessToken}`,
+                            },
                         })
-                        .catch((err) => console.log(err));
-                }, 3000),
+                        .then((response: AxiosResponse) => {
+                            setUserInfo({
+                                accessToken: response.data.data.accessToken,
+                                userId: response.data.data.userId,
+                            });
+                        })
+                        .catch();
+                }, TIME.ACCESS_TOKEN_EXPIRE_TIME - TIME.MINUTE_IN_SECONDS),
             );
 
             setRefreshRequestTimer(refreshRequestTimer);

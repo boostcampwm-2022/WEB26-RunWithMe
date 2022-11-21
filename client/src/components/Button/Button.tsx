@@ -8,6 +8,7 @@ interface ButtonProps {
     width?: "fill" | "fit";
     onClick?: () => void;
     children: ReactNode;
+    type?: "button" | "submit";
 }
 
 const Button = ({
@@ -16,13 +17,15 @@ const Button = ({
     width = "fit",
     onClick,
     children,
+    type = "button",
 }: ButtonProps) => {
     return (
         <Btn
             onClick={onClick}
             color={color}
             backgroundColor={backgroundColor}
-            width={width === "fill" ? "100%" : "auto"}
+            width={width === "fill" ? "100%" : "fit-content"}
+            type={type}
         >
             {children}
         </Btn>

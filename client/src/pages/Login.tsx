@@ -1,11 +1,11 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import Button from "#components/Button/Button";
 import useInput from "#hooks/useInput";
 import axios from "axios";
-import { PLACEHOLDER } from "#constants/constants";
+import { PLACEHOLDER } from "#constants/placeholder";
 import { idValidator, passwordValidator } from "#utils/valitationUtils";
 
 import { useSetRecoilState } from "recoil";
@@ -20,9 +20,9 @@ const Login = () => {
     const setUserInfo = useSetRecoilState(userState);
     const navigate = useNavigate();
 
-    const checkFormValidation = useCallback(() => {
-        return userIdError || passwordError;
-    }, [userIdError, passwordError]);
+    const checkFormValidation = () => {
+        return userId || password;
+    };
 
     const onSubmitLogin = () => {
         if (checkFormValidation()) return;

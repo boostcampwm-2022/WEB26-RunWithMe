@@ -7,6 +7,7 @@ import { userState } from "#atoms/userState";
 import { Route, Routes } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
 import { TIME } from "#constants/time";
+import NewCourse from "#pages/NewCourse/NewCourse";
 
 function App() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -48,6 +49,9 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login />} />
+            <Route path="course">
+                <Route path="new" element={<NewCourse />} />
+            </Route>
         </Routes>
     );
 }

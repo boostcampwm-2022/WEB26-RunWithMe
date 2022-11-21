@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import ZoomControl from "./ZoomControl";
 
 export default {
-    title: "Example/ZoomControl",
+    title: "MapControl/ZoomControl",
     component: ZoomControl,
 } as ComponentMeta<typeof ZoomControl>;
 

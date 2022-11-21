@@ -1,35 +1,46 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import Button from "#components/Button/Button";
 import useInput from "#hooks/useInput";
 import axios from "axios";
-import { PLACEHOLDER } from "#constants/constants";
+import { PLACEHOLDER } from "#constants/placeholder";
 import { idValidator, passwordValidator } from "#utils/valitationUtils";
 
+import { useSetRecoilState } from "recoil";
 import { InputWrapper, OptionsWrapper } from "./SignUp.styles";
+import { userState } from "#atoms/userState";
 
 import { LogoWrapper } from "./Login.styles";
 
 const Login = () => {
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
     const [password, onChangePassword, passwordError] = useInput(passwordValidator);
-
+    const setUserInfo = useSetRecoilState(userState);
     const navigate = useNavigate();
 
-    const checkFormValidation = useCallback(() => {
-        return userIdError || passwordError;
-    }, [userIdError, passwordError]);
+    const checkFormValidation = () => {
+        return userId || password;
+    };
 
     const onSubmitLogin = () => {
         if (checkFormValidation()) return;
         axios
-            .post("http://localhost:4000/auth/login", {
-                userId,
-                password,
+            .post(
+                "http://localhost:4000/auth/login",
+                {
+                    userId,
+                    password,
+                },
+                {
+                    withCredentials: true,
+                },
+            )
+            .then((res) => {
+                setUserInfo({ accessToken: res.data.data.accessToken, userId: res.data.data.userId });
+                res.status === 201 && navigate("/", { replace: true });
             })
-            .then((res) => res.status === 201 && navigate("/", { replace: true }))
             .catch(console.log);
     };
 

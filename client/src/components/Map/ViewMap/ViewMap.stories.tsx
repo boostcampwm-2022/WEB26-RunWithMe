@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import ViewMap from "./ViewMap";
 
 export default {
-    title: "Example/ViewMap",
+    title: "Map/ViewMap",
     component: ViewMap,
 } as ComponentMeta<typeof ViewMap>;
 

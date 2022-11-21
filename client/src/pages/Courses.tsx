@@ -3,7 +3,7 @@ import Header from "#components/Header/Header";
 import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
 import Filter from "#components/Filter/Filter";
-import { PLACEHOLDER } from "#constants/constants";
+import { PLACEHOLDER } from "#constants/placeholder";
 
 const Courses = () => {
     return (

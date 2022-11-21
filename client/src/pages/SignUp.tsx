@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
@@ -7,7 +7,9 @@ import axios from "axios";
 import useInput from "#hooks/useInput";
 import { confirmPasswordValidator, idValidator, passwordValidator, zipCodeValidator } from "#utils/valitationUtils";
 import { InputWrapper, LogoWrapper, OptionsWrapper } from "./SignUp.styles";
-import { PLACEHOLDER } from "#constants/constants";
+import { PLACEHOLDER } from "#constants/placeholder";
+import usePaceInput from "#hooks/usePaceInput";
+import PaceInput from "#components/Input/PaceInput/PaceInput";
 
 const SignUp = () => {
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
@@ -16,21 +18,18 @@ const SignUp = () => {
         confirmPasswordValidator(String(password)),
     );
     const [zipCode, onChangeZipCode, zipCodeError] = useInput(zipCodeValidator);
-    const [pace, onChangePace] = useInput(() => "", true);
-
+    const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
     const navigate = useNavigate();
 
-    const checkFormValidation = useCallback(() => {
-        return userIdError || passwordError || confirmPasswordError || !confirmPassword;
-    }, [userIdError, passwordError, confirmPasswordError]);
+    const checkFormValidation = () => confirmPassword && password && userId && zipCode;
 
     const onSubmitSignUp = () => {
-        if (checkFormValidation()) return;
+        if (!checkFormValidation()) return;
         axios
             .post("http://localhost:4000/user", {
                 userId,
                 password,
-                pace,
+                pace: pace.minute * 60 + pace.second,
                 zipCode,
             })
             .then((res) => res.status === 201 && navigate("/", { replace: true }))
@@ -52,7 +51,7 @@ const SignUp = () => {
                     onChange={onChangeConfirmPassword}
                 ></Input>
                 <span>{confirmPasswordError}</span>
-                <Input placeholder={PLACEHOLDER.PACE} type="number" onChange={onChangePace}></Input>
+                <PaceInput onChangeMinute={onChangeMinute} onChangeSecond={onChangeSecond}></PaceInput>
                 <Input placeholder={PLACEHOLDER.ZIP_CODE} type="number" onChange={onChangeZipCode}></Input>
                 <span>{zipCodeError}</span>
                 <Button width="fill" onClick={onSubmitSignUp}>

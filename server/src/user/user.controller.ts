@@ -9,7 +9,6 @@ export class UserController {
 
     @Post()
     async create(@Body() createUserDto: CreateUserDto) {
-        createUserDto = plainToClass(CreateUserDto, createUserDto);
         return this.userService.create(createUserDto);
     }
 }

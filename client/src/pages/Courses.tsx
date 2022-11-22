@@ -6,34 +6,26 @@ import Filter from "#components/Filter/Filter";
 import Modal from "#components/Modal/Modal";
 import useFilter from "#hooks/useFilter";
 import { PLACEHOLDER } from "#constants/placeholder";
+import CourseCard from "#components/Card/CourseCard/CourseCard";
 
 const Courses = () => {
-    const [showModal, setShowModal] = useState(true);
-    //const [currentFilter, setCurrentFilter] = useFilter(initial );
-    //const [currentTimeFilter, setCurrentTimeFilter] = useFilter({initial: , options: })
-    const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter({
+    const [distanceFilter, setCurrentDistanceFilter] = useFilter({
         currentFilter: "5km 이내",
         options: ["5km 이내", "3km 이내", "1km 이내"],
     });
 
-    const [modalContents, setModalContents] = useState(currentDistanceFilter.options);
-    const modalToggler = () => {
-        setShowModal(!showModal);
-    };
+    const [timeFilter, setCurrentTimeFilter] = useFilter({
+        currentFilter: "5시간 이내",
+        options: ["5시간 이내", "3시간 이내", "1시간 이내"],
+    });
 
     return (
         <>
             <Header text="코스 목록" />
             <SearchBar placeholder={PLACEHOLDER.SEARCH}></SearchBar>
-            <Modal toggled={showModal} toggleVisible={modalToggler}>
-                {modalContents.map((filter: string, i: number) => (
-                    <div key={i}>{filter}</div>
-                ))}
-            </Modal>
             <FilterBar>
-                <Filter modalToggler={modalToggler} text="거리순"></Filter>
-                <Filter modalToggler={modalToggler} text="시간순"></Filter>
-                <Filter modalToggler={modalToggler} text="시간순"></Filter>
+                <Filter filterState={distanceFilter} setCurrentFilterState={setCurrentDistanceFilter}></Filter>
+                <Filter filterState={timeFilter} setCurrentFilterState={setCurrentTimeFilter}></Filter>
             </FilterBar>
             <div>asd</div>
         </>

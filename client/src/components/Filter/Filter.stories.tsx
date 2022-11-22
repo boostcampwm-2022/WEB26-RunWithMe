@@ -12,5 +12,5 @@ const Template: ComponentStory<typeof Filter> = (args) => <Filter {...args} />;
 
 export const Text = Template.bind({});
 Text.args = {
-    text: "FilterType",
+    filterState: { currentFilter: "5km 이내", options: ["5km 이내", "3km 이내", "1km 이내"] },
 };

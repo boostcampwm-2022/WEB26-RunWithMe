@@ -1,7 +1,9 @@
-import { useState, useCallback } from "react";
-const useFilter = (initialFilter: any) => {
-    const [filterState, setFilterState] = useState(initialFilter);
-
+import { useState, useCallback, useReducer } from "react";
+const useFilter = (initialFilter: {
+    currentFilter: string;
+    options: string[];
+}): [{ currentFilter: string; options: string[] }, (selectedFilter: string) => void] => {
+    const [filterState, setFilterState] = useState<{ currentFilter: string; options: string[] }>(initialFilter);
     /*
         initialFilter object example
         {
@@ -9,7 +11,13 @@ const useFilter = (initialFilter: any) => {
             options: ['5km 이내', '3km 이내', '1km 이내']
         }
     */
-    return [filterState, setFilterState];
+
+    const setCurrentFilterState = (selectedFilter: string) => {
+        console.log("filter set");
+        setFilterState({ currentFilter: selectedFilter, options: filterState.options });
+    };
+
+    return [filterState, setCurrentFilterState];
 };
 
 export default useFilter;

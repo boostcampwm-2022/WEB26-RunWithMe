@@ -2,7 +2,6 @@ import Button from "#components/Button/Button";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import { PLACEHOLDER } from "#constants/placeholder";
-import { useCallback } from "react";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexColumn } from "styles/flex";
@@ -25,15 +24,10 @@ const CourseForm = styled.div`
 `;
 
 const NewCourse = () => {
-    const { map, renderMap, pathLength } = useWriteMap({
+    const { renderMap, pathLength } = useWriteMap({
         height: `${window.innerHeight - 307}px`,
         center: { lat: 33.450701, lng: 126.570667 },
     });
-
-    const setCenter = useCallback((position: kakao.maps.LatLng) => {
-        if (!map) return;
-        map.setCenter(position);
-    }, []);
 
     return (
         <div style={{ height: "100vh", maxHeight: "100vh" }}>

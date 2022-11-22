@@ -14,6 +14,10 @@ export class AuthGuard implements CanActivate {
 
     private validateRequest(req: Request) {
         const jwtString = req.headers.authorization.split("Bearer")[1].trim();
+        if (!jwtString) {
+            return false;
+        }
+
         this.authService.verifyAccessToken(jwtString);
         return true;
     }

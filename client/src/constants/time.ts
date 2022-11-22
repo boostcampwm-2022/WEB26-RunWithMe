@@ -1,0 +1,4 @@
+export enum TIME {
+    ACCESS_TOKEN_EXPIRE_TIME = 15 * 60 * 1000,
+    MINUTE_IN_SECONDS = 60 * 1000,
+}

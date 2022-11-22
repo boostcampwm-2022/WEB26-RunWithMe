@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { LoginUserDto } from "./dto/login-user.dto";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { plainToClass } from "class-transformer";
 import { AuthGuard } from "src/common/guard/auth.guard";
 import { RefreshGuard } from "src/common/guard/refresh.guard";

@@ -4,7 +4,7 @@ import { LocalData } from "#types/Local";
 import { MapControlPotition, MapControlProps } from "#types/MapControlProps";
 import { PlaceInfo } from "#types/Place";
 import { debounce } from "#utils/timerUtils";
-import { ChangeEvent, useCallback } from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { COLOR } from "styles/color";
 import { flexColumn, flexRowCenter, flexRowSpaceBetween } from "styles/flex";
@@ -61,17 +61,21 @@ const PlaceList = styled.ul`
 
 interface PlaceSearchProps extends MapControlProps {
     setCenter: (position: kakao.maps.LatLng) => void;
+    getCenter: () => kakao.maps.LatLng;
 }
 
-const PlaceSearch = ({ position, setCenter }: PlaceSearchProps) => {
-    const { searchResult, search } = usePlaceSearch();
-    const onChangeQuery = debounce((e: ChangeEvent<HTMLInputElement>) => search(e.target.value), 200);
+const PlaceSearch = ({ position, setCenter, getCenter }: PlaceSearchProps) => {
+    const { searchResult, search, clear } = usePlaceSearch();
+    const inputRef = useRef<HTMLInputElement>(null);
+    const onChangeQuery = debounce((e: ChangeEvent<HTMLInputElement>) => search(e.target.value, getCenter()), 200);
 
     const onClickPlace = useCallback(
         (place: PlaceInfo) => () => {
+            if (!inputRef.current) return;
             const { x, y } = place;
-            console.log(setCenter);
             setCenter(new kakao.maps.LatLng(Number(y), Number(x)));
+            inputRef.current.value = "";
+            clear();
         },
         [],
     );
@@ -80,7 +84,7 @@ const PlaceSearch = ({ position, setCenter }: PlaceSearchProps) => {
         <SearchContainer position={position}>
             <SearchWrapper>
                 <div>
-                    <input onChange={onChangeQuery} placeholder="장소, 주소, 버스 검색" />
+                    <input ref={inputRef} onChange={onChangeQuery} placeholder="장소, 주소, 버스 검색" />
                     <img src={SEARCH_ICON} />
                 </div>
             </SearchWrapper>

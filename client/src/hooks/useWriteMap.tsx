@@ -78,9 +78,9 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     );
 
     const getCenter = useCallback(() => {
-        if (!map.current) return;
+        if (!map.current) return new kakao.maps.LatLng(center.lng, center.lat);
         return map.current.getCenter();
-    }, [map.current]);
+    }, []);
 
     return {
         map: map.current,
@@ -96,7 +96,7 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
                     onClick={onClickLock}
                     position={{ top: "96px", right: "14px" }}
                 />
-                <PlaceSearch position={{ top: "14px" }} setCenter={setCenter} />
+                <PlaceSearch position={{ top: "14px" }} setCenter={setCenter} getCenter={getCenter} />
             </div>
         ),
     };

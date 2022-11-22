@@ -2,12 +2,11 @@ import Button from "#components/Button/Button";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import { PLACEHOLDER } from "#constants/placeholder";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexColumn } from "styles/flex";
 import useWriteMap from "#hooks/useWriteMap";
-import { LatLng } from "#types/LatLng";
 const CourseForm = styled.div`
     ${flexColumn};
     align-items: center;

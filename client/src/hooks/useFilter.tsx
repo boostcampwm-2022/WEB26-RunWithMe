@@ -1,4 +1,4 @@
-import { useState, useCallback, useReducer } from "react";
+import { useState } from "react";
 const useFilter = (initialFilter: {
     currentFilter: string;
     options: string[];

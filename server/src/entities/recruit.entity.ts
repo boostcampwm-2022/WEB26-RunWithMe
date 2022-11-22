@@ -12,7 +12,7 @@ import {
 import { Course } from "./course.entity";
 import { UserRecruit } from "./user_recruit.entity";
 
-@Entity()
+@Entity("recruit")
 export class Recruit {
     @PrimaryGeneratedColumn()
     id: number;
@@ -29,8 +29,8 @@ export class Recruit {
     @Column()
     pace: number;
 
-    @Column()
-    zipCode: string;
+    @Column({ type: "varchar", length: 10 })
+    hCode: string;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -38,7 +38,7 @@ export class Recruit {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @OneToMany(() => UserRecruit, (userRecruit) => userRecruit.user)
+    @OneToMany(() => UserRecruit, (userRecruit) => userRecruit.recruit)
     userRecruits: UserRecruit[];
 
     @Column()
@@ -60,7 +60,7 @@ export class Recruit {
         startTime: Date,
         maxPpl: number,
         pace: number,
-        zipCode: string,
+        hCode: string,
         userId: number,
         courseId: number,
     ) {
@@ -69,7 +69,7 @@ export class Recruit {
         recruit.startTime = startTime;
         recruit.maxPpl = maxPpl;
         recruit.pace = pace;
-        recruit.zipCode = zipCode;
+        recruit.hCode = hCode;
         recruit.userId = userId;
         recruit.courseId = courseId;
         return recruit;

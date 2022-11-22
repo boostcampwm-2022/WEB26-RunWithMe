@@ -53,10 +53,10 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="course">
                 <Route path="new" element={<NewCourse />} />
-                <Route path="detail" element={<CourseDetail />} />
+                <Route path=":id" element={<CourseDetail />} />
             </Route>
             <Route path="recruit">
-                <Route path="detail" element={<RecruitDetail />} />
+                <Route path=":id" element={<RecruitDetail />} />
             </Route>
         </Routes>
     );

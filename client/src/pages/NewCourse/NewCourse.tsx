@@ -2,11 +2,12 @@ import Button from "#components/Button/Button";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import { PLACEHOLDER } from "#constants/placeholder";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexColumn } from "styles/flex";
 import useWriteMap from "#hooks/useWriteMap";
+import { LatLng } from "#types/LatLng";
 const CourseForm = styled.div`
     ${flexColumn};
     align-items: center;
@@ -25,13 +26,14 @@ const CourseForm = styled.div`
 `;
 
 const NewCourse = () => {
-    const { renderMap, pathLength } = useWriteMap({
+    const { map, renderMap, pathLength } = useWriteMap({
         height: `${window.innerHeight - 307}px`,
         center: { lat: 33.450701, lng: 126.570667 },
     });
 
-    useEffect(() => {
-        console.log;
+    const setCenter = useCallback((position: kakao.maps.LatLng) => {
+        if (!map) return;
+        map.setCenter(position);
     }, []);
 
     return (

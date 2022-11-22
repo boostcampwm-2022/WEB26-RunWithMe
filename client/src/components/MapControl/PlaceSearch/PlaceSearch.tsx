@@ -1,26 +1,41 @@
 import { SEARCH_ICON } from "#assets/icons";
+import usePlaceSearch from "#hooks/usePlaceSearch";
+import { LocalData } from "#types/Local";
 import { MapControlPotition, MapControlProps } from "#types/MapControlProps";
-import styled from "styled-components";
+import { PlaceInfo } from "#types/Place";
+import { debounce } from "#utils/timerUtils";
+import { ChangeEvent, useCallback } from "react";
+import styled, { css } from "styled-components";
 import { COLOR } from "styles/color";
-import { flexRowCenter, flexRowSpaceBetween } from "styles/flex";
+import { flexColumn, flexRowCenter, flexRowSpaceBetween } from "styles/flex";
 import { fontMidium } from "styles/font";
 
+const SearchBarItemStyle = css`
+    background: ${COLOR.WHITE};
+    opacity: 0.9;
+    border-radius: 10px;
+    padding: 4px 8px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+`;
+
 const SearchContainer = styled.div<{ position: MapControlPotition }>`
-    ${flexRowCenter};
+    ${flexColumn}
+    align-items: center;
+    position: absolute;
     width: 100%;
     z-index: 1;
-    position: absolute;
     top: ${({ position }) => position.top ?? "auto"};
     left: ${({ position }) => position.left ?? "auto"};
     bottom: ${({ position }) => position.bottom ?? "auto"};
     right: ${({ position }) => position.right ?? "auto"};
+`;
+
+const SearchWrapper = styled.div`
+    ${flexRowCenter};
+    width: 100%;
     div {
-        ${flexRowSpaceBetween}
-        background: ${COLOR.WHITE};
-        opacity: 0.9;
-        border-radius: 10px;
-        padding: 4px 8px;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+        ${flexRowSpaceBetween};
+        ${SearchBarItemStyle};
     }
     input {
         ${fontMidium(COLOR.DARK_GRAY, 500)}
@@ -29,15 +44,55 @@ const SearchContainer = styled.div<{ position: MapControlPotition }>`
             outline: none;
         }
     }
+    margin-bottom: 4px;
 `;
 
-const PlaceSearch = ({ position }: MapControlProps) => {
+const PlaceList = styled.ul`
+    ${SearchBarItemStyle};
+    background-color: ${COLOR.WHITE};
+    width: 200px;
+    align-items: center;
+    li {
+        ${fontMidium(COLOR.DARK_GRAY, 500)};
+        margin: 2px 0;
+        list-style-type: none;
+    }
+`;
+
+interface PlaceSearchProps extends MapControlProps {
+    setCenter: (position: kakao.maps.LatLng) => void;
+}
+
+const PlaceSearch = ({ position, setCenter }: PlaceSearchProps) => {
+    const { searchResult, search } = usePlaceSearch();
+    const onChangeQuery = debounce((e: ChangeEvent<HTMLInputElement>) => search(e.target.value), 200);
+
+    const onClickPlace = useCallback(
+        (place: PlaceInfo) => () => {
+            const { x, y } = place;
+            console.log(setCenter);
+            setCenter(new kakao.maps.LatLng(Number(y), Number(x)));
+        },
+        [],
+    );
+
     return (
         <SearchContainer position={position}>
-            <div>
-                <input placeholder="장소, 주소, 버스 검색" />
-                <img src={SEARCH_ICON} />
-            </div>
+            <SearchWrapper>
+                <div>
+                    <input onChange={onChangeQuery} placeholder="장소, 주소, 버스 검색" />
+                    <img src={SEARCH_ICON} />
+                </div>
+            </SearchWrapper>
+            {searchResult.length > 0 && (
+                <PlaceList>
+                    {searchResult.map((place, idx) => (
+                        <li key={idx} onClick={onClickPlace(place)}>
+                            {place.place_name}
+                        </li>
+                    ))}
+                </PlaceList>
+            )}
         </SearchContainer>
     );
 };

@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { CreateUserDto } from "./dto/create-user.dto";
 import { UserService } from "./user.service";
-import { plainToClass } from "class-transformer";
+import { CreateUserDto } from "./dto/create-user.dto";
 import { CheckUserDto } from "./dto/check-user.dto";
 
 @Controller("user")
@@ -10,12 +9,12 @@ export class UserController {
 
     @Post()
     async create(@Body() createUserDto: CreateUserDto) {
-        return this.userService.create(createUserDto);
+        await this.userService.create(createUserDto);
+        return { statusCode: 201 };
     }
 
     @Get(":userId")
     async checkId(@Param() checkUserDto: CheckUserDto) {
-        checkUserDto = plainToClass(CheckUserDto, checkUserDto);
         return this.userService.checkId(checkUserDto);
     }
 }

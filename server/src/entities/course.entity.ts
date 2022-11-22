@@ -13,7 +13,7 @@ export class Course {
     @Column({ type: "varchar", length: 512 })
     img: string;
 
-    @Column({ type: "json" })
+    @Column({ type: "varchar", length: 512 })
     path: string;
 
     @Column()

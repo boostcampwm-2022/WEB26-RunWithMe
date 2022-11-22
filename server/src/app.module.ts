@@ -13,6 +13,7 @@ import { UserRecruit } from "./entities/user_recruit.entity";
 import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
 import type { ClientOpts } from "redis";
+import { RecruitModule } from "./recruit/recruit.module";
 
 @Module({
     imports: [
@@ -42,6 +43,7 @@ import type { ClientOpts } from "redis";
         }),
         UserModule,
         AuthModule,
+        RecruitModule,
     ],
     controllers: [AppController],
     providers: [AppService],

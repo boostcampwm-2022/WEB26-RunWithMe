@@ -55,7 +55,7 @@ export class Recruit {
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user: User;
 
-    static from(
+    static of(
         title: string,
         startTime: Date,
         maxPpl: number,

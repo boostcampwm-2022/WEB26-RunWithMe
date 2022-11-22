@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { AccessGuard } from "src/common/guard/access.guard";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
 import { JoinRecruitDto } from "./dto/join-recruit.dto";
 import { RecruitService } from "./recruit.service";
@@ -29,9 +30,43 @@ export class RecruitController {
             },
         };
     }
-
-    @Post()
+    @UseGuards(AccessGuard)
+    @Post("join")
     async register(@Body() joinRecruitDto: JoinRecruitDto) {
+        const recruitId = joinRecruitDto.getRecruitId();
+        const userId = joinRecruitDto.getUserId();
+        if (!(await this.recruitService.isExistRecruit(recruitId))) {
+            return {
+                statusCode: 409,
+                error: {
+                    message: "Does not exist or has been deleted",
+                },
+            };
+        }
+        if (await this.recruitService.isAuthorOfRecruit(recruitId, userId)) {
+            return {
+                statusCode: 423,
+                error: {
+                    message: "Cannot participate in your own recruitment",
+                },
+            };
+        }
+        if (await this.recruitService.isParticipaite(recruitId, userId)) {
+            return {
+                statusCode: 423,
+                error: {
+                    message: "You have already participated.",
+                },
+            };
+        }
+        if (!(await this.recruitService.isVacancy(recruitId))) {
+            return {
+                statusCode: 423,
+                error: {
+                    message: "Maximum cap reached",
+                },
+            };
+        }
         return {
             statusCode: 201,
             success: true,

@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { plainToClass } from "class-transformer";
-import { AuthGuard } from "src/common/guard/auth.guard";
+import { AccessGuard } from "src/common/guard/access.guard";
 import { RefreshGuard } from "src/common/guard/refresh.guard";
 
 @Controller("auth")
@@ -30,7 +30,7 @@ export class AuthController {
         });
     }
 
-    @UseGuards(AuthGuard)
+    @UseGuards(AccessGuard)
     @Get("/logout")
     async logoutUser(@Req() req: Request, @Res() res: Response) {
         const jwtString = req.headers["authorization"].split("Bearer")[1].trim();

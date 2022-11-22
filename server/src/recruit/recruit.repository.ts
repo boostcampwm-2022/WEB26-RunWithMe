@@ -15,7 +15,11 @@ export class RecruitRepository extends Repository<Recruit> {
         });
     }
 
-    async findOneById(recruitId: number): Promise<Recruit> {
-        return this.findOneById(recruitId);
+    async findOneById(recruitId: number): Promise<Recruit | undefined> {
+        return await this.findOneBy({ id: recruitId });
+    }
+
+    async getMaxPpl(recruitId: number) {
+        return (await this.findOneById(recruitId)).maxPpl;
     }
 }

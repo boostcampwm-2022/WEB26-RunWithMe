@@ -15,12 +15,24 @@ const MainPage = () => {
     const handleCoursesClick = () => {
         navigate("/courses");
     };
+    const handleCourseNewClick = () => {
+        navigate("/course/new");
+    };
+    const handleRecruitDetailClick = () => {
+        navigate("/recruit/detail");
+    };
+    const handleCourseDetailClick = () => {
+        navigate("/course/detail");
+    };
 
     return (
         <>
             <button onClick={handleLoginClick}>로그인</button>
             <button onClick={handleSignUpClick}>회원가입 </button>
             <button onClick={handleCoursesClick}>코스목록</button>
+            <button onClick={handleCourseNewClick}>코스등록 </button>
+            <button onClick={handleRecruitDetailClick}>모집상세 </button>
+            <button onClick={handleCourseDetailClick}>코스상세 </button>
         </>
     );
 };

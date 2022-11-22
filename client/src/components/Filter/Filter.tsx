@@ -62,7 +62,10 @@ const Filter = ({ filterState, setCurrentFilterState }: FilterProps) => {
     return (
         <FilterWrapper onClick={handleToggleModal}>
             <Modal toggled={showModal} toggleVisible={handleToggleModal}>
-                <ModalFilterWrapper>{createModalContents(filterState.options)}</ModalFilterWrapper>
+                <ModalFilterWrapper>
+                    {createModalContents(filterState.options)}
+                    <button onClick={handleToggleModal}>닫기</button>
+                </ModalFilterWrapper>
             </Modal>
             <img src={LOCATION_ICON} />
             <p>{filterState.currentFilter}</p>

@@ -1,4 +1,5 @@
 import LockButton from "#components/MapControl/LockButton/LockButton";
+import PlaceSearch from "#components/MapControl/PlaceSearch/PlaceSearch";
 import UndoButton from "#components/MapControl/UndoButton/UndoButton";
 import ZoomControl from "#components/MapControl/ZoomControl/ZoomControl";
 import { MapProps } from "#types/MapProps";
@@ -82,6 +83,7 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
                     onClick={onClickLock}
                     position={{ top: "96px", right: "14px" }}
                 />
+                <PlaceSearch position={{ top: "14px" }} />
             </div>
         ),
     };

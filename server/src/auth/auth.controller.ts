@@ -22,7 +22,7 @@ export class AuthController {
             maxAge: 60 * 60 * 24 * 30,
         });
         res.send({
-            status: 200,
+            statusCode: 200,
             data: {
                 accessToken: accessToken,
                 userId,
@@ -40,7 +40,7 @@ export class AuthController {
             maxAge: 0,
         });
         res.send({
-            status: 200,
+            statusCode: 200,
         });
     }
     @Post("/login")
@@ -52,7 +52,7 @@ export class AuthController {
             httpOnly: true,
         });
         res.send({
-            status: 200,
+            statusCode: 200,
             data: {
                 accessToken: data.accessToken,
                 userId: loginUserDto.getUserId(),

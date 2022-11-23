@@ -15,7 +15,7 @@ export class CreateUserDto {
     private pace: number;
 
     @IsNumberString()
-    private zipCode: string;
+    private hCode: string;
 
     getUserId() {
         return this.userId;
@@ -30,6 +30,6 @@ export class CreateUserDto {
     }
 
     toUserEntity() {
-        return User.of(this.userId, this.password, this.pace, this.zipCode);
+        return User.of(this.userId, this.password, this.pace, this.hCode);
     }
 }

@@ -11,6 +11,15 @@ export class JoinRecruitDto {
     @IsNumber()
     private userId: number;
 
+    getRecruitId() {
+        return this.recruitId;
+    }
+
+    getUserId() {
+        return this.userId;
+    }
+    
+    
     toEntity() {
         return UserRecruit.of(this.recruitId, this.userId);
     }

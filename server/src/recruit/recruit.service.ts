@@ -2,10 +2,10 @@ import { Injectable } from "@nestjs/common";
 import { RecruitRepository } from "./recruit.repository";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
 import { Recruit } from "src/entities/recruit.entity";
+
 @Injectable()
 export class RecruitService {
     constructor(private recruitRepository: RecruitRepository) {}
-
     async create(createRecruitDto: CreateRecruitDto): Promise<Recruit> {
         const recruitEntity = createRecruitDto.toEntity();
         return this.recruitRepository.createOne(recruitEntity);

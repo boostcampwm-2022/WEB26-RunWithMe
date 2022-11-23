@@ -2,13 +2,13 @@ import styled from "styled-components";
 import { MORE_BUTTON_ICON } from "#assets/icons";
 import { useNavigate } from "react-router-dom";
 import { flexRow } from "styles/flex";
-import { fontMidium } from "styles/font";
+import { fontMedium } from "styles/font";
 import { COLOR } from "styles/color";
 const MoreButtonWrapper = styled.div`
     ${flexRow};
     align-items: center;
     p {
-        ${fontMidium(COLOR.BLACK, 400)}
+        ${fontMedium(COLOR.BLACK, 400)}
     }
     img {
         margin-left: 4px;

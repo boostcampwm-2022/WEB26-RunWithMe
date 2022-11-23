@@ -1,6 +1,6 @@
 import { css } from "styled-components";
 
-export const fontMidium = (color: string, weight: string | number) => css`
+export const fontMedium = (color: string, weight: string | number) => css`
     font-size: 1.4rem;
     font-weight: ${String(weight)};
     color: ${color};

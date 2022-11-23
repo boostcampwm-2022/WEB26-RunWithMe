@@ -9,8 +9,7 @@ export const Dimmed = styled.div`
     position: absolute;
     left: 0;
     top: 0;
-    background: ${COLOR.BLACK};
-    opacity: 0.3;
+    background-color: rgba(0, 0, 0, 0.3);
     * {
         max-width: 100vw !important;
         max-height: 100vh !important;

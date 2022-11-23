@@ -16,8 +16,7 @@ export class UserService {
         const hashedPassword = bcrypt.hashSync(createUserDto.getPassword(), 10);
         createUserDto.setPassword(hashedPassword);
         const userEntity = createUserDto.toUserEntity();
-        await this.userRepository.save(userEntity);
-        return { status: 201 };
+        return this.userRepository.save(userEntity);
     }
 
     async checkId(checkUserDto: CheckUserDto) {

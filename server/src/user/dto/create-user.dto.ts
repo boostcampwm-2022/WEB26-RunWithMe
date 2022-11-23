@@ -30,6 +30,6 @@ export class CreateUserDto {
     }
 
     toUserEntity() {
-        return User.from(this.userId, this.password, this.pace, this.zipCode);
+        return User.of(this.userId, this.password, this.pace, this.zipCode);
     }
 }

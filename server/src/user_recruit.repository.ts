@@ -6,11 +6,10 @@ import { UserRecruit } from "./entities/user_recruit.entity";
 export class UserRecruitRepository extends Repository<UserRecruit> {
     public async isParticipate(recruitId: number, userId: number): Promise<boolean> {
         const participants = await this.createQueryBuilder("user_recruit")
-            .select("userId")
             .where("user_recruit.recruitId = :recruitId", { recruitId })
             .andWhere("user_recruit.userId = :userId", { userId })
-            .execute();
-        if (participants.length !== 0) {
+            .getOne();
+        if (participants) {
             return true;
         }
         return false;

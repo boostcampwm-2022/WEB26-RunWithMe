@@ -30,7 +30,7 @@ export class RecruitController {
             },
         };
     }
-    @UseGuards(AccessGuard)
+    // @UseGuards(AccessGuard)
     @Post("join")
     async register(@Body() joinRecruitDto: JoinRecruitDto) {
         const recruitId = joinRecruitDto.getRecruitId();

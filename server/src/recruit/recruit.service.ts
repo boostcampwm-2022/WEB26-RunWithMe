@@ -7,14 +7,46 @@ import { UserRecruitRepository } from "src/user_recruit.repository";
 @Injectable()
 export class RecruitService {
     constructor(private recruitRepository: RecruitRepository, private userRecruitRepository: UserRecruitRepository) {}
-
     async create(createRecruitDto: CreateRecruitDto): Promise<Recruit> {
         const recruitEntity = createRecruitDto.toEntity();
         return this.recruitRepository.createOne(recruitEntity);
     }
 
-    async findAll(): Promise<Recruit[]> {
-        return this.recruitRepository.findAll();
+    async getRecruitList(page: number, pageSize: number) {
+        const recruitList = await this.recruitRepository.findAll(page, pageSize);
+        return recruitList.map(
+            ({
+                id,
+                title,
+                startTime,
+                maxPpl,
+                currentPpl,
+                course_id,
+                course_title,
+                course_img,
+                course_path,
+                course_pathLength,
+                course_hCode,
+                course_createdAt,
+            }) => {
+                return {
+                    id,
+                    title,
+                    startTime,
+                    maxPpl,
+                    currentPpl: parseInt(currentPpl),
+                    course: {
+                        id: course_id,
+                        title: course_title,
+                        img: course_img,
+                        path: JSON.parse(course_path),
+                        pathLength: course_pathLength,
+                        hCode: course_hCode,
+                        createdAt: course_createdAt,
+                    },
+                };
+            },
+        );
     }
 
     async isExistRecruit(recruitId: number): Promise<number | null> {
@@ -23,11 +55,6 @@ export class RecruitService {
             return recruitEntity.userId;
         }
         return null;
-    }
-
-    async isAuthorOfRecruit(recruitId: number, userId: number): Promise<boolean> {
-        const author = await this.isExistRecruit(recruitId);
-        return author === userId;
     }
 
     async isParticipating(recruitId: number, userId: number): Promise<boolean> {
@@ -41,5 +68,10 @@ export class RecruitService {
             return true;
         }
         return false;
+    }
+
+    async isAuthorOfRecruit(recruitId: number, userId: number) {
+        const recruitEntity = await this.recruitRepository.findOneById(recruitId);
+        return recruitEntity.userId === userId;
     }
 }

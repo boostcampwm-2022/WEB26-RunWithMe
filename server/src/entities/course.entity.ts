@@ -2,7 +2,7 @@ import { User } from "src/entities/user.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Recruit } from "./recruit.entity";
 
-@Entity()
+@Entity("course")
 export class Course {
     @PrimaryGeneratedColumn()
     id: number;
@@ -18,6 +18,9 @@ export class Course {
 
     @Column()
     pathLength: number;
+
+    @Column({ type: "varchar", length: 10 })
+    hCode: string;
 
     @CreateDateColumn()
     createdAt: Date;

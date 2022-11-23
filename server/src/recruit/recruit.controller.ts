@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards, Query } from "@nestjs/common";
 import { AccessGuard } from "src/common/guard/access.guard";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
 import { JoinRecruitDto } from "./dto/join-recruit.dto";
@@ -9,12 +9,11 @@ export class RecruitController {
     constructor(private readonly recruitService: RecruitService) {}
 
     @Get()
-    async getRecruits() {
-        const recruitEntityArrays = await this.recruitService.findAll();
-        // TODO: 페이지네이션 적용
+    async getRecruits(@Query("page") page: number, @Query("pageSize") pageSize?: number) {
+        const recruitList = await this.recruitService.getRecruitList(page, pageSize || 10);
         return {
             statusCode: 200,
-            data: recruitEntityArrays,
+            data: recruitList,
         };
     }
 

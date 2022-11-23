@@ -3,7 +3,7 @@ import { Recruit } from "src/entities/recruit.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRecruit } from "./user_recruit.entity";
 
-@Entity()
+@Entity("user")
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
@@ -18,7 +18,7 @@ export class User {
     pace: number;
 
     @Column({ type: "varchar", length: 10 })
-    zipCode: string;
+    hCode: string;
 
     @OneToMany(() => Course, (course) => course.user)
     courses: Course[];
@@ -26,15 +26,15 @@ export class User {
     @OneToMany(() => Recruit, (recruit) => recruit.user)
     recruits: Recruit[];
 
-    @OneToMany(() => UserRecruit, (userRecruit) => userRecruit.recruit)
+    @OneToMany(() => UserRecruit, (userRecruit) => userRecruit.user)
     userRecruits: Recruit[];
 
-    static of(userId: string, password: string, pace: number, zipCode: string) {
+    static of(userId: string, password: string, pace: number, hCode: string) {
         const user = new User();
         user.userId = userId;
         user.password = password;
         user.pace = pace;
-        user.zipCode = zipCode;
+        user.hCode = hCode;
         return user;
     }
 }

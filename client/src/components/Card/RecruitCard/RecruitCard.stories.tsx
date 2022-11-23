@@ -19,6 +19,7 @@ _RecruitCard.args = {
     data: {
         title: "달려~ 달려~",
         recruitId: 5,
+        currentPpl: 1,
         course: {
             title: "황새울공원 한 바퀴 도는 코스입니다.",
             courseId: 5,

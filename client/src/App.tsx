@@ -10,7 +10,7 @@ import { TIME } from "#constants/time";
 import NewCourse from "#pages/NewCourse/NewCourse";
 import RecruitDetail from "#pages/RecruitDetail";
 import CourseDetail from "#pages/CourseDetail";
-
+import Main from "#pages/MainPage/MainPage";
 function App() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
     const [refreshRequestTimer, setRefreshRequestTimer] = useState<NodeJS.Timer | null>(null);
@@ -58,6 +58,7 @@ function App() {
             <Route path="recruit">
                 <Route path="detail" element={<RecruitDetail />} />
             </Route>
+            <Route path="main" element={<Main />} />
         </Routes>
     );
 }

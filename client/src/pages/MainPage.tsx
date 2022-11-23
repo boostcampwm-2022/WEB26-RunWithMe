@@ -21,6 +21,9 @@ const MainPage = () => {
     const handleCourseDetailClick = () => {
         navigate("/course/detail");
     };
+    const handleMainClick = () => {
+        navigate("/main");
+    };
 
     return (
         <>
@@ -29,6 +32,7 @@ const MainPage = () => {
             <button onClick={handleCourseNewClick}>코스등록 </button>
             <button onClick={handleRecruitDetailClick}>모집상세 </button>
             <button onClick={handleCourseDetailClick}>코스상세 </button>
+            <button onClick={handleMainClick}>메인 </button>
         </>
     );
 };

@@ -6,6 +6,7 @@ export interface Recruit {
     course: Course;
     startTime: Date;
     maxPpl: number;
+    currentPpl: number;
     pace: number;
     authorId: string;
 }

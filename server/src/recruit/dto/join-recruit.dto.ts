@@ -18,8 +18,7 @@ export class JoinRecruitDto {
     getUserId() {
         return this.userId;
     }
-    
-    
+
     toEntity() {
         return UserRecruit.of(this.recruitId, this.userId);
     }

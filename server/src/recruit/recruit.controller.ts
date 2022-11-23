@@ -37,38 +37,29 @@ export class RecruitController {
         if (!(await this.recruitService.isExistRecruit(recruitId))) {
             return {
                 statusCode: 409,
-                error: {
-                    message: "Does not exist or has been deleted",
-                },
+                message: "Does not exist or has been deleted",
             };
         }
         if (await this.recruitService.isAuthorOfRecruit(recruitId, userId)) {
             return {
                 statusCode: 423,
-                error: {
-                    message: "Cannot participate in your own recruitment",
-                },
+                message: "Cannot participate in your own recruitment",
             };
         }
         if (await this.recruitService.isParticipating(recruitId, userId)) {
             return {
                 statusCode: 423,
-                error: {
-                    message: "You have already participated.",
-                },
+                message: "You have already participated.",
             };
         }
         if (!(await this.recruitService.isVacancy(recruitId))) {
             return {
                 statusCode: 423,
-                error: {
-                    message: "Maximum cap reached",
-                },
+                message: "Maximum cap reached",
             };
         }
         return {
             statusCode: 201,
-            success: true,
         };
     }
 }

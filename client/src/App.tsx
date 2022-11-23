@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SignUp from "#pages/SignUp";
 import Login from "#pages/Login";
 import MainPage from "#pages/MainPage";
+import Courses from "#pages/Courses";
 import { useRecoilState } from "recoil";
 import { userState } from "#atoms/userState";
 import { Route, Routes } from "react-router-dom";
@@ -51,6 +52,7 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login />} />
+            <Route path="courses" element={<Courses />} />
             <Route path="course">
                 <Route path="new" element={<NewCourse />} />
                 <Route path="detail" element={<CourseDetail />} />

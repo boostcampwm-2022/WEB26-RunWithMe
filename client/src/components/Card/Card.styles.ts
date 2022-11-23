@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexRowSpaceBetween } from "styles/flex";
-import { fontMidium, fontSmall } from "styles/font";
+import { fontMedium, fontSmall } from "styles/font";
 
 export const CardWrapper = styled.div`
     width: 100%;
@@ -19,7 +19,7 @@ export const Summary = styled.div`
 `;
 
 export const CardTitle = styled.p`
-    ${fontMidium(COLOR.BLACK, 700)}
+    ${fontMedium(COLOR.BLACK, 700)}
 `;
 
 export const SummaryBody = styled.div`

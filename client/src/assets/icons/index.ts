@@ -20,7 +20,6 @@ export {
     MORE_BUTTON_ICON,
     ZOOM_IN_ICON,
     ZOOM_OUT_ICON,
-    SEARCH_ICON,
     LOCK_ICON,
     UNLOCK_ICON,
     UNDO_ICON,

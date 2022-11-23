@@ -12,6 +12,9 @@ const MainPage = () => {
     const handleSignUpClick = () => {
         navigate("/signup");
     };
+    const handleCoursesClick = () => {
+        navigate("/courses");
+    };
     const handleCourseNewClick = () => {
         navigate("/course/new");
     };
@@ -26,6 +29,7 @@ const MainPage = () => {
         <>
             <button onClick={handleLoginClick}>로그인</button>
             <button onClick={handleSignUpClick}>회원가입 </button>
+            <button onClick={handleCoursesClick}>코스목록</button>
             <button onClick={handleCourseNewClick}>코스등록 </button>
             <button onClick={handleRecruitDetailClick}>모집상세 </button>
             <button onClick={handleCourseDetailClick}>코스상세 </button>

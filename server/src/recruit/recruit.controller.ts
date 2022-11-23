@@ -51,7 +51,7 @@ export class RecruitController {
                 },
             };
         }
-        if (await this.recruitService.isParticipaite(recruitId, userId)) {
+        if (await this.recruitService.isParticipating(recruitId, userId)) {
             return {
                 statusCode: 423,
                 error: {

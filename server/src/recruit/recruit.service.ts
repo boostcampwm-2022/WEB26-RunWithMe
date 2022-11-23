@@ -30,7 +30,7 @@ export class RecruitService {
         return author === userId;
     }
 
-    async isParticipaite(recruitId: number, userId: number): Promise<boolean> {
+    async isParticipating(recruitId: number, userId: number): Promise<boolean> {
         return this.userRecruitRepository.isParticipate(recruitId, userId);
     }
 

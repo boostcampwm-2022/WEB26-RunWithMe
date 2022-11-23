@@ -9,6 +9,7 @@ const settings = {
     centerMode: true,
     infinite: true,
     slidesToShow: 1,
+    dots: true,
     slidesToScroll: 1,
 };
 

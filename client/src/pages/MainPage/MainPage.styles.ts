@@ -14,6 +14,19 @@ export const CarouselWrapper = styled.div`
     .slick-slide {
         padding: 5px;
     }
+    .slick-dots {
+        margin-top: 30px;
+        .slick-active {
+            button {
+                ::before {
+                    color: ${COLOR.ORANGE} !important;
+                }
+            }
+        }
+        li {
+            margin: 0 1px;
+        }
+    }
 `;
 
 export const TitleWrapper = styled.div`

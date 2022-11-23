@@ -2,7 +2,7 @@ import { MapControlPotition } from "#types/MapControlProps";
 import styled, { css } from "styled-components";
 import { COLOR } from "styles/color";
 import { flexColumn, flexRowCenter, flexRowSpaceBetween } from "styles/flex";
-import { fontMidium } from "styles/font";
+import { fontMedium } from "styles/font";
 
 const SearchBarItemStyle = css`
     background: ${COLOR.WHITE};
@@ -32,7 +32,7 @@ export const SearchWrapper = styled.div`
         ${SearchBarItemStyle};
     }
     input {
-        ${fontMidium(COLOR.DARK_GRAY, 500)}
+        ${fontMedium(COLOR.DARK_GRAY, 500)}
         border: none;
         :focus {
             outline: none;
@@ -47,7 +47,7 @@ export const PlaceList = styled.ul`
     width: 200px;
     align-items: center;
     li {
-        ${fontMidium(COLOR.DARK_GRAY, 500)};
+        ${fontMedium(COLOR.DARK_GRAY, 500)};
         margin: 2px 0;
         list-style-type: none;
     }

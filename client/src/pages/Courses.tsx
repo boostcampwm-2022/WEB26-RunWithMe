@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "#components/Header/Header";
 import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
-import Filter from "#components/Filter/Filter";
+import SelectFilter from "#components/SelectFilter/SelectFilter";
 import useFilter from "#hooks/useFilter";
 import OnOffFilter from "#components/OnOffFilter/OnOffFilter";
 import useOnOffFilter from "#hooks/useOnOffFilter";
@@ -76,24 +76,24 @@ const Courses = () => {
                     filterName="내용"
                     toggleFilterState={toggleContentFilter}
                 ></OnOffFilter>
-                <Filter
+                <SelectFilter
                     filterState={currentDistanceFilter}
                     filterOptions={["5km 이내", "3km 이내", "1km 이내"]}
                     filterDescription="달리려는 총 거리를 선택해주세요"
                     setCurrentFilterState={setCurrentDistanceFilter}
-                ></Filter>
-                <Filter
+                ></SelectFilter>
+                <SelectFilter
                     filterState={currentTimeFilter}
                     filterOptions={["5시간 이내", "3시간 이내", "1시간 이내"]}
                     filterDescription="달리기를 시작할 시간을 선택해주세요"
                     setCurrentFilterState={setCurrentTimeFilter}
-                ></Filter>{" "}
-                <Filter
+                ></SelectFilter>{" "}
+                <SelectFilter
                     filterState={currentTimeFilter}
                     filterOptions={["5시간 이내", "3시간 이내", "1시간 이내"]}
                     filterDescription="달리기를 시작할 시간을 선택해주세요"
                     setCurrentFilterState={setCurrentTimeFilter}
-                ></Filter>
+                ></SelectFilter>
             </FilterBar>
             <InfiniteScroll
                 dataLength={cardList.length}

@@ -5,7 +5,7 @@ import { ARROW_DOWN_ICON, LOCATION_ICON } from "#assets/icons";
 import { fontMedium } from "styles/font";
 import { COLOR } from "styles/color";
 import Modal from "#components/Modal/Modal";
-import { ModalFilterWrapper } from "./Filter.style";
+import { ModalFilterWrapper } from "./SelectFilter.style";
 
 //does not contain dropdown logic, only primitive filter skeleton
 
@@ -51,6 +51,7 @@ const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilte
     };
 
     const createModalContents = (filterOptions: string[]) => {
+        console.log(filterOptions);
         return filterOptions.map((filterName: string, i: number) => (
             <div key={i} onClick={handleFilterContentClick}>
                 {filterName}

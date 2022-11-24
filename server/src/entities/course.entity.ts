@@ -20,7 +20,7 @@ export class Course {
     @Column()
     pathLength: number;
 
-    @Column({ type: "varchar", length: 10 })
+    @Column({ type: "varchar", length: 10, nullable: true })
     name: string;
 
     @CreateDateColumn()
@@ -39,7 +39,15 @@ export class Course {
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user: User;
 
-    static of(title: string, img: string, path: LatLng[], pathLength: number, hCode: string, userId: number) {
+    static of(
+        title: string,
+        img: string,
+        path: LatLng[],
+        pathLength: number,
+        hCode: string,
+        userId: number,
+        name: string,
+    ) {
         const course = new Course();
         course.title = title;
         course.img = img;
@@ -47,6 +55,7 @@ export class Course {
         course.hCode = hCode;
         course.pathLength = pathLength;
         course.userId = userId;
+        course.name = name;
         return course;
     }
 }

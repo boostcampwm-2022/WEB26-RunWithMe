@@ -1,4 +1,3 @@
-import { Type } from "class-transformer";
 import { IsNumber, IsNumberString, IsString } from "class-validator";
 import { isValidPath } from "src/common/decorator/path.validator";
 import { LatLng } from "src/common/type/lat-lng";
@@ -17,14 +16,16 @@ export class CreateCourseDto {
     @IsNumber()
     private pathLength: number;
 
-    @Type(() => Number)
     @IsNumber()
     private userId: number;
+
+    @IsString()
+    private name: string;
 
     @IsNumberString()
     private hCode: string;
 
     toEntity() {
-        return Course.of(this.title, this.img, this.path, this.pathLength, this.hCode, this.userId);
+        return Course.of(this.title, this.img, this.path, this.pathLength, this.hCode, this.userId, this.name);
     }
 }

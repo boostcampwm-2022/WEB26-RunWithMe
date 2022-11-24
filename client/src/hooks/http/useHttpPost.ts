@@ -9,6 +9,10 @@ const useGet = () => {
             .post(url, data)
             .then((res) => {
                 setIsLoading(false);
+                const data = res.data;
+                if (data.statusCode >= 400) {
+                    throw new Error(data.message);
+                }
                 return res.data;
             })
             .catch((error) => {

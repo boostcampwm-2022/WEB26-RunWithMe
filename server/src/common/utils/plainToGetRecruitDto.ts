@@ -9,6 +9,7 @@ export const plainToGetRecruitDto = (plainRecruitData: RawRecruitData) => {
         currentPpl,
         createdAt,
         userId,
+        pace,
         course_id,
         course_title,
         course_img,
@@ -25,6 +26,7 @@ export const plainToGetRecruitDto = (plainRecruitData: RawRecruitData) => {
         maxPpl,
         currentPpl: parseInt(currentPpl),
         userId,
+        pace,
         createdAt,
         course: {
             id: course_id,

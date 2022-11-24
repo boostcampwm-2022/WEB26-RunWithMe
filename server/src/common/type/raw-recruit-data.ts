@@ -13,4 +13,5 @@ export interface RawRecruitData {
     currentPpl: string;
     userId: number;
     createdAt: Date;
+    pace: number;
 }

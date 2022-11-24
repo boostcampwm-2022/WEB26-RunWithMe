@@ -9,12 +9,12 @@ interface CourseCardProps {
 
 const CourseCard = ({ data }: CourseCardProps) => {
     return (
-        <Card img={data.img} to={`/course/${data.courseId}`}>
+        <Card img={data.img} to={`/course/${data.id}`}>
             <CardTitle>{data.title}</CardTitle>
             <SummaryBody>
                 <div>
                     <img src={LOCATION_ICON} />
-                    <span>{data.hCode}</span>
+                    <span>{data.hDong.name}</span>
                     <img src={RULER_ICON} />
                     <span>{`${(data.pathLength / 1000).toFixed(1)}km`}</span>
                 </div>

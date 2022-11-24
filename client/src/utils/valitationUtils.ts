@@ -8,10 +8,15 @@ export const idValidator = (id: string) => {
 export const passwordValidator = (password: string) => {
     return password.length < 10 || password.length > 100 ? "비밀번호는 10자 이상 100자 이하여야 합니다" : "";
 };
+
 export const confirmPasswordValidator = (password: string) => (confirmPassword: string) => {
     return password !== confirmPassword || !confirmPassword ? "비밀번호가 일치하지 않습니다" : "";
 };
 
 export const hCodeValidator = (hCode: string) => {
-    return hCode.length === 5 ? "" : "지역을 입력하세요";
+    return hCode.length === 10 ? "" : "지역을 입력하세요";
+};
+
+export const courseTitleValidator = (title: string) => {
+    return !title ? "제목을 입력하세요" : "";
 };

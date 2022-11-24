@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, Query } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards, Query, Param } from "@nestjs/common";
 import { AccessGuard } from "src/common/guard/access.guard";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
 import { JoinRecruitDto } from "./dto/join-recruit.dto";
@@ -61,6 +61,16 @@ export class RecruitController {
         this.recruitService.join(userId, recruitId);
         return {
             statusCode: 201,
+        };
+    }
+
+    @Get(":id")
+    async getRecruitDetail(@Param("id") recruitId: number, @Body("userIdx") userIdx: number) {
+        const data = await this.recruitService.getRecruitDetail(recruitId);
+        return {
+            ...data,
+            isAuthor: data.authorId === userIdx,
+            isParticipating: await this.recruitService.isParticipating(recruitId, userIdx),
         };
     }
 }

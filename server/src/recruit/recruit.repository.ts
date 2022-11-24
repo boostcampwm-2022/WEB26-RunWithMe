@@ -3,7 +3,6 @@ import { Recruit } from "src/entities/recruit.entity";
 import { Repository } from "typeorm";
 import { RawRecruitData } from "src/common/type/raw-recruit-data";
 import { BadRequestException } from "@nestjs/common";
-import { UserRecruitRepository } from "src/user_recruit.repository";
 
 @CustomRepository(Recruit)
 export class RecruitRepository extends Repository<Recruit> {
@@ -49,7 +48,7 @@ export class RecruitRepository extends Repository<Recruit> {
             .innerJoinAndSelect("recruit.user", "user")
             .where("recruit.startTime > NOW()")
             .andWhere(time ? `recruit.startTime < DATE_ADD(NOW(), INTERVAL :time HOUR)` : "1=1", { time })
-            .andWhere(maxLen && minLen ? `course.pathLength >= :minLen and course.pathLength < :maxLen` : "1=1", {
+            .andWhere(maxLen && minLen >= 0 ? `course.pathLength >= :minLen and course.pathLength < :maxLen` : "1=1", {
                 minLen,
                 maxLen,
             })

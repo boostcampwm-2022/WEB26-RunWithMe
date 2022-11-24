@@ -10,6 +10,7 @@ import { PLACEHOLDER } from "#constants/placeholder";
 import CourseCard from "#components/Card/CourseCard/CourseCard";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { CLOCK_ICON, LOCATION_ICON } from "#assets/icons";
 
 const DummyCardData = {
     title: "황새울공원 한 바퀴 도는 코스입니다.",
@@ -96,12 +97,14 @@ const Courses = () => {
                     toggleFilterState={toggleContentFilter}
                 ></OnOffFilter>
                 <SelectFilter
+                    filterIcon={LOCATION_ICON}
                     filterState={currentDistanceFilter}
                     filterOptions={["5km 이내", "3km 이내", "1km 이내"]}
                     filterDescription="달리려는 총 거리를 선택해주세요"
                     setCurrentFilterState={setCurrentDistanceFilter}
                 ></SelectFilter>
                 <SelectFilter
+                    filterIcon={CLOCK_ICON}
                     filterState={currentTimeFilter}
                     filterOptions={["5시간 이내", "3시간 이내", "1시간 이내"]}
                     filterDescription="달리기를 시작할 시간을 선택해주세요"

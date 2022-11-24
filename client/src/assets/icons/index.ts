@@ -14,6 +14,7 @@ import LOCATION_ICON from "./location_icon.svg";
 import RUNNING_ICON from "./running_icon.svg";
 import DELETE_ICON from "./delete_icon.svg";
 import USER_ICON from "./user_icon.svg";
+import CLOCK_ICON from "./clock_icon.svg";
 export {
     USER_CIRCLE_ICON,
     ARROW_LEFT_ICON,
@@ -31,4 +32,5 @@ export {
     SEARCH_ICON,
     DELETE_ICON,
     USER_ICON,
+    CLOCK_ICON,
 };

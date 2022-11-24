@@ -17,7 +17,7 @@ const FilterWrapper = styled.div<{ filterState: boolean }>`
     &:hover {
         background: rgba(0, 0, 0, 0.05);
     }
-    background-color: ${(props) => (props.filterState ? "rgba(0, 0, 0, 0)" : "rgba(0, 0, 0, 0.05)")};
+    background-color: ${(props) => (props.filterState ? "rgba(0, 0, 0, 0.05)" : "rgba(0, 0, 0, 0)")};
 `;
 
 interface FilterProps {

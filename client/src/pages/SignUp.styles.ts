@@ -17,7 +17,6 @@ export const InputWrapper = styled.div`
     padding: 0 40px;
     margin-bottom: 40px;
     div {
-        /* display: block; */
         input {
             font-size: 1.4rem;
         }

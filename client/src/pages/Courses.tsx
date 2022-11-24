@@ -7,9 +7,7 @@ import useFilter from "#hooks/useFilter";
 import OnOffFilter from "#components/OnOffFilter/OnOffFilter";
 import useOnOffFilter from "#hooks/useOnOffFilter";
 import { PLACEHOLDER } from "#constants/placeholder";
-import CourseCard from "#components/Card/CourseCard/CourseCard";
-import styled from "styled-components";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { CLOCK_ICON, LOCATION_ICON } from "#assets/icons";
 
 const DummyCardData = {
     title: "황새울공원 한 바퀴 도는 코스입니다.",
@@ -28,13 +26,6 @@ const DummyCardData = {
     hCode: "신림동",
 };
 
-const CourseList = styled.div`
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-`;
-
 const Courses = () => {
     const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter("5km 이내");
     const [currentTimeFilter, setCurrentTimeFilter] = useFilter("5시간 이내");
@@ -42,8 +33,21 @@ const Courses = () => {
     const [titleFilter, toggleTitleFilter] = useOnOffFilter(true);
     const [authorFilter, toggleAuthorFilter] = useOnOffFilter(true);
     const [contentFilter, toggleContentFilter] = useOnOffFilter(true);
+    const [availFilter, toggleAvailFilter] = useOnOffFilter(true);
 
     const [cardList, setCardList] = useState<any[]>([]);
+
+    const sendRequest = () => {
+        const params = new URLSearchParams({
+            dist: "5",
+            maxLen: "3000",
+            minLen: "1000",
+            page: "1",
+            title: "true",
+            author: "true",
+        });
+        console.log(params.toString());
+    };
 
     //fake API for infinite scroll
     const fetchNextData = () => {
@@ -54,6 +58,7 @@ const Courses = () => {
 
     useEffect(() => {
         fetchNextData();
+        sendRequest();
     }, []);
 
     return (
@@ -61,6 +66,11 @@ const Courses = () => {
             <Header text="코스 목록" />
             <SearchBar placeholder={PLACEHOLDER.SEARCH}></SearchBar>
             <FilterBar>
+                <OnOffFilter
+                    filterState={availFilter}
+                    filterName="참여 가능"
+                    toggleFilterState={toggleAvailFilter}
+                ></OnOffFilter>
                 <OnOffFilter
                     filterState={titleFilter}
                     filterName="제목"
@@ -77,38 +87,20 @@ const Courses = () => {
                     toggleFilterState={toggleContentFilter}
                 ></OnOffFilter>
                 <SelectFilter
+                    filterIcon={LOCATION_ICON}
                     filterState={currentDistanceFilter}
                     filterOptions={["5km 이내", "3km 이내", "1km 이내"]}
                     filterDescription="달리려는 총 거리를 선택해주세요"
                     setCurrentFilterState={setCurrentDistanceFilter}
                 ></SelectFilter>
                 <SelectFilter
-                    filterState={currentTimeFilter}
-                    filterOptions={["5시간 이내", "3시간 이내", "1시간 이내"]}
-                    filterDescription="달리기를 시작할 시간을 선택해주세요"
-                    setCurrentFilterState={setCurrentTimeFilter}
-                ></SelectFilter>{" "}
-                <SelectFilter
+                    filterIcon={CLOCK_ICON}
                     filterState={currentTimeFilter}
                     filterOptions={["5시간 이내", "3시간 이내", "1시간 이내"]}
                     filterDescription="달리기를 시작할 시간을 선택해주세요"
                     setCurrentFilterState={setCurrentTimeFilter}
                 ></SelectFilter>
             </FilterBar>
-            <InfiniteScroll
-                dataLength={cardList.length}
-                next={() => {
-                    fetchNextData();
-                }}
-                hasMore={true}
-                loader={<h4>Loading...</h4>}
-            >
-                <CourseList>
-                    {cardList.map((card, i) => (
-                        <CourseCard data={card} key={i}></CourseCard>
-                    ))}
-                </CourseList>
-            </InfiniteScroll>
         </>
     );
 };

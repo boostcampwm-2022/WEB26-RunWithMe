@@ -2,12 +2,49 @@ import { Injectable } from "@nestjs/common";
 import { Course } from "src/entities/course.entity";
 import { CourseRepository } from "./course.repository";
 import { CreateCourseDto } from "./dto/create-course.dto";
+import { GetCourseDto } from "./dto/get-course.dto";
 
 @Injectable()
 export class CourseService {
     constructor(private courseRepository: CourseRepository) {}
+
     async create(createRecruitDto: CreateCourseDto): Promise<Course> {
         const courseEntity = createRecruitDto.toEntity();
         return this.courseRepository.createOne(courseEntity);
+    }
+
+    async getCourseList(queryParams: GetCourseDto) {
+        if (queryParams.getQuery() === "") {
+            return [];
+        }
+
+        if (!queryParams.getTitle() && !queryParams.getAuthor()) {
+            return [];
+        }
+
+        const courseList = await this.courseRepository.findAll(
+            queryParams.getPage(),
+            queryParams.getPageSize(),
+            queryParams.getQuery(),
+            queryParams.getTitle(),
+            queryParams.getAuthor(),
+            queryParams.getMinLength(),
+            queryParams.getMaxLength(),
+        );
+
+        return courseList.map(({ id, title, img, path, pathLength, name, createdAt, user }) => {
+            return {
+                id,
+                title,
+                img,
+                path,
+                pathLength,
+                hDong: {
+                    name,
+                },
+                createdAt,
+                user,
+            };
+        });
     }
 }

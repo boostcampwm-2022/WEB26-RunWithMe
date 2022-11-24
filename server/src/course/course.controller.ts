@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { CourseService } from "./course.service";
 import { CreateCourseDto } from "./dto/create-course.dto";
+import { GetCourseDto } from "./dto/get-course.dto";
 
 @Controller("course")
 export class CourseController {
@@ -14,6 +15,15 @@ export class CourseController {
             data: {
                 courseId: courseEntity.id,
             },
+        };
+    }
+
+    @Get()
+    async getCourses(@Query() queryParams: GetCourseDto) {
+        const courseList = await this.courseService.getCourseList(queryParams);
+        return {
+            statusCode: 200,
+            data: courseList,
         };
     }
 }

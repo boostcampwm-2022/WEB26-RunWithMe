@@ -1,11 +1,13 @@
 import { Course } from "./Course";
 
 export interface Recruit {
+    id: number;
     title: string;
-    recruitId: number;
-    course: Course;
-    startTime: Date;
+    startTime: string;
     maxPpl: number;
+    currentPpl: number;
+    userId: string;
+    createdAt: string;
+    course: Course;
     pace: number;
-    authorId: string;
 }

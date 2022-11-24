@@ -12,6 +12,7 @@ import UNDO_ICON from "./undo_icon.svg";
 import RULER_ICON from "./ruler_icon.svg";
 import LOCATION_ICON from "./location_icon.svg";
 import RUNNING_ICON from "./running_icon.svg";
+import USER_ICON from "./user_icon.svg";
 export {
     USER_CIRCLE_ICON,
     ARROW_LEFT_ICON,
@@ -27,4 +28,5 @@ export {
     LOCATION_ICON,
     RUNNING_ICON,
     SEARCH_ICON,
+    USER_ICON,
 };

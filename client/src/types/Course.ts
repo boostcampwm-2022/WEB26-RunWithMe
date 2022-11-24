@@ -1,11 +1,13 @@
+import { hDong } from "./hDong";
 import { LatLng } from "./LatLng";
 
 export interface Course {
+    id: number;
     title: string;
-    courseId: number;
-    path: LatLng[];
-    pathLength: number;
-    hCode: string;
-    userId: string;
     img: string;
+    path: string;
+    pathLength: number;
+    hDong: hDong;
+    createdAt: string;
+    userId?: string;
 }

@@ -24,6 +24,7 @@ export const CardTitle = styled.p`
 
 export const SummaryBody = styled.div`
     ${flexRowSpaceBetween};
+    align-items: center;
     div {
         ${flexRowSpaceBetween};
         margin-top: 4px;
@@ -42,4 +43,18 @@ export const SummaryBody = styled.div`
 
 export const UserIdLabel = styled.span`
     color: ${COLOR.LIGHT_GRAY} !important;
+`;
+
+export const PeopleWrapper = styled.div`
+    img {
+        width: 10px;
+        margin-right: 4px;
+    }
+    span {
+        ${fontSmall(COLOR.BLACK, 400)};
+    }
+`;
+
+export const SummaryHead = styled.div`
+    ${flexRowSpaceBetween};
 `;

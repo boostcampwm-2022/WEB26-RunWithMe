@@ -23,7 +23,7 @@ const DummyCardData = {
     pathLength: 3355,
     userId: "gchoi96",
     img: "https://kr.object.ncloudstorage.com/j199/img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202022-11-20%20%EC%98%A4%ED%9B%84%204.01.56.png",
-    zipCode: "신림동",
+    hCode: "신림동",
 };
 
 const CourseList = styled.div`

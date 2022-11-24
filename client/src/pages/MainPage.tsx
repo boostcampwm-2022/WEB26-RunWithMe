@@ -19,10 +19,10 @@ const MainPage = () => {
         navigate("/course/new");
     };
     const handleRecruitDetailClick = () => {
-        navigate("/recruit/detail");
+        navigate("/recruit/1");
     };
     const handleCourseDetailClick = () => {
-        navigate("/course/detail");
+        navigate("/course/1");
     };
 
     return (

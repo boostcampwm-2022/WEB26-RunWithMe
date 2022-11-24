@@ -15,32 +15,30 @@ import CourseDetail from "#pages/CourseDetail";
 function App() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
     const [refreshRequestTimer, setRefreshRequestTimer] = useState<NodeJS.Timer | null>(null);
-
+    const getAccessToken = () => {
+        axios
+            .get("http://localhost:4000/auth/refresh", {
+                withCredentials: true,
+            })
+            .then((response: AxiosResponse) => {
+                setUserInfo({
+                    accessToken: response.data.data.accessToken,
+                    userId: response.data.data.userId,
+                    userIdx: response.data.data.userIdx,
+                });
+            })
+            .catch();
+    };
     useEffect(() => {
-        const silentLogin = () => {
-            setRefreshRequestTimer(
-                setTimeout(() => {
-                    axios
-                        .get("http://localhost:4000/auth/refresh", {
-                            withCredentials: true,
-                            headers: {
-                                Authorization: `Bearer ${userInfo.accessToken}`,
-                            },
-                        })
-                        .then((response: AxiosResponse) => {
-                            setUserInfo({
-                                accessToken: response.data.data.accessToken,
-                                userId: response.data.data.userId,
-                            });
-                        })
-                        .catch();
-                }, TIME.ACCESS_TOKEN_EXPIRE_TIME - TIME.MINUTE_IN_SECONDS),
-            );
+        getAccessToken();
+    }, []);
+    useEffect(() => {
+        setRefreshRequestTimer(
+            setTimeout(() => {
+                getAccessToken();
+            }, TIME.ACCESS_TOKEN_EXPIRE_TIME - TIME.MINUTE_IN_SECONDS),
+        );
 
-            setRefreshRequestTimer(refreshRequestTimer);
-        };
-
-        silentLogin();
         return () => {
             if (!refreshRequestTimer) return;
             clearTimeout(refreshRequestTimer);

@@ -12,6 +12,7 @@ import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useGet from "#hooks/http/useHttpGet";
 import axios from "axios";
+import RecruitCard from "#components/Card/RecruitCard/RecruitCard";
 
 const DummyCardData = {
     title: "황새울공원 한 바퀴 도는 코스입니다.",
@@ -30,7 +31,7 @@ const DummyCardData = {
     hCode: "신림동",
 };
 
-const CourseList = styled.div`
+const RecruitList = styled.div`
     padding: 2rem;
     display: flex;
     flex-direction: column;
@@ -41,31 +42,45 @@ const Recruits = () => {
     const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter("5km 이내");
     const [currentTimeFilter, setCurrentTimeFilter] = useFilter("5시간 이내");
 
-    const [titleFilter, toggleTitleFilter] = useOnOffFilter(true);
-    const [authorFilter, toggleAuthorFilter] = useOnOffFilter(true);
-    const [availFilter, toggleAvailFilter] = useOnOffFilter(true);
+    const [titleFilter, toggleTitleFilter] = useOnOffFilter(false);
+    const [authorFilter, toggleAuthorFilter] = useOnOffFilter(false);
+    const [availFilter, toggleAvailFilter] = useOnOffFilter(false);
 
     const [cardList, setCardList] = useState<any[]>([]);
+    const [searchContent, setSearchContent] = useState("");
+    const handleSearchContentChange = (e: React.FormEvent<HTMLInputElement>) => {
+        setSearchContent(e.currentTarget.value);
+    };
+
+    const [page, setPage] = useState(1);
 
     const { get } = useGet();
 
+    const sendNoFilterRequest = async () => {
+        const response = await get("/recruit", {
+            page: page,
+        });
+        // response.forEach((elem: any) => (elem.course.img = "https://loremflickr.com/640/480/abstract"));
+        setCardList(cardList.concat(response));
+    };
+
     const sendRequest = async () => {
-        console.log(currentDistanceFilter, currentTimeFilter, titleFilter.toString());
         const maxLen = Number(currentDistanceFilter[0]);
+        const time = Number(currentTimeFilter[0]);
         let minLen = maxLen - 2;
         if (maxLen === 1) minLen = 0;
+        console.log(searchContent, maxLen * 1000, minLen * 1000, titleFilter.toString());
 
-        // const response = await get("/course", {
-        //     maxLen: (maxLen * 1000).toString(),
-        //     minLen: (minLen * 1000).toString(),
-        //     page: "1",
-        //     title: titleFilter.toString(),
-        //     author: authorFilter.toString(),
-        //     avail: availFilter.toString(),
-        // });
-        // console.log(response);
-        const response2 = await axios.get("http://localhost:4000/recruit?page=1&pageSize=10");
-        console.log(response2);
+        const response = await get("/recruit", {
+            query: searchContent,
+            page: page,
+            maxLen: (maxLen * 1000).toString(),
+            minLen: (minLen * 1000).toString(),
+            time: time.toString(),
+        });
+
+        setCardList(cardList.concat(response));
+        console.log(response.data);
     };
     //fake API for infinite scroll
     const fetchNextData = () => {
@@ -75,14 +90,18 @@ const Recruits = () => {
     };
 
     useEffect(() => {
-        fetchNextData();
-        sendRequest();
+        sendNoFilterRequest();
     }, []);
 
     return (
         <>
             <Header text="모집 목록" />
-            <SearchBar placeholder={PLACEHOLDER.SEARCH}></SearchBar>
+            <SearchBar
+                placeholder={PLACEHOLDER.SEARCH}
+                onClick={sendRequest}
+                content={searchContent}
+                onChange={handleSearchContentChange}
+            ></SearchBar>
             <FilterBar>
                 <OnOffFilter
                     filterState={availFilter}
@@ -111,12 +130,6 @@ const Recruits = () => {
                     filterDescription="달리기를 시작할 시간을 선택해주세요"
                     setCurrentFilterState={setCurrentTimeFilter}
                 ></SelectFilter>
-                <SelectFilter
-                    filterState={currentTimeFilter}
-                    filterOptions={["5시간 이내", "3시간 이내", "1시간 이내"]}
-                    filterDescription="달리기를 시작할 시간을 선택해주세요"
-                    setCurrentFilterState={setCurrentTimeFilter}
-                ></SelectFilter>
             </FilterBar>
             <InfiniteScroll
                 dataLength={cardList.length}
@@ -126,11 +139,11 @@ const Recruits = () => {
                 hasMore={true}
                 loader={<h4>Loading...</h4>}
             >
-                <CourseList>
+                <RecruitList>
                     {cardList.map((card, i) => (
-                        <CourseCard data={card} key={i}></CourseCard>
+                        <RecruitCard data={card} key={i}></RecruitCard>
                     ))}
-                </CourseList>
+                </RecruitList>
             </InfiniteScroll>
         </>
     );

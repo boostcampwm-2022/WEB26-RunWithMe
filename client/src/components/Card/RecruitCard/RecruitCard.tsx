@@ -5,8 +5,6 @@ import styled from "styled-components";
 import { LOCATION_ICON, RULER_ICON, RUNNING_ICON } from "#assets/icons";
 import { CardTitle, SummaryBody, UserIdLabel } from "../Card.styles";
 
-const Participants = styled.div``;
-
 interface RecruitCardProps {
     data: Recruit;
 }

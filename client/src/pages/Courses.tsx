@@ -107,12 +107,6 @@ const Courses = () => {
                     filterDescription="달리기를 시작할 시간을 선택해주세요"
                     setCurrentFilterState={setCurrentTimeFilter}
                 ></SelectFilter>
-                <SelectFilter
-                    filterState={currentTimeFilter}
-                    filterOptions={["5시간 이내", "3시간 이내", "1시간 이내"]}
-                    filterDescription="달리기를 시작할 시간을 선택해주세요"
-                    setCurrentFilterState={setCurrentTimeFilter}
-                ></SelectFilter>
             </FilterBar>
             <InfiniteScroll
                 dataLength={cardList.length}

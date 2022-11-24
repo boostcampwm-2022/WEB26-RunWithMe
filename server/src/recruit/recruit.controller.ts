@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post, UseGuards, Query } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards, Query, Param } from "@nestjs/common";
 import { AccessGuard } from "src/common/guard/access.guard";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
+import { GetRecruitDto } from "./dto/get-recruit.dto";
 import { JoinRecruitDto } from "./dto/join-recruit.dto";
 import { RecruitService } from "./recruit.service";
 
@@ -9,8 +10,8 @@ export class RecruitController {
     constructor(private readonly recruitService: RecruitService) {}
 
     @Get()
-    async getRecruits(@Query("page") page: number, @Query("pageSize") pageSize?: number) {
-        const recruitList = await this.recruitService.getRecruitList(page, pageSize || 10);
+    async getRecruits(@Query() queryParams: GetRecruitDto) {
+        const recruitList = await this.recruitService.getRecruitList(queryParams);
         return {
             statusCode: 200,
             data: recruitList,
@@ -61,6 +62,16 @@ export class RecruitController {
         this.recruitService.join(userId, recruitId);
         return {
             statusCode: 201,
+        };
+    }
+
+    @Get(":id")
+    async getRecruitDetail(@Param("id") recruitId: number, @Body("userIdx") userIdx: number) {
+        const data = await this.recruitService.getRecruitDetail(recruitId);
+        return {
+            ...data,
+            isAuthor: data.authorId === userIdx,
+            isParticipating: await this.recruitService.isParticipating(recruitId, userIdx),
         };
     }
 }

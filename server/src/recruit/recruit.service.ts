@@ -21,12 +21,14 @@ export class RecruitService {
                 startTime,
                 maxPpl,
                 currentPpl,
+                createdAt,
+                userId,
                 course_id,
                 course_title,
                 course_img,
                 course_path,
                 course_pathLength,
-                course_hCode,
+                course_name,
                 course_createdAt,
             }) => {
                 return {
@@ -35,13 +37,17 @@ export class RecruitService {
                     startTime,
                     maxPpl,
                     currentPpl: parseInt(currentPpl),
+                    userId,
+                    createdAt,
                     course: {
                         id: course_id,
                         title: course_title,
                         img: course_img,
                         path: JSON.parse(course_path),
                         pathLength: course_pathLength,
-                        hCode: course_hCode,
+                        hDong: {
+                            course_name,
+                        },
                         createdAt: course_createdAt,
                     },
                 };

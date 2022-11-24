@@ -30,7 +30,7 @@ export class Recruit {
     pace: number;
 
     @Column({ type: "varchar", length: 10 })
-    hCode: string;
+    name: string;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -69,7 +69,7 @@ export class Recruit {
         recruit.startTime = startTime;
         recruit.maxPpl = maxPpl;
         recruit.pace = pace;
-        recruit.hCode = hCode;
+        recruit.name = hCode;
         recruit.userId = userId;
         recruit.courseId = courseId;
         return recruit;

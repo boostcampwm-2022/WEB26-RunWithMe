@@ -46,6 +46,18 @@ const Courses = () => {
 
     const [cardList, setCardList] = useState<any[]>([]);
 
+    const sendRequest = () => {
+        const params = new URLSearchParams({
+            dist: "5",
+            maxLen: "3000",
+            minLen: "1000",
+            page: "1",
+            title: "true",
+            author: "true",
+        });
+        console.log(params.toString());
+    };
+
     //fake API for infinite scroll
     const fetchNextData = () => {
         setTimeout(() => {
@@ -55,6 +67,7 @@ const Courses = () => {
 
     useEffect(() => {
         fetchNextData();
+        sendRequest();
     }, []);
 
     return (

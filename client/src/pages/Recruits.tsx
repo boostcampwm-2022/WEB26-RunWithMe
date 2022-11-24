@@ -10,6 +10,8 @@ import { PLACEHOLDER } from "#constants/placeholder";
 import CourseCard from "#components/Card/CourseCard/CourseCard";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
+import useGet from "#hooks/http/useHttpGet";
+import axios from "axios";
 
 const DummyCardData = {
     title: "황새울공원 한 바퀴 도는 코스입니다.",
@@ -41,11 +43,30 @@ const Recruits = () => {
 
     const [titleFilter, toggleTitleFilter] = useOnOffFilter(true);
     const [authorFilter, toggleAuthorFilter] = useOnOffFilter(true);
-    const [contentFilter, toggleContentFilter] = useOnOffFilter(true);
     const [availFilter, toggleAvailFilter] = useOnOffFilter(true);
 
     const [cardList, setCardList] = useState<any[]>([]);
 
+    const { get } = useGet();
+
+    const sendRequest = async () => {
+        console.log(currentDistanceFilter, currentTimeFilter, titleFilter.toString());
+        const maxLen = Number(currentDistanceFilter[0]);
+        let minLen = maxLen - 2;
+        if (maxLen === 1) minLen = 0;
+
+        // const response = await get("/course", {
+        //     maxLen: (maxLen * 1000).toString(),
+        //     minLen: (minLen * 1000).toString(),
+        //     page: "1",
+        //     title: titleFilter.toString(),
+        //     author: authorFilter.toString(),
+        //     avail: availFilter.toString(),
+        // });
+        // console.log(response);
+        const response2 = await axios.get("http://localhost:4000/recruit?page=1&pageSize=10");
+        console.log(response2);
+    };
     //fake API for infinite scroll
     const fetchNextData = () => {
         setTimeout(() => {
@@ -55,11 +76,12 @@ const Recruits = () => {
 
     useEffect(() => {
         fetchNextData();
+        sendRequest();
     }, []);
 
     return (
         <>
-            <Header text="코스 목록" />
+            <Header text="모집 목록" />
             <SearchBar placeholder={PLACEHOLDER.SEARCH}></SearchBar>
             <FilterBar>
                 <OnOffFilter
@@ -76,11 +98,6 @@ const Recruits = () => {
                     filterState={authorFilter}
                     filterName="작성자"
                     toggleFilterState={toggleAuthorFilter}
-                ></OnOffFilter>
-                <OnOffFilter
-                    filterState={contentFilter}
-                    filterName="내용"
-                    toggleFilterState={toggleContentFilter}
                 ></OnOffFilter>
                 <SelectFilter
                     filterState={currentDistanceFilter}

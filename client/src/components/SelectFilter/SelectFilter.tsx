@@ -51,7 +51,6 @@ const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilte
     };
 
     const createModalContents = (filterOptions: string[]) => {
-        console.log(filterOptions);
         return filterOptions.map((filterName: string, i: number) => (
             <div key={i} onClick={handleFilterContentClick}>
                 {filterName}

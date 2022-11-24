@@ -1,8 +1,11 @@
 import { Recruit } from "#types/Recruit";
 import { getDisplayPaceString } from "#utils/stringtils";
 import Card from "../Card";
+import styled from "styled-components";
 import { LOCATION_ICON, RULER_ICON, RUNNING_ICON } from "#assets/icons";
 import { CardTitle, SummaryBody, UserIdLabel } from "../Card.styles";
+
+const Participants = styled.div``;
 
 interface RecruitCardProps {
     data: Recruit;
@@ -10,7 +13,7 @@ interface RecruitCardProps {
 
 const RecruitCard = ({ data }: RecruitCardProps) => {
     return (
-        <Card img={data.course.img} to={`/recruid/${data.recruitId}`}>
+        <Card img={data.course.img} to={`/recruit/${data.recruitId}`}>
             <CardTitle>{data.title}</CardTitle>
             <SummaryBody>
                 <div>

@@ -55,6 +55,10 @@ export class RecruitService {
             .map(plainToGetRecruitDto);
     }
 
+    async getRecruitDetail(recruitId: number) {
+        return await this.recruitRepository.findRecruitDetail(recruitId);
+    }
+
     async isExistRecruit(recruitId: number): Promise<number | null> {
         const recruitEntity = await this.recruitRepository.findOneById(recruitId);
         if (recruitEntity) {
@@ -68,7 +72,7 @@ export class RecruitService {
     }
 
     async isVacancy(recruitId: number): Promise<boolean> {
-        const currentPpl = await this.userRecruitRepository.countCurrentPpl(recruitId);
+        const currentPpl = await this.getCurrentPpl(recruitId);
         const maxPpl = await this.recruitRepository.getMaxPpl(recruitId);
         if (currentPpl < maxPpl) {
             return true;
@@ -76,8 +80,16 @@ export class RecruitService {
         return false;
     }
 
+    async getCurrentPpl(recruitId: number) {
+        return await this.userRecruitRepository.countCurrentPpl(recruitId);
+    }
+
     async isAuthorOfRecruit(recruitId: number, userId: number) {
         const recruitEntity = await this.recruitRepository.findOneById(recruitId);
         return recruitEntity.userId === userId;
+    }
+
+    join(userId: number, recruitId: number) {
+        this.userRecruitRepository.createUserRecruit(userId, recruitId);
     }
 }

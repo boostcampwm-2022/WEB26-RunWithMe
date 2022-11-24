@@ -15,8 +15,11 @@ export class AuthController {
     async refresh(@Req() req: Request, @Res() res: Response) {
         const jwtString = req["cookies"]["refreshToken"];
         const { userId } = this.authService.verifyRefreshToken(jwtString);
-        const accessToken = this.authService.getAccessToken(userId);
-        const refreshToken = this.authService.getRefreshToken(userId);
+        const { userIdx } = this.authService.verifyRefreshToken(jwtString);
+        const accessToken = await this.authService.getAccessToken(userId);
+        const refreshToken = await this.authService.getRefreshToken(userId);
+        console.log(userId);
+        console.log(userIdx);
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             maxAge: 60 * 60 * 24 * 30,
@@ -26,6 +29,7 @@ export class AuthController {
             data: {
                 accessToken: accessToken,
                 userId,
+                userIdx,
             },
         });
     }
@@ -43,6 +47,7 @@ export class AuthController {
             statusCode: 200,
         });
     }
+
     @Post("/login")
     async validateUser(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
         loginUserDto = plainToClass(LoginUserDto, loginUserDto);
@@ -56,6 +61,7 @@ export class AuthController {
             data: {
                 accessToken: data.accessToken,
                 userId: loginUserDto.getUserId(),
+                userIdx: data.userIdx,
             },
         });
     }

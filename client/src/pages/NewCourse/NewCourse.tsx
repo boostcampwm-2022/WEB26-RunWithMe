@@ -35,7 +35,8 @@ const NewCourse = () => {
         try {
             const { lng: x, lat: y } = getLatLngByXY(path[0]);
             const regions = await query({ x, y });
-            const hCode = regions.documents.find((el) => el.region_type === "H")?.code;
+            // [0]: BCode, [1]: HCode
+            const { code: hCode, region_3depth_name: name } = regions.documents[1];
             const response = await post("/course", {
                 title,
                 path: path.map(getLatLngByXY),
@@ -43,6 +44,7 @@ const NewCourse = () => {
                 pathLength,
                 userId,
                 hCode,
+                name,
             });
             navigate(`/course/${response.courseId}`);
         } catch (error: any) {

@@ -2,11 +2,15 @@ import { Injectable } from "@nestjs/common";
 import { RecruitRepository } from "./recruit.repository";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
 import { Recruit } from "src/entities/recruit.entity";
+import { HDongRepository } from "src/common/repository/h_dong.repository";
 @Injectable()
 export class RecruitService {
-    constructor(private recruitRepository: RecruitRepository) {}
+    constructor(private recruitRepository: RecruitRepository, private hDongRepository: HDongRepository) {}
 
     async create(createRecruitDto: CreateRecruitDto): Promise<Recruit> {
+        const code = createRecruitDto.getHCode();
+        const { name } = await this.hDongRepository.findOneBy({ code });
+        createRecruitDto.setHCodeToName(name);
         const recruitEntity = createRecruitDto.toEntity();
         return this.recruitRepository.createOne(recruitEntity);
     }

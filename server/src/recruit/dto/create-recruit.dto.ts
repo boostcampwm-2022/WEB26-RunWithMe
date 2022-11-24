@@ -29,7 +29,15 @@ export class CreateRecruitDto {
     @IsNumber()
     private courseId: number;
 
-    toEntity() {
+    getHCode(): string {
+        return this.hCode;
+    }
+
+    setHCodeToName(name: string): void {
+        this.hCode = name;
+    }
+
+    toEntity(): Recruit {
         return Recruit.of(this.title, this.startTime, this.maxPpl, this.pace, this.hCode, this.userId, this.courseId);
     }
 }

@@ -4,6 +4,8 @@ import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
 import Filter from "#components/Filter/Filter";
 import useFilter from "#hooks/useFilter";
+import OnOffFilter from "#components/OnOffFilter/OnOffFilter";
+import useOnOffFilter from "#hooks/useOnOffFilter";
 import { PLACEHOLDER } from "#constants/placeholder";
 import CourseCard from "#components/Card/CourseCard/CourseCard";
 import styled from "styled-components";
@@ -34,15 +36,17 @@ const CourseList = styled.div`
 `;
 
 const Courses = () => {
-    const [distanceFilter, setCurrentDistanceFilter] = useFilter({
+    const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter({
         currentFilter: "5km 이내",
         options: ["5km 이내", "3km 이내", "1km 이내"],
     });
 
-    const [timeFilter, setCurrentTimeFilter] = useFilter({
+    const [currentTimeFilter, setCurrentTimeFilter] = useFilter({
         currentFilter: "5시간 이내",
         options: ["5시간 이내", "3시간 이내", "1시간 이내"],
     });
+
+    const [titleFilter, toggleTitleFilter] = useOnOffFilter(true);
 
     const [cardList, setCardList] = useState<any[]>([]);
 
@@ -62,8 +66,17 @@ const Courses = () => {
             <Header text="코스 목록" />
             <SearchBar placeholder={PLACEHOLDER.SEARCH}></SearchBar>
             <FilterBar>
-                <Filter filterState={distanceFilter} setCurrentFilterState={setCurrentDistanceFilter}></Filter>
-                <Filter filterState={timeFilter} setCurrentFilterState={setCurrentTimeFilter}></Filter>
+                <OnOffFilter
+                    filterState={titleFilter}
+                    filterName="제목"
+                    toggleFilterState={toggleTitleFilter}
+                ></OnOffFilter>
+                <Filter
+                    filterState={currentDistanceFilter}
+                    filterOptions={["5km 이내", "3km 이내", "1km 이내"]}
+                    setCurrentFilterState={setCurrentDistanceFilter}
+                ></Filter>
+                {/* <Filter filterState={currentTimeFilter} setCurrentFilterState={setCurrentTimeFilter}></Filter> */}
             </FilterBar>
             <InfiniteScroll
                 dataLength={cardList.length}

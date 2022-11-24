@@ -35,6 +35,7 @@ type _filterState = {
 };
 interface FilterProps {
     filterState: _filterState;
+    filterOptions: string[];
     setCurrentFilterState: any;
 }
 

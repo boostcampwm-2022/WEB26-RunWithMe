@@ -1,9 +1,9 @@
 import { useState } from "react";
-const useFilter = (initialFilter: {
+const useFilter = (initialFilterState: {
     currentFilter: string;
     options: string[];
 }): [{ currentFilter: string; options: string[] }, (selectedFilter: string) => void] => {
-    const [filterState, setFilterState] = useState<{ currentFilter: string; options: string[] }>(initialFilter);
+    const [filterState, setFilterState] = useState<{ currentFilter: string; options: string[] }>(initialFilterState);
     /*
         initialFilter object example
         {
@@ -13,7 +13,6 @@ const useFilter = (initialFilter: {
     */
 
     const setCurrentFilterState = (selectedFilter: string) => {
-        console.log("filter set");
         setFilterState({ currentFilter: selectedFilter, options: filterState.options });
     };
 

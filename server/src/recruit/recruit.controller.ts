@@ -1,4 +1,16 @@
-import { Body, Controller, Get, Post, UseGuards, Query, Param } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Get,
+    Post,
+    UseGuards,
+    Query,
+    Param,
+    Req,
+    HttpException,
+    BadRequestException,
+} from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import { AccessGuard } from "src/common/guard/access.guard";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
 import { GetRecruitDto } from "./dto/get-recruit.dto";
@@ -7,7 +19,7 @@ import { RecruitService } from "./recruit.service";
 
 @Controller("recruit")
 export class RecruitController {
-    constructor(private readonly recruitService: RecruitService) {}
+    constructor(private readonly recruitService: RecruitService, private jwtService: JwtService) {}
 
     @Get()
     async getRecruits(@Query() queryParams: GetRecruitDto) {
@@ -33,29 +45,35 @@ export class RecruitController {
     // @UseGuards(AccessGuard)
     @Post("join")
     async register(@Body() joinRecruitDto: JoinRecruitDto) {
+        console.log(joinRecruitDto);
         const recruitId = joinRecruitDto.getRecruitId();
         const userId = joinRecruitDto.getUserId();
         if (!(await this.recruitService.isExistRecruit(recruitId))) {
             return {
                 statusCode: 409,
+                error: "conflict",
                 message: "Does not exist or has been deleted",
             };
         }
         if (await this.recruitService.isAuthorOfRecruit(recruitId, userId)) {
             return {
                 statusCode: 423,
+                error: "Locked",
                 message: "Cannot participate in your own recruitment",
             };
         }
+
         if (await this.recruitService.isParticipating(recruitId, userId)) {
             return {
                 statusCode: 423,
+                error: "Locked",
                 message: "You have already participated.",
             };
         }
         if (!(await this.recruitService.isVacancy(recruitId))) {
             return {
                 statusCode: 423,
+                error: "Locked",
                 message: "Maximum cap reached",
             };
         }
@@ -66,8 +84,12 @@ export class RecruitController {
     }
 
     @Get(":id")
-    async getRecruitDetail(@Param("id") recruitId: number, @Body("userIdx") userIdx: number) {
+    async getRecruitDetail(@Param("id") recruitId: number, @Req() request: Request) {
+        console.log("a");
+        const jwtString = request.headers["authorization"].split("Bearer")[1].trim();
+        const { userIdx } = this.jwtService.verify(jwtString, { secret: process.env.ACCESS_SECRET });
         const data = await this.recruitService.getRecruitDetail(recruitId);
+        // return 1;
         return {
             ...data,
             isAuthor: data.authorId === userIdx,

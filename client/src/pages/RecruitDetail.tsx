@@ -7,7 +7,7 @@ import { useRecoilValue } from "recoil";
 import useHttpPost from "#hooks/http/useHttpPost";
 import useHttpGet from "#hooks/http/useHttpGet";
 import { useEffect, useState, useCallback } from "react";
-import ViewMap from "#components/Map/ViewMap/ViewMap";
+import useShowMap from "#hooks/useShowMap";
 
 const RecruitDetail = () => {
     const { id } = useParams();
@@ -21,6 +21,8 @@ const RecruitDetail = () => {
     const [author, setAuthor] = useState("게시자");
     const [maxPpl, setMaxPpl] = useState("최대 인원");
     const [currentPpl, setCurrentPpl] = useState("현재 인원");
+    const [path, setPath] = useState([]);
+    const [middlePoint, setMiddlePoint] = useState({ lat: 0, lng: 0 });
 
     const getPaceFormat = (sec: number): string => {
         return `${parseInt(String(sec / 60))}'${sec % 60}"`;
@@ -44,7 +46,36 @@ const RecruitDetail = () => {
             alert(error.message);
         }
     };
-
+    const renderMap = useCallback(
+        useShowMap({
+            height: `${window.innerHeight - 307}px`,
+            center: { lat: middlePoint.lat, lng: middlePoint.lng },
+            runningPath: path,
+            level: 5,
+        }).renderMap,
+        [path, middlePoint],
+    );
+    const getMiddlePoint = (path: { lat: number; lng: number }[]) => {
+        let minLat = 90;
+        let maxLat = -90;
+        let minLng = 180;
+        let maxLng = -180;
+        for (const point of path) {
+            if (minLat > point.lat) {
+                minLat = point.lat;
+            }
+            if (maxLat < point.lat) {
+                maxLat = point.lat;
+            }
+            if (minLng > point.lng) {
+                minLng = point.lng;
+            }
+            if (maxLng < point.lng) {
+                maxLng = point.lng;
+            }
+        }
+        return { lat: (minLat + maxLat) / 2, lng: (minLng + maxLng) / 2 };
+    };
     const getRecruitDetail = useCallback(async () => {
         try {
             const response = await get(`/recruit/${id}`);
@@ -55,6 +86,8 @@ const RecruitDetail = () => {
             setAuthor(response.userId);
             setMaxPpl(response.maxPpl);
             setCurrentPpl(response.currentPpl);
+            setPath(JSON.parse(response.path));
+            setMiddlePoint(getMiddlePoint(JSON.parse(response.path)));
         } catch {}
     }, []);
 
@@ -67,7 +100,7 @@ const RecruitDetail = () => {
     return (
         <>
             <Header loggedIn={true} text="모집 상세"></Header>
-            <ViewMap />
+            {renderMap()}
             <Title>{title}</Title>
             <Content>
                 <div>

@@ -14,6 +14,7 @@ import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
 import type { ClientOpts } from "redis";
 import { RecruitModule } from "./recruit/recruit.module";
+import { CourseModule } from "./course/course.module";
 
 @Module({
     imports: [
@@ -44,6 +45,7 @@ import { RecruitModule } from "./recruit/recruit.module";
         UserModule,
         AuthModule,
         RecruitModule,
+        CourseModule,
     ],
     controllers: [AppController],
     providers: [AppService],

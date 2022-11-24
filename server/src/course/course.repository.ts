@@ -25,11 +25,11 @@ export class CourseRepository extends Repository<Course> {
                 minLen,
                 maxLen,
             })
-            .andWhere(query && title && author ? `(recruit.title LIKE :query_title or user.userId = :query)` : "1=1", {
+            .andWhere(query && title && author ? `(course.title LIKE :query_title or user.userId = :query)` : "1=1", {
                 query_title: "%" + query + "%",
                 query,
             })
-            .andWhere(query && title && author === false ? `recruit.title LIKE :query_title` : "1=1", {
+            .andWhere(query && title && author === false ? `course.title LIKE :query_title` : "1=1", {
                 query_title: "%" + query + "%",
             })
             .andWhere(query && title === false && author ? `user.userId = :query` : "1=1", {

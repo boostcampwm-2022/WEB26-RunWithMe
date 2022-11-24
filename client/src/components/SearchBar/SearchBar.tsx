@@ -6,6 +6,7 @@ import { SEARCH_ICON } from "#assets/icons";
 
 interface SearchBarProps {
     placeholder?: string;
+    content?: string;
     onChange?: ChangeEventHandler<HTMLInputElement>;
     onClick?: () => void;
 }

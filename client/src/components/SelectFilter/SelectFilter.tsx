@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { flexRowCenter } from "styles/flex";
-import { ARROW_DOWN_ICON, LOCATION_ICON } from "#assets/icons";
+import { ARROW_DOWN_ICON } from "#assets/icons";
 import { fontMedium } from "styles/font";
 import { COLOR } from "styles/color";
 import Modal from "#components/Modal/Modal";
@@ -35,9 +35,10 @@ interface FilterProps {
     filterOptions: string[];
     filterDescription: string;
     setCurrentFilterState: any;
+    filterIcon: any;
 }
 
-const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilterState }: FilterProps) => {
+const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilterState, filterIcon }: FilterProps) => {
     const [showModal, setShowModal] = useState(false);
 
     const handleToggleModal = () => {
@@ -51,7 +52,6 @@ const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilte
     };
 
     const createModalContents = (filterOptions: string[]) => {
-        console.log(filterOptions);
         return filterOptions.map((filterName: string, i: number) => (
             <div key={i} onClick={handleFilterContentClick}>
                 {filterName}
@@ -68,7 +68,7 @@ const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilte
                     <button onClick={handleToggleModal}>닫기</button>
                 </ModalFilterWrapper>
             </Modal>
-            <img src={LOCATION_ICON} />
+            <img src={filterIcon} />
             <p>{filterState}</p>
             <img src={ARROW_DOWN_ICON} />
         </FilterWrapper>

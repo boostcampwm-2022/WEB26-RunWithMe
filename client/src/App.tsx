@@ -11,6 +11,7 @@ import RecruitDetail from "#pages/RecruitDetail";
 import CourseDetail from "#pages/CourseDetail";
 import useGet from "#hooks/http/useHttpGet";
 import { TIME } from "#constants/time";
+import Recruits from "#pages/Recruits";
 
 function App() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -48,6 +49,7 @@ function App() {
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login />} />
             <Route path="courses" element={<Courses />} />
+            <Route path="recruits" element={<Recruits />} />
             <Route path="course">
                 <Route path="new" element={<NewCourse />} />
                 <Route path=":id" element={<CourseDetail />} />

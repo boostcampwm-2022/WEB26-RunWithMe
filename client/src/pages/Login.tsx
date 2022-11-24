@@ -4,7 +4,6 @@ import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import Button from "#components/Button/Button";
 import useInput from "#hooks/useInput";
-import axios from "axios";
 import { PLACEHOLDER } from "#constants/placeholder";
 import { idValidator, passwordValidator } from "#utils/valitationUtils";
 
@@ -13,10 +12,12 @@ import { InputWrapper, OptionsWrapper } from "./SignUp.styles";
 import { userState } from "#atoms/userState";
 
 import { LogoWrapper } from "./Login.styles";
+import useHttpPost from "#hooks/http/useHttpPost";
 
 const Login = () => {
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
     const [password, onChangePassword, passwordError] = useInput(passwordValidator);
+    const { post } = useHttpPost();
     const setUserInfo = useSetRecoilState(userState);
     const navigate = useNavigate();
 
@@ -24,28 +25,15 @@ const Login = () => {
         return userId && password;
     };
 
-    const onSubmitLogin = () => {
+    const onSubmitLogin = async () => {
         if (!checkFormValidation()) return;
-        axios
-            .post(
-                "http://localhost:4000/auth/login",
-                {
-                    userId,
-                    password,
-                },
-                {
-                    withCredentials: true,
-                },
-            )
-            .then((res) => {
-                setUserInfo({
-                    accessToken: res.data.data.accessToken,
-                    userId: res.data.data.userId,
-                    userIdx: res.data.data.userIdx,
-                });
-                res.status === 201 && navigate("/", { replace: true });
-            })
-            .catch(console.log);
+        try {
+            const response = await post("/auth/login", { userId, password });
+            setUserInfo(response.data);
+            navigate("/");
+        } catch (error: any) {
+            alert(error.message);
+        }
     };
 
     return (

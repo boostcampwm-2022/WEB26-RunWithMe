@@ -1,8 +1,11 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("h_dong")
 export class HDong {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
     code: string;
 
     @Column()

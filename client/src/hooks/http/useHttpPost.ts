@@ -11,7 +11,10 @@ const useGet = () => {
                 setIsLoading(false);
                 return res.data;
             })
-            .catch(setError);
+            .catch((error) => {
+                setError(error);
+                throw error;
+            });
     };
     return { isLoading, error, post };
 };

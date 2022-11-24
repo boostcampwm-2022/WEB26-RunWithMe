@@ -10,6 +10,7 @@ import NewCourse from "#pages/NewCourse/NewCourse";
 import RecruitDetail from "#pages/RecruitDetail";
 import CourseDetail from "#pages/CourseDetail";
 import useGet from "#hooks/http/useHttpGet";
+import { TIME } from "#constants/time";
 
 function App() {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -30,7 +31,7 @@ function App() {
         setRefreshRequestTimer(
             setTimeout(() => {
                 getAccessToken();
-            }, 3000),
+            }, TIME.ACCESS_TOKEN_EXPIRE_TIME - TIME.MINUTE_IN_SECONDS),
         );
 
         return () => {

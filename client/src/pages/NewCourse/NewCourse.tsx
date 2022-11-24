@@ -9,17 +9,16 @@ import useLocalAPI from "#hooks/useLocalAPI";
 import getLatLngByXY from "#utils/mapUtils";
 import { PLACEHOLDER } from "#constants/placeholder";
 import { useCallback } from "react";
-import { useRecoilValue } from "recoil";
-import { userState } from "#atoms/userState";
 import { useNavigate } from "react-router-dom";
 import { courseTitleValidator } from "#utils/valitationUtils";
 import { RegionResponse } from "#types/Region";
 import { CourseForm } from "./NewCourse.styles";
+import useUser from "#hooks/useUser";
 //#endregion
 const img =
     "https://kr.object.ncloudstorage.com/j199/img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202022-11-20%20%EC%98%A4%ED%9B%84%204.01.56.png";
 const NewCourse = () => {
-    const { userIdx: userId } = useRecoilValue(userState);
+    const { userIdx: userId } = useUser();
     const [title, onChangeTitle] = useInput(courseTitleValidator);
     const query = useLocalAPI<RegionResponse>("/geo/coord2regioncode.json");
     const { post } = useHttpPost();

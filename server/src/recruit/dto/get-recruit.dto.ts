@@ -1,11 +1,9 @@
 import { Transform, Type } from "class-transformer";
 import { IsBoolean, IsNumber, IsString, IsOptional } from "class-validator";
-import { runInThisContext } from "vm";
-
 export class GetRecruitDto {
     @IsOptional()
     @IsString()
-    private query?: string;
+    private query?: string | undefined;
 
     @IsOptional()
     @Type(() => Number)
@@ -64,15 +62,15 @@ export class GetRecruitDto {
     @IsNumber()
     private pageSize?: number;
 
-    getQuery(): string | null {
+    getQuery(): string | undefined {
         return this.query;
     }
 
-    getTime(): number | null {
+    getTime(): number | undefined {
         return this.time;
     }
 
-    getDist(): number | null {
+    getDist(): number | undefined {
         return this.dist;
     }
 

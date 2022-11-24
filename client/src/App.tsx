@@ -18,8 +18,10 @@ function App() {
     const { get } = useGet();
 
     const getAccessToken = useCallback(async () => {
-        const response = await get("/auth/refresh");
-        setUserInfo(response.data);
+        try {
+            const response = await get("/auth/refresh");
+            setUserInfo(response.data);
+        } catch {}
     }, []);
 
     useEffect(() => {

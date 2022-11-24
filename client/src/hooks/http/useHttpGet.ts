@@ -7,7 +7,7 @@ const useGet = () => {
         setIsLoading(true);
         return axios
             .get(url, {
-                data: query,
+                params: query,
             })
             .then((res) => {
                 setIsLoading(false);

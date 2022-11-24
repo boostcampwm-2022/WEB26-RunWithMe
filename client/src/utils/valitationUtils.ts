@@ -13,7 +13,7 @@ export const confirmPasswordValidator = (password: string) => (confirmPassword: 
     return password !== confirmPassword || !confirmPassword ? "비밀번호가 일치하지 않습니다" : "";
 };
 
-export const hCodeValidator = (hCode: string) => {
+export const hNameValidator = (hCode: string) => {
     return hCode.length === 10 ? "" : "지역을 입력하세요";
 };
 

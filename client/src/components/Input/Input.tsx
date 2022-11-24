@@ -7,9 +7,11 @@ interface InputProps {
     width?: string;
     subText?: ReactNode;
     onChange?: ChangeEventHandler<HTMLInputElement>;
+    disabled?: boolean;
+    value?: string;
 }
 
-const Input = ({ width, type = "text", placeholder, subText, onChange }: InputProps) => {
+const Input = ({ width, type = "text", placeholder, subText, onChange, disabled = false, value }: InputProps) => {
     return (
         <InputWrapper width={width ?? "100%"}>
             <input
@@ -17,6 +19,8 @@ const Input = ({ width, type = "text", placeholder, subText, onChange }: InputPr
                 placeholder={placeholder}
                 type={type}
                 style={{ width: subText ? "80%" : "100%" }}
+                disabled={disabled}
+                value={value}
             />
             {subText && <p>{subText}</p>}
         </InputWrapper>

@@ -21,11 +21,11 @@ const Login = () => {
     const navigate = useNavigate();
 
     const checkFormValidation = () => {
-        return userId || password;
+        return userId && password;
     };
 
     const onSubmitLogin = () => {
-        if (checkFormValidation()) return;
+        if (!checkFormValidation()) return;
         axios
             .post(
                 "http://localhost:4000/auth/login",
@@ -38,7 +38,11 @@ const Login = () => {
                 },
             )
             .then((res) => {
-                setUserInfo({ accessToken: res.data.data.accessToken, userId: res.data.data.userId });
+                setUserInfo({
+                    accessToken: res.data.data.accessToken,
+                    userId: res.data.data.userId,
+                    userIdx: res.data.data.userIdx,
+                });
                 res.status === 201 && navigate("/", { replace: true });
             })
             .catch(console.log);

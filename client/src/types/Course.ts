@@ -5,7 +5,7 @@ export interface Course {
     courseId: number;
     path: LatLng[];
     pathLength: number;
-    zipCode: string;
+    hCode: string;
     userId: string;
     img: string;
 }

@@ -2,12 +2,42 @@ import Header from "#components/Header/Header";
 import Button from "#components/Button/Button";
 import useMap from "#hooks/useMap";
 import { Content, Title } from "./RecruitDetail.styles";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { userState } from "#atoms/userState";
+import { useRecoilValue } from "recoil";
 
 const RecruitDetail = () => {
+    const { id } = useParams();
+    const userInfo = useRecoilValue(userState);
     const { renderMap } = useMap({
         height: `${window.innerHeight - 400}px`,
         center: { lat: 33.450701, lng: 126.570667 },
     });
+    const onSubmitJoin = () => {
+        axios
+            .post(
+                "http://localhost:4000/recruit/join",
+                {
+                    recruitId: id,
+                    userId: userInfo.userIdx,
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${userInfo.accessToken}`,
+                    },
+                },
+            )
+            .then((res) => {
+                if (res.data.statusCode == 201) {
+                    alert("참여 완료");
+                } else {
+                    alert(res.data.message);
+                }
+            })
+            .catch(console.log);
+    };
     return (
         <>
             <Header loggedIn={true} text="모집 상세"></Header>
@@ -34,7 +64,7 @@ const RecruitDetail = () => {
                     <span>참가 현황</span>
                     <p>1 / 5</p>
                 </div>
-                <Button width="fit" onClick={() => alert("참여 API 날림~")}>
+                <Button width="fit" onClick={onSubmitJoin}>
                     참여하기
                 </Button>
             </Content>

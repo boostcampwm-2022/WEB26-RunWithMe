@@ -14,7 +14,7 @@ const CourseCard = ({ data }: CourseCardProps) => {
             <SummaryBody>
                 <div>
                     <img src={LOCATION_ICON} />
-                    <span>{data.zipCode}</span>
+                    <span>{data.hCode}</span>
                     <img src={RULER_ICON} />
                     <span>{`${(data.pathLength / 1000).toFixed(1)}km`}</span>
                 </div>

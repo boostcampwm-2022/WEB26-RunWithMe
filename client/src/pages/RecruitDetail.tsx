@@ -15,6 +15,7 @@ const RecruitDetail = () => {
         height: `${window.innerHeight - 400}px`,
         center: { lat: 33.450701, lng: 126.570667 },
     });
+
     const onSubmitJoin = async () => {
         try {
             await post("/recruit/join", {

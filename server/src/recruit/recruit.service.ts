@@ -89,4 +89,7 @@ export class RecruitService {
         const recruitEntity = await this.recruitRepository.findOneById(recruitId);
         return recruitEntity.userId === userId;
     }
+    join(userId: number, recruitId: number) {
+        this.userRecruitRepository.createUserRecruit(userId, recruitId);
+    }
 }

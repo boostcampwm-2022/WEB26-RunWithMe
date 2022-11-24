@@ -17,4 +17,7 @@ export class UserRecruitRepository extends Repository<UserRecruit> {
     public async countCurrentPpl(recruitId: number) {
         return await this.countBy({ recruitId });
     }
+    public createUserRecruit(userId: number, recruitId: number) {
+        this.save({ userId, recruitId });
+    }
 }

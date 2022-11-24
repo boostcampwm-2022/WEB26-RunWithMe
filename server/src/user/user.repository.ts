@@ -8,7 +8,11 @@ export class UserRepository extends Repository<User> {
         return this.save(userEntity);
     }
 
-    public async findByUserId(userId: string): Promise<User | undefined> {
+    public findOneByUserId(userId: string) {
         return this.findOneBy({ userId });
+    }
+
+    public async findUserIdxByUserId(userId: string) {
+        return (await this.findOneByUserId(userId)).id;
     }
 }

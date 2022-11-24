@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import Header from "#components/Header/Header";
 import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
-import Filter from "#components/Filter/Filter";
+import SelectFilter from "#components/SelectFilter/SelectFilter";
 import useFilter from "#hooks/useFilter";
+import OnOffFilter from "#components/OnOffFilter/OnOffFilter";
+import useOnOffFilter from "#hooks/useOnOffFilter";
 import { PLACEHOLDER } from "#constants/placeholder";
 import CourseCard from "#components/Card/CourseCard/CourseCard";
 import styled from "styled-components";
@@ -34,15 +36,12 @@ const CourseList = styled.div`
 `;
 
 const Courses = () => {
-    const [distanceFilter, setCurrentDistanceFilter] = useFilter({
-        currentFilter: "5km 이내",
-        options: ["5km 이내", "3km 이내", "1km 이내"],
-    });
+    const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter("5km 이내");
+    const [currentTimeFilter, setCurrentTimeFilter] = useFilter("5시간 이내");
 
-    const [timeFilter, setCurrentTimeFilter] = useFilter({
-        currentFilter: "5시간 이내",
-        options: ["5시간 이내", "3시간 이내", "1시간 이내"],
-    });
+    const [titleFilter, toggleTitleFilter] = useOnOffFilter(true);
+    const [authorFilter, toggleAuthorFilter] = useOnOffFilter(true);
+    const [contentFilter, toggleContentFilter] = useOnOffFilter(true);
 
     const [cardList, setCardList] = useState<any[]>([]);
 
@@ -62,8 +61,39 @@ const Courses = () => {
             <Header text="코스 목록" />
             <SearchBar placeholder={PLACEHOLDER.SEARCH}></SearchBar>
             <FilterBar>
-                <Filter filterState={distanceFilter} setCurrentFilterState={setCurrentDistanceFilter}></Filter>
-                <Filter filterState={timeFilter} setCurrentFilterState={setCurrentTimeFilter}></Filter>
+                <OnOffFilter
+                    filterState={titleFilter}
+                    filterName="제목"
+                    toggleFilterState={toggleTitleFilter}
+                ></OnOffFilter>
+                <OnOffFilter
+                    filterState={authorFilter}
+                    filterName="작성자"
+                    toggleFilterState={toggleAuthorFilter}
+                ></OnOffFilter>
+                <OnOffFilter
+                    filterState={contentFilter}
+                    filterName="내용"
+                    toggleFilterState={toggleContentFilter}
+                ></OnOffFilter>
+                <SelectFilter
+                    filterState={currentDistanceFilter}
+                    filterOptions={["5km 이내", "3km 이내", "1km 이내"]}
+                    filterDescription="달리려는 총 거리를 선택해주세요"
+                    setCurrentFilterState={setCurrentDistanceFilter}
+                ></SelectFilter>
+                <SelectFilter
+                    filterState={currentTimeFilter}
+                    filterOptions={["5시간 이내", "3시간 이내", "1시간 이내"]}
+                    filterDescription="달리기를 시작할 시간을 선택해주세요"
+                    setCurrentFilterState={setCurrentTimeFilter}
+                ></SelectFilter>{" "}
+                <SelectFilter
+                    filterState={currentTimeFilter}
+                    filterOptions={["5시간 이내", "3시간 이내", "1시간 이내"]}
+                    filterDescription="달리기를 시작할 시간을 선택해주세요"
+                    setCurrentFilterState={setCurrentTimeFilter}
+                ></SelectFilter>
             </FilterBar>
             <InfiniteScroll
                 dataLength={cardList.length}

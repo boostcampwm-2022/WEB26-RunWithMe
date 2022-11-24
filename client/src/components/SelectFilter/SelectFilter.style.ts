@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { fontSmall } from "styles/font";
+import { fontMedium } from "styles/font";
 
 export const ModalFilterWrapper = styled.div`
     width: 50vw;
@@ -14,13 +15,19 @@ export const ModalFilterWrapper = styled.div`
         }
     }
     & :last-child {
+        margin-top: 10px;
         border-top: 1px solid gray;
     }
     button {
-        padding-top: 4px;
+        padding-top: 1rem;
         width: 100%;
         border: none;
         background: transparent;
         ${fontSmall(COLOR.BLACK, 700)}
+    }
+    header {
+        text-align: center;
+        ${fontMedium(COLOR.BLACK, 700)}
+        margin-bottom: 1.5rem;
     }
 `;

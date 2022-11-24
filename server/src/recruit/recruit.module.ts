@@ -1,9 +1,8 @@
 import { Module } from "@nestjs/common";
 import { RecruitService } from "./recruit.service";
 import { RecruitController } from "./recruit.controller";
-import { AuthService } from "src/auth/auth.service";
-import { TypeOrmModule } from "@nestjs/typeorm";
 import { TypeOrmCustomModule } from "src/common/typeorm/typeorm.module";
+import { AuthService } from "src/auth/auth.service";
 import { JwtService } from "@nestjs/jwt";
 import { AuthRepository } from "src/auth/auth.repository";
 import { UserRepository } from "src/user/user.repository";

@@ -76,7 +76,7 @@ export class RecruitService {
     }
 
     async isParticipating(recruitId: number, userId: number): Promise<boolean> {
-        return this.userRecruitRepository.isParticipate(recruitId, userId);
+        return await this.userRecruitRepository.isParticipating(recruitId, userId);
     }
 
     async isVacancy(recruitId: number): Promise<boolean> {

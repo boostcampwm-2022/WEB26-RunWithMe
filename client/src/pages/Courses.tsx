@@ -7,9 +7,7 @@ import useFilter from "#hooks/useFilter";
 import OnOffFilter from "#components/OnOffFilter/OnOffFilter";
 import useOnOffFilter from "#hooks/useOnOffFilter";
 import { PLACEHOLDER } from "#constants/placeholder";
-import CourseCard from "#components/Card/CourseCard/CourseCard";
 import styled from "styled-components";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { CLOCK_ICON, LOCATION_ICON } from "#assets/icons";
 
 const DummyCardData = {
@@ -111,20 +109,6 @@ const Courses = () => {
                     setCurrentFilterState={setCurrentTimeFilter}
                 ></SelectFilter>
             </FilterBar>
-            <InfiniteScroll
-                dataLength={cardList.length}
-                next={() => {
-                    fetchNextData();
-                }}
-                hasMore={true}
-                loader={<h4>Loading...</h4>}
-            >
-                <CourseList>
-                    {cardList.map((card, i) => (
-                        <CourseCard data={card} key={i}></CourseCard>
-                    ))}
-                </CourseList>
-            </InfiniteScroll>
         </>
     );
 };

@@ -7,8 +7,12 @@ import { HDongRepository } from "src/common/repository/h_dong.repository";
 
 @Injectable()
 export class RecruitService {
-    constructor(private recruitRepository: RecruitRepository, private hDongRepository: HDongRepository, private userRecruitRepository: UserRecruitRepository) {}
-    
+    constructor(
+        private recruitRepository: RecruitRepository,
+        private hDongRepository: HDongRepository,
+        private userRecruitRepository: UserRecruitRepository,
+    ) {}
+
     async create(createRecruitDto: CreateRecruitDto): Promise<Recruit> {
         const code = createRecruitDto.getHCode();
         const { name } = await this.hDongRepository.findOneBy({ code });

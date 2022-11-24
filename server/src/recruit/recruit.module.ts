@@ -14,11 +14,12 @@ import { HDongRepository } from "src/common/repository/h_dong.repository";
 @Module({
     imports: [
         TypeOrmCustomModule.forCustomRepository([
-            RecruitRepository, 
-            UserRepository, 
-            UserRecruitRepository, 
-            HDongRepository
+            RecruitRepository,
+            UserRepository,
+            UserRecruitRepository,
+            HDongRepository,
         ]),
+    ],
     controllers: [RecruitController],
     providers: [RecruitService, AuthService, JwtService, AuthRepository],
 })

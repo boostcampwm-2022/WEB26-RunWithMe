@@ -14,7 +14,6 @@ import useLocalAPI from "#hooks/useLocalAPI";
 import { LocalData, LocalSearchResponse } from "#types/Local";
 import ResetButton from "#components/ResetButton/ResetButton";
 import AddressList from "#components/AddressList/AddressList";
-
 const SignUp = () => {
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
     const [password, onChangePassword, passwordError] = useInput(passwordValidator);

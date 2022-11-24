@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
+import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import { LoginUserDto } from "./dto/login-user.dto";
-import { Request, Response } from "express";
 import { plainToClass } from "class-transformer";
-import { AuthGuard } from "src/common/guard/auth.guard";
+import { AccessGuard } from "src/common/guard/access.guard";
 import { RefreshGuard } from "src/common/guard/refresh.guard";
 
 @Controller("auth")
@@ -19,9 +19,10 @@ export class AuthController {
         const refreshToken = this.authService.getRefreshToken(userId);
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
+            maxAge: 60 * 60 * 24 * 30,
         });
         res.send({
-            status: 200,
+            statusCode: 200,
             data: {
                 accessToken: accessToken,
                 userId,
@@ -29,7 +30,7 @@ export class AuthController {
         });
     }
 
-    @UseGuards(AuthGuard)
+    @UseGuards(AccessGuard)
     @Get("/logout")
     async logoutUser(@Req() req: Request, @Res() res: Response) {
         const jwtString = req.headers["authorization"].split("Bearer")[1].trim();
@@ -39,7 +40,7 @@ export class AuthController {
             maxAge: 0,
         });
         res.send({
-            status: 200,
+            statusCode: 200,
         });
     }
     @Post("/login")
@@ -51,7 +52,7 @@ export class AuthController {
             httpOnly: true,
         });
         res.send({
-            status: 200,
+            statusCode: 200,
             data: {
                 accessToken: data.accessToken,
                 userId: loginUserDto.getUserId(),

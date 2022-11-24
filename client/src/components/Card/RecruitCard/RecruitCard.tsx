@@ -15,7 +15,7 @@ const RecruitCard = ({ data }: RecruitCardProps) => {
             <SummaryBody>
                 <div>
                     <img src={LOCATION_ICON} />
-                    <span>{data.course.zipCode}</span>
+                    <span>{data.course.hCode}</span>
                     <img src={RULER_ICON} />
                     <span>{`${(data.course.pathLength / 1000).toFixed(1)}km`}</span>
                     <img src={RUNNING_ICON} />

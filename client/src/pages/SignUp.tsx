@@ -5,7 +5,7 @@ import Input from "#components/Input/Input";
 import Button from "#components/Button/Button";
 import axios from "axios";
 import useInput from "#hooks/useInput";
-import { confirmPasswordValidator, idValidator, passwordValidator, zipCodeValidator } from "#utils/valitationUtils";
+import { confirmPasswordValidator, idValidator, passwordValidator, hCodeValidator } from "#utils/valitationUtils";
 import { InputWrapper, LogoWrapper, OptionsWrapper } from "./SignUp.styles";
 import { PLACEHOLDER } from "#constants/placeholder";
 import usePaceInput from "#hooks/usePaceInput";
@@ -17,11 +17,11 @@ const SignUp = () => {
     const [confirmPassword, onChangeConfirmPassword, confirmPasswordError] = useInput(
         confirmPasswordValidator(String(password)),
     );
-    const [zipCode, onChangeZipCode, zipCodeError] = useInput(zipCodeValidator);
+    const [hCode, onChangeHCode, hCodeError] = useInput(hCodeValidator);
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
     const navigate = useNavigate();
 
-    const checkFormValidation = () => confirmPassword && password && userId && zipCode;
+    const checkFormValidation = () => confirmPassword && password && userId && hCode;
 
     const onSubmitSignUp = () => {
         if (!checkFormValidation()) return;
@@ -30,7 +30,7 @@ const SignUp = () => {
                 userId,
                 password,
                 pace: pace.minute * 60 + pace.second,
-                zipCode,
+                hCode,
             })
             .then((res) => res.status === 201 && navigate("/", { replace: true }))
             .catch(console.log);
@@ -52,8 +52,8 @@ const SignUp = () => {
                 ></Input>
                 <span>{confirmPasswordError}</span>
                 <PaceInput onChangeMinute={onChangeMinute} onChangeSecond={onChangeSecond}></PaceInput>
-                <Input placeholder={PLACEHOLDER.ZIP_CODE} type="number" onChange={onChangeZipCode}></Input>
-                <span>{zipCodeError}</span>
+                <Input placeholder={PLACEHOLDER.ZIP_CODE} type="number" onChange={onChangeHCode}></Input>
+                <span>{hCodeError}</span>
                 <Button width="fill" onClick={onSubmitSignUp}>
                     회원가입
                 </Button>

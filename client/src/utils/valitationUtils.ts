@@ -12,6 +12,6 @@ export const confirmPasswordValidator = (password: string) => (confirmPassword: 
     return password !== confirmPassword || !confirmPassword ? "비밀번호가 일치하지 않습니다" : "";
 };
 
-export const zipCodeValidator = (zipCode: string) => {
-    return zipCode.length === 5 ? "" : "지역을 입력하세요";
+export const hCodeValidator = (hCode: string) => {
+    return hCode.length === 5 ? "" : "지역을 입력하세요";
 };

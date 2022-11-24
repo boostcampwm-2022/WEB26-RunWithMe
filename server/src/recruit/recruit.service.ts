@@ -2,11 +2,13 @@ import { Injectable } from "@nestjs/common";
 import { RecruitRepository } from "./recruit.repository";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
 import { Recruit } from "src/entities/recruit.entity";
+import { UserRecruitRepository } from "src/user_recruit.repository";
 import { HDongRepository } from "src/common/repository/h_dong.repository";
+
 @Injectable()
 export class RecruitService {
-    constructor(private recruitRepository: RecruitRepository, private hDongRepository: HDongRepository) {}
-
+    constructor(private recruitRepository: RecruitRepository, private hDongRepository: HDongRepository, private userRecruitRepository: UserRecruitRepository) {}
+    
     async create(createRecruitDto: CreateRecruitDto): Promise<Recruit> {
         const code = createRecruitDto.getHCode();
         const { name } = await this.hDongRepository.findOneBy({ code });
@@ -56,6 +58,27 @@ export class RecruitService {
                 };
             },
         );
+    }
+
+    async isExistRecruit(recruitId: number): Promise<number | null> {
+        const recruitEntity = await this.recruitRepository.findOneById(recruitId);
+        if (recruitEntity) {
+            return recruitEntity.userId;
+        }
+        return null;
+    }
+
+    async isParticipating(recruitId: number, userId: number): Promise<boolean> {
+        return this.userRecruitRepository.isParticipate(recruitId, userId);
+    }
+
+    async isVacancy(recruitId: number): Promise<boolean> {
+        const currentPpl = await this.userRecruitRepository.countCurrentPpl(recruitId);
+        const maxPpl = await this.recruitRepository.getMaxPpl(recruitId);
+        if (currentPpl < maxPpl) {
+            return true;
+        }
+        return false;
     }
 
     async isAuthorOfRecruit(recruitId: number, userId: number) {

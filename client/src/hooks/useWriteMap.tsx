@@ -1,4 +1,5 @@
 import LockButton from "#components/MapControl/LockButton/LockButton";
+import PlaceSearch from "#components/MapControl/PlaceSearch/PlaceSearch";
 import UndoButton from "#components/MapControl/UndoButton/UndoButton";
 import ZoomControl from "#components/MapControl/ZoomControl/ZoomControl";
 import { MapProps } from "#types/MapProps";
@@ -68,6 +69,19 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
         setIsMapDraggable((prev) => !prev);
     }, [map]);
 
+    const setCenter = useCallback(
+        (position: kakao.maps.LatLng) => {
+            if (!map.current) return;
+            map.current.setCenter(position);
+        },
+        [map.current],
+    );
+
+    const getCenter = useCallback(() => {
+        if (!map.current) return new kakao.maps.LatLng(center.lng, center.lat);
+        return map.current.getCenter();
+    }, []);
+
     return {
         map: map.current,
         path,
@@ -82,6 +96,7 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
                     onClick={onClickLock}
                     position={{ top: "96px", right: "14px" }}
                 />
+                <PlaceSearch position={{ top: "14px" }} setCenter={setCenter} getCenter={getCenter} />
             </div>
         ),
     };

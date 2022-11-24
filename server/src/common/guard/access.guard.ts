@@ -4,7 +4,7 @@ import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { AuthService } from "src/auth/auth.service";
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AccessGuard implements CanActivate {
     constructor(private authService: AuthService) {}
 
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
@@ -14,6 +14,10 @@ export class AuthGuard implements CanActivate {
 
     private validateRequest(req: Request) {
         const jwtString = req.headers.authorization.split("Bearer")[1].trim();
+        if (!jwtString) {
+            return false;
+        }
+
         this.authService.verifyAccessToken(jwtString);
         return true;
     }

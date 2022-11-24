@@ -10,10 +10,10 @@ export default {
     component: Modal,
 } as ComponentMeta<typeof Modal>;
 
-const _Modal: ComponentStory<typeof Modal> = (args) => <Modal {...args} />;
+export const _Modal: ComponentStory<typeof Modal> = (args) => <Modal {...args} />;
 
 _Modal.args = {
-    content: (
+    children: (
         <div style={{ display: "flex", flexDirection: "column" }}>
             <Input width="375px" placeholder="제목을 입력하세요" />
             <div style={{ height: "10px" }} />

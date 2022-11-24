@@ -29,4 +29,5 @@ export {
     RUNNING_ICON,
     USER_ICON,
     SEARCH_ICON,
+    USER_ICON,
 };

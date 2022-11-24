@@ -35,7 +35,7 @@ const CourseList = styled.div`
     gap: 2rem;
 `;
 
-const Courses = () => {
+const Recruits = () => {
     const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter("5km 이내");
     const [currentTimeFilter, setCurrentTimeFilter] = useFilter("5시간 이내");
 
@@ -118,4 +118,4 @@ const Courses = () => {
         </>
     );
 };
-export default Courses;
+export default Recruits;

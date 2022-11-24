@@ -58,6 +58,7 @@ export class RecruitController {
                 message: "Maximum cap reached",
             };
         }
+        this.recruitService.join(userId, recruitId);
         return {
             statusCode: 201,
         };

@@ -9,7 +9,7 @@ export class UserService {
     constructor(private userRepository: UserRepository) {}
 
     async create(createUserDto: CreateUserDto) {
-        const isPresent = await this.userRepository.findByUserId(createUserDto.getUserId());
+        const isPresent = await this.userRepository.findOneByUserId(createUserDto.getUserId());
         if (isPresent) {
             throw new BadRequestException();
         }
@@ -20,7 +20,7 @@ export class UserService {
     }
 
     async checkId(checkUserDto: CheckUserDto) {
-        if (await this.userRepository.findByUserId(checkUserDto.getUserId())) {
+        if (await this.userRepository.findOneByUserId(checkUserDto.getUserId())) {
             return {
                 statusCode: "200",
                 existsCode: true,
@@ -30,5 +30,9 @@ export class UserService {
             statusCode: "200",
             existsCode: false,
         };
+    }
+
+    async getUserIdxByUserId(userId: string) {
+        return await this.userRepository.findUserIdxByUserId(userId);
     }
 }

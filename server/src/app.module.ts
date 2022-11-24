@@ -10,6 +10,7 @@ import { User } from "./entities/user.entity";
 import { Course } from "./entities/course.entity";
 import { Recruit } from "./entities/recruit.entity";
 import { UserRecruit } from "./entities/user_recruit.entity";
+import { HDong } from "./entities/h_dong.entity";
 import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
 import type { ClientOpts } from "redis";
@@ -30,7 +31,7 @@ import { CourseModule } from "./course/course.module";
             database: process.env.DB_NAME,
             synchronize: true,
             logging: true,
-            entities: [User, Course, Recruit, UserRecruit],
+            entities: [User, Course, Recruit, UserRecruit, HDong],
         }),
         CacheModule.register<ClientOpts>({
             isGlobal: true,

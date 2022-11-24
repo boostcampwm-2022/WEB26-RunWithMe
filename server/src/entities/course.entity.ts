@@ -14,11 +14,14 @@ export class Course {
     @Column({ type: "varchar", length: 512 })
     img: string;
 
-    @Column({ type: "varchar", length: 512 })
+    @Column({ type: "text" })
     path: string;
 
     @Column()
     pathLength: number;
+
+    @Column({ type: "varchar", length: 10 })
+    name: string;
 
     @CreateDateColumn()
     createdAt: Date;

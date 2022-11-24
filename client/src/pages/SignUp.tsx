@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import Button from "#components/Button/Button";
-import axios from "axios";
 import useInput from "#hooks/useInput";
 import { confirmPasswordValidator, idValidator, passwordValidator, hCodeValidator } from "#utils/valitationUtils";
 import { InputWrapper, LogoWrapper, OptionsWrapper } from "./SignUp.styles";
 import { PLACEHOLDER } from "#constants/placeholder";
 import usePaceInput from "#hooks/usePaceInput";
 import PaceInput from "#components/Input/PaceInput/PaceInput";
+import useHttpPost from "#hooks/http/useHttpPost";
 
 const SignUp = () => {
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
@@ -17,23 +17,21 @@ const SignUp = () => {
     const [confirmPassword, onChangeConfirmPassword, confirmPasswordError] = useInput(
         confirmPasswordValidator(String(password)),
     );
+    const { post } = useHttpPost();
     const [hCode, onChangeHCode, hCodeError] = useInput(hCodeValidator);
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
     const navigate = useNavigate();
 
     const checkFormValidation = () => confirmPassword && password && userId && hCode;
 
-    const onSubmitSignUp = () => {
+    const onSubmitSignUp = async () => {
         if (!checkFormValidation()) return;
-        axios
-            .post("http://localhost:4000/user", {
-                userId,
-                password,
-                pace: pace.minute * 60 + pace.second,
-                hCode,
-            })
-            .then((res) => res.status === 201 && navigate("/", { replace: true }))
-            .catch(console.log);
+        try {
+            await post("/user", { userId, password, hCode, pace: pace.minute * 60 + pace.second });
+            navigate("/", { replace: true });
+        } catch (error: any) {
+            alert(error.message);
+        }
     };
 
     return (

@@ -14,24 +14,25 @@ export class AuthService {
     ) {}
 
     async validateUser(loginUserDto: LoginUserDto) {
-        const userEntity = await this.userRepository.findByUserId(loginUserDto.getUserId());
+        const userEntity = await this.userRepository.findOneByUserId(loginUserDto.getUserId());
         if (!userEntity || !bcrypt.compareSync(loginUserDto.getPassword(), userEntity.password)) {
             throw new UnauthorizedException();
         }
-        const accessToken = this.getAccessToken(userEntity.userId);
-        const refreshToken = this.getRefreshToken(userEntity.userId);
+        const accessToken = await this.getAccessToken(userEntity.userId);
+        const refreshToken = await this.getRefreshToken(userEntity.userId);
         return {
             accessToken,
             refreshToken,
+            userIdx: userEntity.id,
         };
     }
 
     async logoutUser(userId: string) {
         this.authRepository.deleteToken(userId);
     }
-    getAccessToken(userId: string) {
+    async getAccessToken(userId: string) {
         const token = this.jwtService.sign(
-            { userId },
+            { userId, userIdx: await this.userRepository.findUserIdxByUserId(userId) },
             {
                 secret: process.env.ACCESS_SECRET,
                 expiresIn: "15m",
@@ -40,9 +41,9 @@ export class AuthService {
         return token;
     }
 
-    getRefreshToken(userId: string) {
+    async getRefreshToken(userId: string) {
         const token = this.jwtService.sign(
-            { userId },
+            { userId, userIdx: await this.userRepository.findUserIdxByUserId(userId) },
             {
                 secret: process.env.REFRESH_SECRET,
                 expiresIn: "30d",
@@ -55,12 +56,14 @@ export class AuthService {
     verifyRefreshToken(jwtString: string) {
         const payload = this.jwtService.verify(jwtString, { secret: process.env.REFRESH_SECRET });
         const { userId } = payload;
-        return { userId };
+        const { userIdx } = payload;
+        return { userId, userIdx };
     }
 
     verifyAccessToken(jwtString: string) {
         const payload = this.jwtService.verify(jwtString, { secret: process.env.ACCESS_SECRET });
         const { userId } = payload;
-        return { userId };
+        const { userIdx } = payload;
+        return { userId, userIdx };
     }
 }

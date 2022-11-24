@@ -2,42 +2,30 @@ import Header from "#components/Header/Header";
 import Button from "#components/Button/Button";
 import useMap from "#hooks/useMap";
 import { Content, Title } from "./RecruitDetail.styles";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { userState } from "#atoms/userState";
 import { useRecoilValue } from "recoil";
+import useHttpPost from "#hooks/http/useHttpPost";
 
 const RecruitDetail = () => {
     const { id } = useParams();
     const userInfo = useRecoilValue(userState);
+    const { post } = useHttpPost();
     const { renderMap } = useMap({
         height: `${window.innerHeight - 400}px`,
         center: { lat: 33.450701, lng: 126.570667 },
     });
-    console.log(userInfo);
-    const onSubmitJoin = () => {
-        axios
-            .post(
-                "http://localhost:4000/recruit/join",
-                {
-                    recruitId: id,
-                    userId: userInfo.userIdx,
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${userInfo.accessToken}`,
-                    },
-                },
-            )
-            .then((res) => {
-                if (res.data.statusCode == 201) {
-                    alert("참여 완료");
-                } else {
-                    alert(res.data.message);
-                }
-            })
-            .catch(console.log);
+
+    const onSubmitJoin = async () => {
+        try {
+            await post("/recruit/join", {
+                recruit: id,
+                userId: userInfo.userIdx,
+            });
+            alert("참여 완료");
+        } catch (error: any) {
+            alert(error.message);
+        }
     };
     return (
         <>

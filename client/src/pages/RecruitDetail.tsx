@@ -14,6 +14,7 @@ const RecruitDetail = () => {
         height: `${window.innerHeight - 400}px`,
         center: { lat: 33.450701, lng: 126.570667 },
     });
+    console.log(userInfo);
     const onSubmitJoin = () => {
         axios
             .post(

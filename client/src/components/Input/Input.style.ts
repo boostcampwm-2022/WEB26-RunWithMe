@@ -25,6 +25,10 @@ export const InputWrapper = styled.div<{ width: string }>`
         [type="number"] {
             -moz-appearance: textfield;
         }
+
+        :disabled {
+            background: none;
+        }
     }
     p {
         color: ${COLOR.BABY_BLUE};

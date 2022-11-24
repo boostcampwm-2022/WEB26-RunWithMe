@@ -1,15 +1,19 @@
-import React from "react";
+import React, { ChangeEvent, MouseEventHandler, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import Button from "#components/Button/Button";
 import useInput from "#hooks/useInput";
-import { confirmPasswordValidator, idValidator, passwordValidator, hCodeValidator } from "#utils/valitationUtils";
+import { confirmPasswordValidator, idValidator, passwordValidator } from "#utils/valitationUtils";
 import { InputWrapper, LogoWrapper, OptionsWrapper } from "./SignUp.styles";
 import { PLACEHOLDER } from "#constants/placeholder";
 import usePaceInput from "#hooks/usePaceInput";
 import PaceInput from "#components/Input/PaceInput/PaceInput";
 import useHttpPost from "#hooks/http/useHttpPost";
+import useLocalAPI from "#hooks/useLocalAPI";
+import { LocalData, LocalSearchResponse } from "#types/Local";
+import ResetButton from "#components/ResetButton/ResetButton";
+import AddressList from "#components/AddressList/AddressList";
 
 const SignUp = () => {
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
@@ -17,22 +21,51 @@ const SignUp = () => {
     const [confirmPassword, onChangeConfirmPassword, confirmPasswordError] = useInput(
         confirmPasswordValidator(String(password)),
     );
+    const query = useLocalAPI<LocalSearchResponse>("/search/address.json");
+    const [searchResult, setSearchResult] = useState<LocalData[]>([]);
+    const [hDong, setHDong] = useState({ name: "", code: "" });
     const { post } = useHttpPost();
-    const [hCode, onChangeHCode, hCodeError] = useInput(hCodeValidator);
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
     const navigate = useNavigate();
 
-    const checkFormValidation = () => confirmPassword && password && userId && hCode;
+    const checkFormValidation = () => confirmPassword && password && userId && hDong.code;
 
     const onSubmitSignUp = async () => {
         if (!checkFormValidation()) return;
         try {
-            await post("/user", { userId, password, hCode, pace: pace.minute * 60 + pace.second });
+            await post("/user", { userId, password, hCode: hDong.code, pace: pace.minute * 60 + pace.second });
             navigate("/", { replace: true });
         } catch (error: any) {
             alert(error.message);
         }
     };
+
+    const onClickLocalData = useCallback(
+        (local: LocalData): MouseEventHandler<HTMLDivElement> =>
+            () => {
+                setHDong({ name: local.address_name, code: local.address.h_code });
+                setSearchResult([]);
+            },
+        [],
+    );
+
+    const onChangeHName = (e: ChangeEvent<HTMLInputElement>) => setHDong((prev) => ({ ...prev, name: e.target.value }));
+
+    const onClickResetButton = useCallback(() => {
+        setHDong({ name: "", code: "" });
+    }, []);
+
+    useEffect(() => {
+        if (hDong.code) return;
+        (async () => {
+            const result = await query({ analyze_type: "exact", size: 20, query: hDong.name });
+            setSearchResult(result.documents.filter(isEupMyeonDong));
+        })();
+    }, [hDong]);
+
+    const isEupMyeonDong = useCallback((local: LocalData) => {
+        return local.address_type === "REGION" && local.address.region_3depth_h_name;
+    }, []);
 
     return (
         <>
@@ -50,8 +83,16 @@ const SignUp = () => {
                 ></Input>
                 <span>{confirmPasswordError}</span>
                 <PaceInput onChangeMinute={onChangeMinute} onChangeSecond={onChangeSecond}></PaceInput>
-                <Input placeholder={PLACEHOLDER.ZIP_CODE} type="number" onChange={onChangeHCode}></Input>
-                <span>{hCodeError}</span>
+                <div style={{ width: "100%", position: "relative" }}>
+                    <Input
+                        placeholder={PLACEHOLDER.ZIP_CODE}
+                        value={hDong.name}
+                        onChange={onChangeHName}
+                        disabled={hDong.code.length > 0}
+                        subText={hDong.code.length > 0 && <ResetButton width="1.2rem" onClick={onClickResetButton} />}
+                    />
+                    {searchResult.length > 0 && <AddressList data={searchResult} onClickLocal={onClickLocalData} />}
+                </div>
                 <Button width="fill" onClick={onSubmitSignUp}>
                     회원가입
                 </Button>

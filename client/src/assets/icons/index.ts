@@ -12,6 +12,7 @@ import UNDO_ICON from "./undo_icon.svg";
 import RULER_ICON from "./ruler_icon.svg";
 import LOCATION_ICON from "./location_icon.svg";
 import RUNNING_ICON from "./running_icon.svg";
+import DELETE_ICON from "./delete_icon.svg";
 import USER_ICON from "./user_icon.svg";
 import CLOCK_ICON from "./clock_icon.svg";
 export {
@@ -29,6 +30,7 @@ export {
     LOCATION_ICON,
     RUNNING_ICON,
     SEARCH_ICON,
+    DELETE_ICON,
     USER_ICON,
     CLOCK_ICON,
 };

@@ -1,5 +1,4 @@
 import { hDong } from "./hDong";
-import { LatLng } from "./LatLng";
 
 export interface Course {
     id: number;

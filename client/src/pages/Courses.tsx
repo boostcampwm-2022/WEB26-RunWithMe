@@ -7,7 +7,6 @@ import useFilter from "#hooks/useFilter";
 import OnOffFilter from "#components/OnOffFilter/OnOffFilter";
 import useOnOffFilter from "#hooks/useOnOffFilter";
 import { PLACEHOLDER } from "#constants/placeholder";
-import styled from "styled-components";
 import { CLOCK_ICON, LOCATION_ICON } from "#assets/icons";
 
 const DummyCardData = {
@@ -26,13 +25,6 @@ const DummyCardData = {
     img: "https://kr.object.ncloudstorage.com/j199/img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202022-11-20%20%EC%98%A4%ED%9B%84%204.01.56.png",
     hCode: "신림동",
 };
-
-const CourseList = styled.div`
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-`;
 
 const Courses = () => {
     const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter("5km 이내");

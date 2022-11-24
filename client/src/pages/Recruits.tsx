@@ -48,7 +48,6 @@ const Recruits = () => {
         const time = Number(currentTimeFilter[0]);
         let minLen = maxLen - 2;
         if (maxLen === 1) minLen = 0;
-        console.log(searchContent, maxLen * 1000, minLen * 1000, titleFilter.toString());
         const param: any = {};
         if (titleFilter) param.title = "true";
         if (authorFilter) param.author = "true";

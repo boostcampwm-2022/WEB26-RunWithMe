@@ -20,11 +20,11 @@ export class Course {
     @Column()
     pathLength: number;
 
-    @Column({ type: "varchar", length: 10 })
-    hCode: string;
-
     @CreateDateColumn()
     createdAt: Date;
+
+    @Column({ type: "varchar", length: 10 })
+    hCode: string;
 
     @OneToMany(() => Recruit, (recruit) => recruit.course)
     recruits: Recruit[];
@@ -41,8 +41,8 @@ export class Course {
         course.title = title;
         course.img = img;
         course.path = JSON.stringify(path);
-        course.pathLength = pathLength;
         course.hCode = hCode;
+        course.pathLength = pathLength;
         course.userId = userId;
         return course;
     }

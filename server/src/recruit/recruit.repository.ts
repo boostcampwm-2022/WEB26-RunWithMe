@@ -12,11 +12,14 @@ export class RecruitRepository extends Repository<Recruit> {
         return this.createQueryBuilder("recruit")
             .innerJoinAndSelect("recruit.course", "course")
             .leftJoinAndSelect("recruit.userRecruits", "user_recruit")
+            .innerJoinAndSelect("recruit.user", "user")
             .select([
                 "recruit.id AS id",
                 "recruit.title AS title",
                 "recruit.startTime AS startTime",
                 "recruit.maxPpl AS maxPpl",
+                "recruit.createdAt AS createdAt",
+                "user.userId AS userId",
                 "COUNT(user_recruit.id) AS currentPpl",
                 "course.id",
                 "course.title",

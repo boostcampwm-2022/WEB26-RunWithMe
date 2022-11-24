@@ -1,19 +1,23 @@
 import styled from "styled-components";
-import { useState } from "react";
+
 import { flexRowCenter } from "styles/flex";
 import { fontMedium } from "styles/font";
 import { COLOR } from "styles/color";
-import Filter from "#components/Filter/Filter";
 
-const FilterWrapper = styled.div`
+const FilterWrapper = styled.div<{ filterState: boolean }>`
     ${flexRowCenter}
-    padding: 4px;
+    padding: 4px 8px;
     border-radius: 20px;
+    border: 1px solid #e6e0de;
     cursor: pointer;
     p {
         white-space: nowrap;
         ${fontMedium(COLOR.BLACK, 500)}
     }
+    &:hover {
+        background: rgba(0, 0, 0, 0.05);
+    }
+    background-color: ${(props) => (props.filterState ? "rgba(0, 0, 0, 0)" : "rgba(0, 0, 0, 0.05)")};
 `;
 
 interface FilterProps {
@@ -23,7 +27,11 @@ interface FilterProps {
 }
 
 const OnOffFilter = ({ filterState, filterName, toggleFilterState }: FilterProps) => {
-    return <FilterWrapper></FilterWrapper>;
+    return (
+        <FilterWrapper onClick={toggleFilterState} filterState={filterState}>
+            <p>{filterName}</p>
+        </FilterWrapper>
+    );
 };
 
 export default OnOffFilter;

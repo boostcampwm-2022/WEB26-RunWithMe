@@ -36,17 +36,12 @@ const CourseList = styled.div`
 `;
 
 const Courses = () => {
-    const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter({
-        currentFilter: "5km 이내",
-        options: ["5km 이내", "3km 이내", "1km 이내"],
-    });
-
-    const [currentTimeFilter, setCurrentTimeFilter] = useFilter({
-        currentFilter: "5시간 이내",
-        options: ["5시간 이내", "3시간 이내", "1시간 이내"],
-    });
+    const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter("5km 이내");
+    const [currentTimeFilter, setCurrentTimeFilter] = useFilter("5시간 이내");
 
     const [titleFilter, toggleTitleFilter] = useOnOffFilter(true);
+    const [authorFilter, toggleAuthorFilter] = useOnOffFilter(true);
+    const [contentFilter, toggleContentFilter] = useOnOffFilter(true);
 
     const [cardList, setCardList] = useState<any[]>([]);
 
@@ -71,12 +66,34 @@ const Courses = () => {
                     filterName="제목"
                     toggleFilterState={toggleTitleFilter}
                 ></OnOffFilter>
+                <OnOffFilter
+                    filterState={authorFilter}
+                    filterName="작성자"
+                    toggleFilterState={toggleAuthorFilter}
+                ></OnOffFilter>
+                <OnOffFilter
+                    filterState={contentFilter}
+                    filterName="내용"
+                    toggleFilterState={toggleContentFilter}
+                ></OnOffFilter>
                 <Filter
                     filterState={currentDistanceFilter}
                     filterOptions={["5km 이내", "3km 이내", "1km 이내"]}
+                    filterDescription="달리려는 총 거리를 선택해주세요"
                     setCurrentFilterState={setCurrentDistanceFilter}
                 ></Filter>
-                {/* <Filter filterState={currentTimeFilter} setCurrentFilterState={setCurrentTimeFilter}></Filter> */}
+                <Filter
+                    filterState={currentTimeFilter}
+                    filterOptions={["5시간 이내", "3시간 이내", "1시간 이내"]}
+                    filterDescription="달리기를 시작할 시간을 선택해주세요"
+                    setCurrentFilterState={setCurrentTimeFilter}
+                ></Filter>{" "}
+                <Filter
+                    filterState={currentTimeFilter}
+                    filterOptions={["5시간 이내", "3시간 이내", "1시간 이내"]}
+                    filterDescription="달리기를 시작할 시간을 선택해주세요"
+                    setCurrentFilterState={setCurrentTimeFilter}
+                ></Filter>
             </FilterBar>
             <InfiniteScroll
                 dataLength={cardList.length}

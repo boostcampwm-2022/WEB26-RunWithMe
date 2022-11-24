@@ -14,6 +14,7 @@ const FilterWrapper = styled.div`
     padding: 4px;
     border-radius: 20px;
     cursor: pointer;
+    border: 1px solid #e6e0de;
     p {
         white-space: nowrap;
         ${fontMedium(COLOR.BLACK, 500)}
@@ -29,17 +30,14 @@ const FilterWrapper = styled.div`
     }
 `;
 
-type _filterState = {
-    currentFilter: string;
-    options: string[];
-};
 interface FilterProps {
-    filterState: _filterState;
+    filterState: string;
     filterOptions: string[];
+    filterDescription: string;
     setCurrentFilterState: any;
 }
 
-const Filter = ({ filterState, setCurrentFilterState }: FilterProps) => {
+const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilterState }: FilterProps) => {
     const [showModal, setShowModal] = useState(false);
 
     const handleToggleModal = () => {
@@ -64,12 +62,13 @@ const Filter = ({ filterState, setCurrentFilterState }: FilterProps) => {
         <FilterWrapper onClick={handleToggleModal}>
             <Modal toggled={showModal} toggleVisible={handleToggleModal}>
                 <ModalFilterWrapper>
-                    {createModalContents(filterState.options)}
+                    <header>{filterDescription}</header>
+                    {createModalContents(filterOptions)}
                     <button onClick={handleToggleModal}>닫기</button>
                 </ModalFilterWrapper>
             </Modal>
             <img src={LOCATION_ICON} />
-            <p>{filterState.currentFilter}</p>
+            <p>{filterState}</p>
             <img src={ARROW_DOWN_ICON} />
         </FilterWrapper>
     );

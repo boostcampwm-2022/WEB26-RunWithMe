@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { RecruitRepository } from "./recruit.repository";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
+import { GetRecruitDto } from "./dto/get-recruit.dto";
 import { Recruit } from "src/entities/recruit.entity";
 import { UserRecruitRepository } from "src/user_recruit.repository";
 import { HDongRepository } from "src/common/repository/h_dong.repository";
-
+import { plainToGetRecruitDto } from "src/common/utils/plainToGetRecruitDto";
 @Injectable()
 export class RecruitService {
     constructor(
@@ -21,50 +22,41 @@ export class RecruitService {
         return this.recruitRepository.createOne(recruitEntity);
     }
 
+    async getRecruitList(queryParams: GetRecruitDto) {
+        if (queryParams.getQuery() === "") {
+            return [];
+        }
+
+        if (!queryParams.getTitle() && !queryParams.getAuthor()) {
+            return [];
+        }
+
+        const recruitList = await this.recruitRepository.findAll(
+            queryParams.getPage(),
+            queryParams.getPageSize(),
+            queryParams.getQuery(),
+            queryParams.getTitle(),
+            queryParams.getAuthor(),
+            queryParams.getTime(),
+            queryParams.getMinLength(),
+            queryParams.getMaxLength(),
+        );
+
+        return recruitList
+            .filter(({ currentPpl, maxPpl }) => {
+                if (queryParams.getAvail()) {
+                    if (parseInt(currentPpl) < maxPpl) {
+                        return true;
+                    }
+                    return false;
+                }
+                return true;
+            })
+            .map(plainToGetRecruitDto);
+    }
+
     async getRecruitDetail(recruitId: number) {
         return await this.recruitRepository.findRecruitDetail(recruitId);
-    }
-    async getRecruitList(page: number, pageSize: number) {
-        const recruitList = await this.recruitRepository.findAll(page, pageSize);
-        return recruitList.map(
-            ({
-                id,
-                title,
-                startTime,
-                maxPpl,
-                currentPpl,
-                createdAt,
-                userId,
-                course_id,
-                course_title,
-                course_img,
-                course_path,
-                course_pathLength,
-                course_name,
-                course_createdAt,
-            }) => {
-                return {
-                    id,
-                    title,
-                    startTime,
-                    maxPpl,
-                    currentPpl: parseInt(currentPpl),
-                    userId,
-                    createdAt,
-                    course: {
-                        id: course_id,
-                        title: course_title,
-                        img: course_img,
-                        path: JSON.parse(course_path),
-                        pathLength: course_pathLength,
-                        hDong: {
-                            course_name,
-                        },
-                        createdAt: course_createdAt,
-                    },
-                };
-            },
-        );
     }
 
     async isExistRecruit(recruitId: number): Promise<number | null> {

@@ -18,8 +18,7 @@ export class AuthController {
         const { userIdx } = this.authService.verifyRefreshToken(jwtString);
         const accessToken = await this.authService.getAccessToken(userId);
         const refreshToken = await this.authService.getRefreshToken(userId);
-        console.log(userId);
-        console.log(userIdx);
+
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             maxAge: 60 * 60 * 24 * 30,

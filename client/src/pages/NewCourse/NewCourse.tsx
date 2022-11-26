@@ -12,7 +12,7 @@ import { useCallback } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "#atoms/userState";
 import { useNavigate } from "react-router-dom";
-import { courseTitleValidator } from "#utils/valitationUtils";
+import { courseTitleValidator } from "#utils/validationUtils";
 import { RegionResponse } from "#types/Region";
 import { CourseForm } from "./NewCourse.styles";
 //#endregion

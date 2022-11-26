@@ -4,7 +4,7 @@ import Header from "#components/Header/Header";
 import Input from "#components/Input/Input";
 import Button from "#components/Button/Button";
 import useInput from "#hooks/useInput";
-import { confirmPasswordValidator, idValidator, passwordValidator } from "#utils/valitationUtils";
+import { confirmPasswordValidator, idValidator, passwordValidator } from "#utils/validationUtils";
 import { InputWrapper, LogoWrapper, OptionsWrapper } from "./SignUp.styles";
 import { PLACEHOLDER } from "#constants/placeholder";
 import usePaceInput from "#hooks/usePaceInput";

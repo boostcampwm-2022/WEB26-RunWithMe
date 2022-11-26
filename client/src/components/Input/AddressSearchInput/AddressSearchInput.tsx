@@ -4,6 +4,7 @@ import { PLACEHOLDER } from "#constants/placeholder";
 import useLocalAPI from "#hooks/useLocalAPI";
 import { Address, AddressSearchResponse } from "#types/Address";
 import { LOCAL_API_PATH } from "#types/LocalAPIType";
+import { isEupMyeonDong } from "#utils/addressUtils";
 import { debounce } from "#utils/timerUtils";
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useRef, useState } from "react";
 import Input from "../Input";
@@ -41,7 +42,8 @@ const AddressSearchInput = ({ setRegion }: AddressSearchInputProps) => {
     const getAddressList = useCallback(async (query: string) => {
         if (!query) return;
         const result = await search({ query });
-        setRegionList(result.documents);
+        console.log(result);
+        setRegionList(result.documents.filter(isEupMyeonDong));
     }, []);
 
     return (

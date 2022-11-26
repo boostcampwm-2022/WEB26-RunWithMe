@@ -10,7 +10,7 @@ import { PLACEHOLDER } from "#constants/placeholder";
 import usePaceInput from "#hooks/usePaceInput";
 import PaceInput from "#components/Input/PaceInput/PaceInput";
 import useHttpPost from "#hooks/http/useHttpPost";
-import { Address } from "#types/Local";
+import { Address } from "#types/Address";
 import AddressSearchInput from "#components/Input/AddressSearchInput/AddressSearchInput";
 
 const SignUp = () => {

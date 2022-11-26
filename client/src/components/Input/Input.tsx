@@ -2,27 +2,25 @@ import { ChangeEventHandler, ReactNode } from "react";
 import { InputWrapper } from "./Input.style";
 
 interface InputProps {
-    placeholder?: string;
     type?: "text" | "password" | "number";
     width?: string;
-    subText?: ReactNode;
+    child?: ReactNode;
+    placeholder?: string;
     onChange?: ChangeEventHandler<HTMLInputElement>;
-    disabled?: boolean;
-    value?: string;
+    attr?: object;
 }
 
-const Input = ({ width, type = "text", placeholder, subText, onChange, disabled = false, value }: InputProps) => {
+const Input = ({ width, type = "text", placeholder, child, onChange, attr }: InputProps) => {
     return (
         <InputWrapper width={width ?? "100%"}>
             <input
                 onChange={onChange}
                 placeholder={placeholder}
                 type={type}
-                style={{ width: subText ? "80%" : "100%" }}
-                disabled={disabled}
-                value={value}
+                style={{ width: child ? "80%" : "100%" }}
+                {...attr}
             />
-            {subText && <p>{subText}</p>}
+            {child && <p>{child}</p>}
         </InputWrapper>
     );
 };

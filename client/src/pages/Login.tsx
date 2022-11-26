@@ -6,15 +6,15 @@ import Button from "#components/Button/Button";
 import useInput from "#hooks/useInput";
 import { PLACEHOLDER } from "#constants/placeholder";
 import { idValidator, passwordValidator } from "#utils/valitationUtils";
-
 import { useSetRecoilState } from "recoil";
 import { InputWrapper, OptionsWrapper } from "./SignUp.styles";
 import { userState } from "#atoms/userState";
-
 import { LogoWrapper } from "./Login.styles";
 import useHttpPost from "#hooks/http/useHttpPost";
+import useAuth from "#hooks/useAuth";
 
 const Login = () => {
+    useAuth(false);
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
     const [password, onChangePassword, passwordError] = useInput(passwordValidator);
     const { post } = useHttpPost();

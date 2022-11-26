@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
 /**
- * @param {boolean} withAuth - true: 로그인 필요 / false: 로그아웃 필요
+ * @param {boolean} withAuth - true: 로그인된 유저만 접근 가능 / false: 로그인된 유저는 접근 불가능
  */
 const useAuth = (withAuth = true) => {
     const user = useRecoilValue(userState);

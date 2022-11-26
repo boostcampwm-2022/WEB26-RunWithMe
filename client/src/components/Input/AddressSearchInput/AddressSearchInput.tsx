@@ -42,7 +42,6 @@ const AddressSearchInput = ({ setRegion }: AddressSearchInputProps) => {
     const getAddressList = useCallback(async (query: string) => {
         if (!query) return;
         const result = await search({ query });
-        console.log(result);
         setRegionList(result.documents.filter(isEupMyeonDong));
     }, []);
 

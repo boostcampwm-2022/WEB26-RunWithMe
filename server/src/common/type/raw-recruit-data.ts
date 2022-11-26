@@ -6,6 +6,7 @@ export interface RawRecruitData {
     course_pathLength: number;
     course_name: string;
     course_createdAt: Date;
+    course_userId: string;
     id: number;
     title: string;
     startTime: Date;

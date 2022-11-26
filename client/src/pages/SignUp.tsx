@@ -69,7 +69,7 @@ const SignUp = () => {
 
     return (
         <>
-            <Header loggedIn={false} text="회원가입"></Header>
+            <Header text="회원가입"></Header>
             <LogoWrapper>RunWithMe</LogoWrapper>
             <InputWrapper>
                 <Input placeholder={PLACEHOLDER.ID} type="text" onChange={onChangeUserId}></Input>

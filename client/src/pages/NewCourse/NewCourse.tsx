@@ -54,7 +54,7 @@ const NewCourse = () => {
 
     return (
         <div style={{ height: "100vh", maxHeight: "100vh" }}>
-            <Header text="코스 등록" loggedIn={true} />
+            <Header text="코스 등록" />
             {renderMap()}
             <CourseForm>
                 <div>

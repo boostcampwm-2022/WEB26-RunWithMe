@@ -10,7 +10,7 @@ const CourseDetail = () => {
     });
     return (
         <>
-            <Header loggedIn={true} text="코스 상세"></Header>
+            <Header text="코스 상세"></Header>
             {renderMap()}
             <Title>황새울공원 한 바퀴 도는 코스입니다.</Title>
             <Content>

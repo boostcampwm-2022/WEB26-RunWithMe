@@ -1,21 +1,10 @@
-import {
-    Body,
-    Controller,
-    Get,
-    Post,
-    UseGuards,
-    Query,
-    Param,
-    Req,
-    HttpException,
-    BadRequestException,
-} from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, Param, Req } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { AccessGuard } from "src/common/guard/access.guard";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
 import { GetRecruitDto } from "./dto/get-recruit.dto";
 import { JoinRecruitDto } from "./dto/join-recruit.dto";
 import { RecruitService } from "./recruit.service";
+import { Request } from "express";
 
 @Controller("recruit")
 export class RecruitController {
@@ -45,7 +34,6 @@ export class RecruitController {
     // @UseGuards(AccessGuard)
     @Post("join")
     async register(@Body() joinRecruitDto: JoinRecruitDto) {
-        console.log(joinRecruitDto);
         const recruitId = joinRecruitDto.getRecruitId();
         const userId = joinRecruitDto.getUserId();
         if (!(await this.recruitService.isExistRecruit(recruitId))) {
@@ -85,11 +73,9 @@ export class RecruitController {
 
     @Get(":id")
     async getRecruitDetail(@Param("id") recruitId: number, @Req() request: Request) {
-        console.log("a");
         const jwtString = request.headers["authorization"].split("Bearer")[1].trim();
         const { userIdx } = this.jwtService.verify(jwtString, { secret: process.env.ACCESS_SECRET });
         const data = await this.recruitService.getRecruitDetail(recruitId);
-        // return 1;
         return {
             ...data,
             isAuthor: data.authorId === userIdx,

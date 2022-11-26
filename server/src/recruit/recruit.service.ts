@@ -37,7 +37,7 @@ export class RecruitService {
             queryParams.getQuery(),
             queryParams.getTitle(),
             queryParams.getAuthor(),
-            queryParams.getTime(),
+            queryParams.getHour(),
             queryParams.getMinLength(),
             queryParams.getMaxLength(),
         );

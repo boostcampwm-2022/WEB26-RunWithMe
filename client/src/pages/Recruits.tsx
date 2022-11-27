@@ -102,7 +102,7 @@ const Recruits = () => {
                 <SelectFilter
                     filterIcon={LOCATION_ICON}
                     filterState={currentDistanceFilter}
-                    filterOptions={["선택 없음", "5km 이내", "3km 이내", "1km 이내"]}
+                    filterOptions={["선택 없음", "5 - 3km", "3 - 1km", "1km 이내"]}
                     filterDescription="달리려는 총 거리를 선택해주세요"
                     setCurrentFilterState={setCurrentDistanceFilter}
                 ></SelectFilter>

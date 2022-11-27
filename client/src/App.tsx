@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import SignUp from "#pages/SignUp";
 import Login from "#pages/Login";
 import MainPage from "#pages/MainPage";
+import MainPage2 from "#pages/MainPage/MainPage";
 import Courses from "#pages/Courses";
 import { useRecoilState } from "recoil";
 import { userState } from "#atoms/userState";
@@ -46,6 +47,7 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<MainPage />} />
+            <Route path="main" element={<MainPage2 />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login />} />
             <Route path="courses" element={<Courses />} />

@@ -1,6 +1,6 @@
 import { CustomRepository } from "src/common/typeorm/typeorm.decorator";
 import { Repository } from "typeorm";
-import { Course } from "src/entities/course.entity";
+import { Course } from "src/common/entities/course.entity";
 import { CourseData } from "src/common/type/course-data";
 
 @CustomRepository(Course)

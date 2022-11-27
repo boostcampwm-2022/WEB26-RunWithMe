@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Course } from "src/entities/course.entity";
+import { Course } from "src/common/entities/course.entity";
 import { CourseRepository } from "./course.repository";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { GetCourseDto } from "./dto/get-course.dto";

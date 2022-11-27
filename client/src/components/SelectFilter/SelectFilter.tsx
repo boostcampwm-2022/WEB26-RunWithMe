@@ -56,7 +56,6 @@ const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilte
     };
 
     const createModalContents = (filterOptions: FilterOption[]) => {
-        console.log(filterOptions);
         return filterOptions.map((FilterOption, i) => (
             <div key={i} onClick={handleFilterContentClick} data-min={FilterOption.min} data-max={FilterOption.max}>
                 {FilterOption.text}

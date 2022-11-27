@@ -1,33 +1,52 @@
-name : build + eslint check
+name: build + eslint check
 
 on:
-  pull_request:
-    branches:
-      - develop
+    pull_request:
+        branches:
+            - develop
 
 jobs:
-  check:
-    name: check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install client dependencies
-        run : |
-          cd client
-          npm install
-      - name: Install server dependencies
-        run: |
-          cd server
-          npm install
-      - name: Check eslint
-        run: |
-          ./client/node_modules/.bin/eslint client/src --ext .ts,.tsx
-          ./server/node_modules/.bin/eslint server/src --ext .ts,.tsx
-      - name: Run client build check
-        run: |
-          cd client
-          npm run build
-      - name: Run server build check
-        run: |
-          cd server
-          npm run build
+    check:
+        name: check
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
+
+            - name: Cache client node_modules
+              id: cache-client
+              uses: actions/cache@v3
+              with:
+                  path: client/node_modules
+                  key: npm-packages-client-${{hashFiles('**/package-lock.json')}}
+
+            - name: Install client dependencies
+              if: steps.cache-client.outputs.cache-hit != 'true'
+              run: cd client && npm install
+
+            - name: Cache server node_modules
+              id: cache-server
+              uses: actions/cache@v3
+              with:
+                  path: server/node_modules
+                  key: npm-packages-server-${{hashFiles('**/package-lock.json')}}
+
+            - name: Install server dependencies
+              if: steps.cache-server.outputs.cache-hit != 'true'
+              run: cd server && npm install
+
+            - name: Check eslint
+              run: |
+                  ./client/node_modules/.bin/eslint client/src --ext .ts,.tsx
+                  ./server/node_modules/.bin/eslint server/src --ext .ts,.tsx
+            - name: Run client build check
+              run: |
+                  cd client
+                  npm run build
+            - name: Run server build check
+              run: |
+                  cd server
+                  npm run build

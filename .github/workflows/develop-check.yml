@@ -16,7 +16,18 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v2
 
+            - name: Path filter
+              uses: dorny/paths-filter@v2
+              id: filter
+              with:
+                  filters: |
+                      client:
+                        - 'client/**'
+                      server:
+                        - 'server/**'
+
             - name: Cache client node_modules
+              if: steps.filter.outputs.client == 'true'
               id: cache-client
               uses: actions/cache@v3
               with:
@@ -24,10 +35,12 @@ jobs:
                   key: npm-packages-client-${{hashFiles('**/package-lock.json')}}
 
             - name: Install client dependencies
+              if: steps.filter.outputs.client == 'true'
               if: steps.cache-client.outputs.cache-hit != 'true'
               run: cd client && npm install
 
             - name: Cache server node_modules
+              if: steps.filter.outputs.server == 'true'
               id: cache-server
               uses: actions/cache@v3
               with:
@@ -35,18 +48,28 @@ jobs:
                   key: npm-packages-server-${{hashFiles('**/package-lock.json')}}
 
             - name: Install server dependencies
+              if: steps.filter.outputs.server == 'true'
               if: steps.cache-server.outputs.cache-hit != 'true'
               run: cd server && npm install
 
-            - name: Check eslint
+            - name: Check eslint client
+              if: steps.filter.outputs.client == 'true'
               run: |
                   ./client/node_modules/.bin/eslint client/src --ext .ts,.tsx
+
+            - name: Check eslint server
+              if: steps.filter.outputs.server == 'true'
+              run: |
                   ./server/node_modules/.bin/eslint server/src --ext .ts,.tsx
+
             - name: Run client build check
+              if: steps.filter.outputs.client == 'true'
               run: |
                   cd client
                   npm run build
+                  
             - name: Run server build check
+              if: steps.filter.outputs.server == 'true'
               run: |
                   cd server
                   npm run build

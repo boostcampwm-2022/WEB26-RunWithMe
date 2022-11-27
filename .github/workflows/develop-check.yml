@@ -68,8 +68,8 @@ jobs:
               if: steps.filter.outputs.client == 'true'
               run: |
                   cd client
-                  npm run build
-
+                  npm run 
+                  
             - name: Run server build check
               if: steps.filter.outputs.server == 'true'
               run: |

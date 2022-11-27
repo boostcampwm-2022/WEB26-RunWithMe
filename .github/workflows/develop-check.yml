@@ -9,15 +9,11 @@ jobs:
     check:
         name: check
         runs-on: ubuntu-latest
+        outputs:
+            client: ${{steps.filter.outputs.client}}
+            server: ${{steps.filter.outputs.server}}
         steps:
-            - name: Checkout
-              uses: actions/checkout@v3
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v2
-
-            - name: Path filter
-              uses: dorny/paths-filter@v2
+            - uses: dorny/paths-filter@v2
               id: filter
               with:
                   filters: |
@@ -26,48 +22,58 @@ jobs:
                       server:
                         - 'server/**'
 
-            - name: Cache client node_modules
-              if: steps.filter.outputs.client == 'true'
-              id: cache-client
-              uses: actions/cache@v3
-              with:
-                  path: client/node_modules
-                  key: npm-packages-client-${{hashFiles('**/package-lock.json')}}
+client:
+    needs: check
+    if: ${{needs.check.outputs.client=='true'}}
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v3
 
-            - name: Install client dependencies
-              if: |
-                  steps.filter.outputs.client == 'true' &&
-                  steps.cache-client.outputs.cache-hit != 'true'
-              run: cd client && npm install
+        - name: Nodejs Setup
+          uses: actions/setup-node@v2
 
-            - name: Cache server node_modules
-              if: steps.filter.outputs.server == 'true'
-              id: cache-server
-              uses: actions/cache@v3
-              with:
-                  path: server/node_modules
-                  key: npm-packages-server-${{hashFiles('**/package-lock.json')}}
+        - name: Cache client node modules
+          id: cache-client
+          uses: actions/cache@v3
+          with:
+              path: client/node_modules
+              key: npm-packages-client-${{hashFiles('**/package-lock.json')}}
 
-            - name: Install server dependencies
-              if: |
-                  steps.filter.outputs.server == 'true' &&
-                  steps.cache-server.outputs.cache-hit != 'true'
-              run: cd server && npm install
+        - name: Install client dependencies
+          if: ${{steps.cache-client.outputs.cache-hit != 'true'}}
+          run: cd client && npm install
 
-            - name: Check eslint client
-              if: steps.filter.outputs.client == 'true'
-              run: |
-                  ./client/node_modules/.bin/eslint client/src --ext .ts,.tsx
+        - name: Client eslint check
+          run: ./client/node_modules/.bin/eslint client/src --ext .ts,.tsx
 
-            - name: Check eslint server
-              if: steps.filter.outputs.server == 'true'
-              run: |
-                  ./server/node_modules/.bin/eslint server/src --ext .ts,.tsx
+        - name: Run client build check
+          run: cd client && npm run build
 
-            - name: Run client build check
-              if: steps.filter.outputs.client == 'true'
-              run: cd client && npm run build
+server:
+    needs: check
+    if: ${{needs.check.outputs.server=='true'}}
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v3
 
-            - name: Run server build check
-              if: steps.filter.outputs.server == 'true'
-              run: cd server && npm run build
+        - name: Nodejs Setup
+          uses: actions/setup-node@v2
+
+        - name: Cache server node modules
+          id: cache-server
+          uses: actions/cache@v3
+          with:
+              path: server/node_modules
+              key: npm-packages-server-${{hashFiles('**/package-lock.json')}}
+
+        - name: Install server dependencies
+          if: ${{steps.cache-server.outputs.cache-hit != 'true'}}
+          run: cd server && npm install
+
+        - name: server eslint check
+          run: ./server/node_modules/.bin/eslint server/src --ext .ts,.tsx
+
+        - name: Run server build check
+          run: cd server && npm run build

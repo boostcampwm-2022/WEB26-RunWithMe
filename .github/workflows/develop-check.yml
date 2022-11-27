@@ -22,58 +22,58 @@ jobs:
                       server:
                         - 'server/**'
 
-client:
-    needs: check
-    if: ${{needs.check.outputs.client=='true'}}
-    runs-on: ubuntu-latest
-    steps:
-        - name: Checkout
-          uses: actions/checkout@v3
+    client:
+        needs: check
+        if: ${{needs.check.outputs.client=='true'}}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
 
-        - name: Nodejs Setup
-          uses: actions/setup-node@v2
+            - name: Nodejs Setup
+              uses: actions/setup-node@v2
 
-        - name: Cache client node modules
-          id: cache-client
-          uses: actions/cache@v3
-          with:
-              path: client/node_modules
-              key: npm-packages-client-${{hashFiles('**/package-lock.json')}}
+            - name: Cache client node modules
+              id: cache-client
+              uses: actions/cache@v3
+              with:
+                  path: client/node_modules
+                  key: npm-packages-client-${{hashFiles('**/package-lock.json')}}
 
-        - name: Install client dependencies
-          if: ${{steps.cache-client.outputs.cache-hit != 'true'}}
-          run: cd client && npm install
+            - name: Install client dependencies
+              if: ${{steps.cache-client.outputs.cache-hit != 'true'}}
+              run: cd client && npm install
 
-        - name: Client eslint check
-          run: ./client/node_modules/.bin/eslint client/src --ext .ts,.tsx
+            - name: Client eslint check
+              run: ./client/node_modules/.bin/eslint client/src --ext .ts,.tsx
 
-        - name: Run client build check
-          run: cd client && npm run build
+            - name: Run client build check
+              run: cd client && npm run build
 
-server:
-    needs: check
-    if: ${{needs.check.outputs.server=='true'}}
-    runs-on: ubuntu-latest
-    steps:
-        - name: Checkout
-          uses: actions/checkout@v3
+    server:
+        needs: check
+        if: ${{needs.check.outputs.server=='true'}}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
 
-        - name: Nodejs Setup
-          uses: actions/setup-node@v2
+            - name: Nodejs Setup
+              uses: actions/setup-node@v2
 
-        - name: Cache server node modules
-          id: cache-server
-          uses: actions/cache@v3
-          with:
-              path: server/node_modules
-              key: npm-packages-server-${{hashFiles('**/package-lock.json')}}
+            - name: Cache server node modules
+              id: cache-server
+              uses: actions/cache@v3
+              with:
+                  path: server/node_modules
+                  key: npm-packages-server-${{hashFiles('**/package-lock.json')}}
 
-        - name: Install server dependencies
-          if: ${{steps.cache-server.outputs.cache-hit != 'true'}}
-          run: cd server && npm install
+            - name: Install server dependencies
+              if: ${{steps.cache-server.outputs.cache-hit != 'true'}}
+              run: cd server && npm install
 
-        - name: server eslint check
-          run: ./server/node_modules/.bin/eslint server/src --ext .ts,.tsx
+            - name: server eslint check
+              run: ./server/node_modules/.bin/eslint server/src --ext .ts,.tsx
 
-        - name: Run server build check
-          run: cd server && npm run build
+            - name: Run server build check
+              run: cd server && npm run build

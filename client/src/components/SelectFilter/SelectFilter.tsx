@@ -47,17 +47,14 @@ const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilte
         setShowModal(!showModal);
     };
 
-    const handleFilterContentClick = (e: React.MouseEvent<HTMLElement>) => {
-        const target = e.target as HTMLElement;
-        const min = target.getAttribute("data-min");
-        const max = target.getAttribute("data-max");
-        setCurrentFilterState({ text: target.innerText, min, max });
+    const handleFilterContentClick = (filterOption: FilterOption) => () => {
+        setCurrentFilterState(filterOption);
         handleToggleModal();
     };
 
     const createModalContents = (filterOptions: FilterOption[]) => {
         return filterOptions.map((FilterOption, i) => (
-            <div key={i} onClick={handleFilterContentClick} data-min={FilterOption.min} data-max={FilterOption.max}>
+            <div key={i} onClick={handleFilterContentClick(FilterOption)}>
                 {FilterOption.text}
             </div>
         ));

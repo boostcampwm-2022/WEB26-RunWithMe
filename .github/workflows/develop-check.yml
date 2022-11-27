@@ -35,8 +35,9 @@ jobs:
                   key: npm-packages-client-${{hashFiles('**/package-lock.json')}}
 
             - name: Install client dependencies
-              if: steps.filter.outputs.client == 'true'
-              if: steps.cache-client.outputs.cache-hit != 'true'
+              if: |
+                steps.filter.outputs.client == 'true' &&
+                steps.cache-client.outputs.cache-hit != 'true'
               run: cd client && npm install
 
             - name: Cache server node_modules

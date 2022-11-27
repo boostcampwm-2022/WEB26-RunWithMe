@@ -13,6 +13,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import useGet from "#hooks/http/useHttpGet";
 import { LOCATION_ICON, CLOCK_ICON } from "#assets/icons";
 import RecruitCard from "#components/Card/RecruitCard/RecruitCard";
+import { Recruit } from "#types/Recruit";
 
 const RecruitList = styled.div`
     padding: 2rem;
@@ -22,14 +23,15 @@ const RecruitList = styled.div`
 `;
 
 const Recruits = () => {
-    const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter("선택 없음");
-    const [currentTimeFilter, setCurrentTimeFilter] = useFilter("선택 없음");
+    const { get } = useGet();
+    const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter({ text: "3-5KM", min: 3, max: 5 });
+    const [currentTimeFilter, setCurrentTimeFilter] = useFilter({ text: "3시간 이내", min: 0, max: 3 });
 
     const [titleFilter, toggleTitleFilter] = useOnOffFilter(false);
     const [authorFilter, toggleAuthorFilter] = useOnOffFilter(false);
     const [availFilter, toggleAvailFilter] = useOnOffFilter(false);
 
-    const [cardList, setCardList] = useState<any[]>([]);
+    const [cardList, setCardList] = useState<Recruit[]>([]);
     const [searchContent, setSearchContent] = useState("");
     const handleSearchContentChange = (e: React.FormEvent<HTMLInputElement>) => {
         setSearchContent(e.currentTarget.value);
@@ -41,31 +43,26 @@ const Recruits = () => {
         setPage(page + 1);
     };
 
-    const { get } = useGet();
-
-    const sendRequest = async () => {
-        const maxLen = Number(currentDistanceFilter[0]);
-        const time = Number(currentTimeFilter[0]);
-        let minLen = maxLen - 2;
-        if (maxLen === 1) minLen = 0;
+    const recruitQueryParams = () => {
         const param: any = {};
         if (titleFilter) param.title = "true";
         if (authorFilter) param.author = "true";
         if (availFilter) param.avail = "true";
-
         if (searchContent !== "") param.query = searchContent;
-        if (hasNumber(currentDistanceFilter) || hasNumber(currentTimeFilter)) {
-            param.maxLen = (maxLen * 1000).toString();
-            param.minLen = (minLen * 1000).toString();
-            time: time.toString();
-        }
-        const response = await get("/recruit", param);
+        param.maxLen = (currentDistanceFilter.max * 1000).toString();
+        param.minLen = (currentDistanceFilter.min * 1000).toString();
+        param.time = currentTimeFilter.max.toString();
 
+        return param;
+    };
+
+    const sendRecruitFetchRequest = async () => {
+        const response = await get("/recruit", recruitQueryParams());
         setCardList((prev) => [...prev, ...response.data]);
     };
 
     useEffect(() => {
-        sendRequest();
+        sendRecruitFetchRequest();
     }, []);
 
     return (
@@ -74,11 +71,9 @@ const Recruits = () => {
             <SearchBar
                 placeholder={PLACEHOLDER.SEARCH}
                 onClick={() => {
-                    console.log("///");
                     setPage(1);
                     setCardList([]);
-                    console.log(cardList);
-                    sendRequest();
+                    sendRecruitFetchRequest();
                 }}
                 content={searchContent}
                 onChange={handleSearchContentChange}
@@ -102,14 +97,22 @@ const Recruits = () => {
                 <SelectFilter
                     filterIcon={LOCATION_ICON}
                     filterState={currentDistanceFilter}
-                    filterOptions={["선택 없음", "5 - 3km", "3 - 1km", "1km 이내"]}
+                    filterOptions={[
+                        { text: "3-5KM", min: 3, max: 5 },
+                        { text: "1-3KM", min: 1, max: 3 },
+                        { text: "1KM 이내", min: 0, max: 1 },
+                    ]}
                     filterDescription="달리려는 총 거리를 선택해주세요"
                     setCurrentFilterState={setCurrentDistanceFilter}
                 ></SelectFilter>
                 <SelectFilter
                     filterIcon={CLOCK_ICON}
                     filterState={currentTimeFilter}
-                    filterOptions={["선택 없음", "5시간 이내", "3시간 이내", "1시간 이내"]}
+                    filterOptions={[
+                        { text: "5시간 이내", min: 0, max: 5 },
+                        { text: "3시간 이내", min: 0, max: 3 },
+                        { text: "1시간 이내", min: 0, max: 1 },
+                    ]}
                     filterDescription="달리기를 시작할 시간을 선택해주세요"
                     setCurrentFilterState={setCurrentTimeFilter}
                 ></SelectFilter>
@@ -118,7 +121,7 @@ const Recruits = () => {
                 dataLength={cardList.length}
                 next={() => {
                     incrementPage();
-                    sendRequest();
+                    sendRecruitFetchRequest();
                 }}
                 hasMore={true}
                 loader={<h4>Loading...</h4>}

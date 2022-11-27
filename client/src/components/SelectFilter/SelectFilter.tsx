@@ -6,6 +6,7 @@ import { fontMedium } from "styles/font";
 import { COLOR } from "styles/color";
 import Modal from "#components/Modal/Modal";
 import { ModalFilterWrapper } from "./SelectFilter.style";
+import { FilterOption } from "#types/FilterOption";
 
 //does not contain dropdown logic, only primitive filter skeleton
 
@@ -31,8 +32,9 @@ const FilterWrapper = styled.div`
 `;
 
 interface FilterProps {
-    filterState: string;
-    filterOptions: string[];
+    filterState: FilterOption;
+    filterOptions: FilterOption[];
+
     filterDescription: string;
     setCurrentFilterState: any;
     filterIcon: any;
@@ -47,14 +49,17 @@ const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilte
 
     const handleFilterContentClick = (e: React.MouseEvent<HTMLElement>) => {
         const target = e.target as HTMLElement;
-        setCurrentFilterState(target.innerText);
+        const min = target.getAttribute("data-min");
+        const max = target.getAttribute("data-max");
+        setCurrentFilterState({ text: target.innerText, min, max });
         handleToggleModal();
     };
 
-    const createModalContents = (filterOptions: string[]) => {
-        return filterOptions.map((filterName: string, i: number) => (
-            <div key={i} onClick={handleFilterContentClick}>
-                {filterName}
+    const createModalContents = (filterOptions: FilterOption[]) => {
+        console.log(filterOptions);
+        return filterOptions.map((FilterOption, i) => (
+            <div key={i} onClick={handleFilterContentClick} data-min={FilterOption.min} data-max={FilterOption.max}>
+                {FilterOption.text}
             </div>
         ));
     };
@@ -69,7 +74,7 @@ const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilte
                 </ModalFilterWrapper>
             </Modal>
             <img src={filterIcon} />
-            <p>{filterState}</p>
+            <p>{filterState.text}</p>
             <img src={ARROW_DOWN_ICON} />
         </FilterWrapper>
     );

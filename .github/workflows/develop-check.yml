@@ -3,7 +3,7 @@ name: build + eslint check
 on:
     pull_request:
         branches:
-            - ci-test
+            - develop
 
 jobs:
     check:

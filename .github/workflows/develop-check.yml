@@ -36,8 +36,8 @@ jobs:
 
             - name: Install client dependencies
               if: |
-                steps.filter.outputs.client == 'true' &&
-                steps.cache-client.outputs.cache-hit != 'true'
+                  steps.filter.outputs.client == 'true' &&
+                  steps.cache-client.outputs.cache-hit != 'true'
               run: cd client && npm install
 
             - name: Cache server node_modules
@@ -49,8 +49,9 @@ jobs:
                   key: npm-packages-server-${{hashFiles('**/package-lock.json')}}
 
             - name: Install server dependencies
-              if: steps.filter.outputs.server == 'true'
-              if: steps.cache-server.outputs.cache-hit != 'true'
+              if: |
+                  steps.filter.outputs.server == 'true' &&
+                  steps.cache-server.outputs.cache-hit != 'true'
               run: cd server && npm install
 
             - name: Check eslint client
@@ -65,12 +66,8 @@ jobs:
 
             - name: Run client build check
               if: steps.filter.outputs.client == 'true'
-              run: |
-                  cd client
-                  npm run build
-                  
+              run: cd client && npm run build
+
             - name: Run server build check
               if: steps.filter.outputs.server == 'true'
-              run: |
-                  cd server
-                  npm run build
+              run: cd server && npm run build

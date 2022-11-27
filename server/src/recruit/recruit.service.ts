@@ -30,7 +30,8 @@ export class RecruitService {
         if (!queryParams.getTitle() && !queryParams.getAuthor()) {
             return [];
         }
-
+        console.log("hhihhihi");
+        console.log("bybyby");
         const recruitList = await this.recruitRepository.findAll(
             queryParams.getPage(),
             queryParams.getPageSize(),

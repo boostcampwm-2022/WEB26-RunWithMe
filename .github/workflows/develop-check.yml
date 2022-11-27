@@ -66,12 +66,8 @@ jobs:
 
             - name: Run client build check
               if: steps.filter.outputs.client == 'true'
-              run: |
-                  cd client
-                  npm run 
-                  
+              run: cd client && npm run build
+
             - name: Run server build check
               if: steps.filter.outputs.server == 'true'
-              run: |
-                  cd server
-                  npm run build
+              run: cd server && npm run build

@@ -7,7 +7,6 @@ import useFilter from "#hooks/useFilter";
 import OnOffFilter from "#components/OnOffFilter/OnOffFilter";
 import useOnOffFilter from "#hooks/useOnOffFilter";
 import { PLACEHOLDER } from "#constants/placeholder";
-import { hasNumber } from "#utils/stringtils";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useGet from "#hooks/http/useHttpGet";

@@ -15,7 +15,7 @@ export const plainToGetRecruitDto = (plainRecruitData: RawRecruitData) => {
         course_img,
         course_path,
         course_pathLength,
-        course_name,
+        h_dong_name,
         course_createdAt,
         course_userId,
     } = plainRecruitData;
@@ -33,11 +33,11 @@ export const plainToGetRecruitDto = (plainRecruitData: RawRecruitData) => {
             id: course_id,
             title: course_title,
             img: course_img,
-            path: course_path,
+            path: JSON.parse(course_path),
             pathLength: course_pathLength,
             userId: course_userId,
             hDong: {
-                name: course_name,
+                name: h_dong_name,
             },
             createdAt: course_createdAt,
         },

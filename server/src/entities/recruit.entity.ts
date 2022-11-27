@@ -29,9 +29,6 @@ export class Recruit {
     @Column()
     pace: number;
 
-    @Column({ type: "varchar", length: 10 })
-    name: string;
-
     @CreateDateColumn()
     createdAt: Date;
 
@@ -55,21 +52,12 @@ export class Recruit {
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user: User;
 
-    static of(
-        title: string,
-        startTime: Date,
-        maxPpl: number,
-        pace: number,
-        hCode: string,
-        userId: number,
-        courseId: number,
-    ) {
+    static of(title: string, startTime: Date, maxPpl: number, pace: number, userId: number, courseId: number) {
         const recruit = new Recruit();
         recruit.title = title;
         recruit.startTime = startTime;
         recruit.maxPpl = maxPpl;
         recruit.pace = pace;
-        recruit.name = hCode;
         recruit.userId = userId;
         recruit.courseId = courseId;
         return recruit;

@@ -33,6 +33,7 @@ export class RecruitService {
         console.log("hhihhihi");
         console.log("bybyby");
         console.log("33333");
+        console.log("4444");
         const recruitList = await this.recruitRepository.findAll(
             queryParams.getPage(),
             queryParams.getPageSize(),

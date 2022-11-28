@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Header from "#components/Header/Header";
 import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
@@ -33,12 +33,11 @@ const Courses = () => {
     const handleSearchContentChange = (e: React.FormEvent<HTMLInputElement>) => {
         setSearchContent(e.currentTarget.value);
     };
-    let shouldGetNextPage = true;
-    const [page, setPage] = useState(1);
-
+    const page = useRef(1);
     const incrementPage = () => {
-        setPage(page + 1);
+        page.current++;
     };
+    const [hasMore, setHasMore] = useState(true);
 
     const courseQueryParams = () => {
         const param: any = {};
@@ -47,31 +46,38 @@ const Courses = () => {
         if (searchContent !== "") param.query = searchContent;
         param.maxLen = (currentDistanceFilter.max * 1000).toString();
         param.minLen = (currentDistanceFilter.min * 1000).toString();
-        param.page = page.toString();
+        param.page = page.current.toString();
         return param;
     };
 
-    const sendRecruitFetchRequest = async () => {
+    const sendCourseFetchRequest = async () => {
         const response = await get("/course", courseQueryParams());
-        if (response.data.length == 0) shouldGetNextPage = false;
+        if (response.data.length == 0) setHasMore(false);
+
         setCardList((prev) => [...prev, ...response.data]);
         incrementPage();
-        console.log(response.data.length, cardList.length);
+    };
+
+    const resetSearchResultCards = () => {
+        page.current = 1;
+        setCardList([]);
     };
 
     useEffect(() => {
-        sendRecruitFetchRequest();
+        sendCourseFetchRequest();
     }, []);
 
+    useEffect(() => {
+        console.log(cardList.length);
+    }, [cardList]);
     return (
         <>
-            <Header text="모집 목록" />
+            <Header text="코스 목록" />
             <SearchBar
                 placeholder={PLACEHOLDER.SEARCH}
                 onClick={() => {
-                    setPage(1);
-                    setCardList([]);
-                    sendRecruitFetchRequest();
+                    resetSearchResultCards();
+                    sendCourseFetchRequest();
                 }}
                 content={searchContent}
                 onChange={handleSearchContentChange}
@@ -102,10 +108,10 @@ const Courses = () => {
             <InfiniteScroll
                 dataLength={cardList.length}
                 next={() => {
-                    if (!shouldGetNextPage) return;
-                    sendRecruitFetchRequest();
+                    if (!hasMore) return;
+                    sendCourseFetchRequest();
                 }}
-                hasMore={true}
+                hasMore={hasMore}
                 loader={<h4>Loading...</h4>}
             >
                 <CourseList>

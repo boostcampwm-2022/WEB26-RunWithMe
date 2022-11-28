@@ -17,16 +17,39 @@ export const CenterWrapper = styled.div`
         gap: 10px;
     }
 `;
+
+export const InputWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    input {
+        width: 200px;
+    }
+`;
+
+export const Input = styled.div`
+    display: flex;
+`;
 const jejuExURL =
-    "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/01cbb930-acab-4ec5-81c1-e72f91577cf8/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221126%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221126T161717Z&X-Amz-Expires=86400&X-Amz-Signature=aa2dd5105d1e161e950b30b4e9f01cc8bfaf78b8f9463ec47f8a616860728fbf&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject";
+    "https://user-images.githubusercontent.com/53655119/204238717-6b1ff83d-6d85-4ab8-9b4f-056947147706.png";
 const Mock = () => {
     const [reps, setReps] = useState(0);
     const [maxLat, setMaxLat] = useState(33.462789834085406);
     const [maxLng, setMaxLng] = useState(126.58443060603571);
     const [minLat, setMinLat] = useState(33.44850043013376);
     const [minLng, setMinLng] = useState(126.56573142547181);
+    const [minLen, setMinLen] = useState(0);
+    const [maxLen, setMaxLen] = useState(5000);
     const [pathPoints, setPathPoints] = useState(5);
     const { post } = usePost();
+
+    const handleMinLenChange = (e: any) => {
+        setMinLen(e.target.value);
+    };
+
+    const handleMaxLenChange = (e: any) => {
+        setMaxLen(e.target.value);
+    };
 
     const handleRepsChange = (e: any) => {
         setReps(e.target.value);
@@ -74,16 +97,14 @@ const Mock = () => {
             img: randomImg,
             path: randomPath,
             userId: 1,
-            pathLength: 3000,
+            pathLength: faker.datatype.number({ min: minLen, max: maxLen }),
             hCode: hdongs[randomHcodeIdx][0],
         };
-        console.log(randomCourse);
         return randomCourse;
     };
 
     const sendAxiosRequest = async (course: any) => {
-        const response = await post("/course", course);
-        console.log(response);
+        await post("/course", course);
     };
 
     const handleSubmit = async () => {
@@ -100,19 +121,31 @@ const Mock = () => {
                     반복횟수
                     <input placeholder={"0"} onChange={handleRepsChange}></input>
                 </div>
-                <div>
-                    경도(longitude)
-                    <input onChange={handleMinLatChange} defaultValue={126.56573142547181}></input>
-                    <span>~</span>
-                    <input onChange={handleMaxLatChange} defaultValue={126.58443060603571}></input>
+                <InputWrapper>
+                    <Input>
+                        경도(longitude)
+                        <input onChange={handleMinLatChange} defaultValue={126.56573142547181}></input>
+                        <span>~</span>
+                        <input onChange={handleMaxLatChange} defaultValue={126.58443060603571}></input>
+                    </Input>
+                    <Input>
+                        위도(latitude)&nbsp;&nbsp;&nbsp;
+                        <input onChange={handleMinLngChange} defaultValue={33.44850043013376}></input>
+                        <span>~</span>
+                        <input onChange={handleMaxLngChange} defaultValue={33.462789834085406}></input>
+                    </Input>
                     <div></div>
-                    위도(latitude)&nbsp;&nbsp;&nbsp;
-                    <input onChange={handleMinLngChange} defaultValue={33.44850043013376}></input>
-                    <span>~</span>
-                    <input onChange={handleMaxLngChange} defaultValue={33.462789834085406}></input>
+                    <Input>
+                        총 길이
+                        <input onChange={handleMinLenChange} defaultValue={0}></input>
+                        <span>~</span>
+                        <input onChange={handleMaxLenChange} defaultValue={5000}></input>
+                    </Input>
                     <div></div>
-                    경로의 점 수<input onChange={handlePathPointsChange} defaultValue={5}></input>
-                </div>
+                    <Input>
+                        경로의 점 수<input onChange={handlePathPointsChange} defaultValue={5}></input>
+                    </Input>
+                </InputWrapper>
                 <button onClick={handleSubmit}>Submit</button>
                 <div> 제주도 예시</div>
                 <div> (lng) min: 33.44850043013376, max: 33.462789834085406</div>

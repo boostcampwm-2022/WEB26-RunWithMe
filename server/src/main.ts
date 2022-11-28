@@ -13,7 +13,11 @@ async function bootstrap() {
         .addTag("app")
         .build();
     const document = SwaggerModule.createDocument(app, options);
-    app.enableCors({ origin: true, methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS", credentials: true });
+    app.enableCors({
+        origin: "http://localhost:3000",
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+        credentials: true,
+    });
     app.use(cookieParser());
     app.useGlobalPipes(
         new ValidationPipe({

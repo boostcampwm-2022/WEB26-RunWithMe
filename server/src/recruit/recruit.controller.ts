@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Query, Param, Req } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
+import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
 import { CreateRecruitDto } from "./dto/request/create-recruit.request";
 import { GetRecruitDto } from "./dto/request/get-recruit.request";
 import { JoinRecruitDto } from "./dto/request/join-recruit.request";
@@ -8,7 +8,7 @@ import { Request } from "express";
 
 @Controller("recruit")
 export class RecruitController {
-    constructor(private readonly recruitService: RecruitService, private jwtService: JwtService) {}
+    constructor(private readonly recruitService: RecruitService, private jwtService: CustomJwtService) {}
 
     @Get()
     async getRecruits(@Query() queryParams: GetRecruitDto) {

@@ -5,7 +5,7 @@ import { CustomJwtService } from "./custom-jwt.service";
 @Global()
 @Module({
     imports: [JwtModule.register({})],
-    providers: [CustomJwtService, JwtService],
+    providers: [CustomJwtService],
     exports: [CustomJwtService],
 })
 export class CustomJwtModule {}

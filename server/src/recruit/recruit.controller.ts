@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post, Query, Param, Req } from "@nestjs/common";
-import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
 import { CreateRecruitDto } from "./dto/request/create-recruit.request";
 import { GetRecruitDto } from "./dto/request/get-recruit.request";
 import { JoinRecruitDto } from "./dto/request/join-recruit.request";
@@ -8,7 +7,7 @@ import { Request } from "express";
 
 @Controller("recruit")
 export class RecruitController {
-    constructor(private readonly recruitService: RecruitService, private jwtService: CustomJwtService) {}
+    constructor(private readonly recruitService: RecruitService) {}
 
     @Get()
     async getRecruits(@Query() queryParams: GetRecruitDto) {
@@ -72,6 +71,13 @@ export class RecruitController {
     @Get(":id")
     async getRecruitDetail(@Param("id") recruitId: number, @Req() request: Request) {
         const jwtString = request.headers["authorization"].split("Bearer")[1].trim();
+        if (!(await this.recruitService.isExistingRecruit(recruitId))) {
+            return {
+                statusCode: 409,
+                error: "conflict",
+                message: "Does not exist or has been deleted",
+            };
+        }
         const data = await this.recruitService.getRecruitDetail(jwtString, recruitId);
         return data;
     }

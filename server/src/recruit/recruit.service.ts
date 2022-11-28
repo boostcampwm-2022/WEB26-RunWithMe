@@ -62,12 +62,12 @@ export class RecruitService {
         };
     }
 
-    async isExistingRecruit(recruitId: number): Promise<number | null> {
+    async isExistingRecruit(recruitId: number): Promise<boolean> {
         const recruitEntity = await this.recruitRepository.findOneById(recruitId);
         if (recruitEntity) {
-            return recruitEntity.userId;
+            return true;
         }
-        return null;
+        return false;
     }
 
     async isParticipating(recruitId: number, userId: number): Promise<boolean> {

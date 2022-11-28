@@ -9,10 +9,10 @@ const axios = Axios.create({
     },
 });
 
-const useLocalAPI = <D>(url: LOCAL_API_PATH, options?: RequestParams) => {
-    const query = useCallback((params: RequestParams): Promise<D> => {
+const useLocalAPI = <R>(url: LOCAL_API_PATH, options?: RequestParams) => {
+    const query = useCallback((params: RequestParams): Promise<R> => {
         return axios
-            .get<RequestParams, AxiosResponse<D>>(url, { params: Object.assign(options || {}, params) })
+            .get<RequestParams, AxiosResponse<R>>(url, { params: Object.assign(options || {}, params) })
             .then((res) => res.data);
     }, []);
 

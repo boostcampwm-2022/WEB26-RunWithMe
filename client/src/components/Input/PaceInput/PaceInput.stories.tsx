@@ -8,4 +8,4 @@ export default {
     component: PaceInput,
 } as ComponentMeta<typeof PaceInput>;
 
-export const Template: ComponentStory<typeof PaceInput> = (args) => <PaceInput {...args} />;
+export const _PaceInput: ComponentStory<typeof PaceInput> = (args) => <PaceInput {...args} />;

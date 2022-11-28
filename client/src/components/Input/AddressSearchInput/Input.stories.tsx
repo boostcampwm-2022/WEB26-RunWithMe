@@ -8,4 +8,6 @@ export default {
     component: AddressSearchInput,
 } as ComponentMeta<typeof AddressSearchInput>;
 
-export const Template: ComponentStory<typeof AddressSearchInput> = () => <AddressSearchInput setRegion={console.log} />;
+export const _AddressSearchInput: ComponentStory<typeof AddressSearchInput> = () => (
+    <AddressSearchInput setRegion={console.log} />
+);

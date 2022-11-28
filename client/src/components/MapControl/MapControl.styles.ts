@@ -1,9 +1,9 @@
-import { MapControlPotition } from "#types/MapControlProps";
+import { MapControlPosition } from "#types/MapControlProps";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexRowCenter } from "styles/flex";
 
-export const MapButton = styled.div<{ position: MapControlPotition }>`
+export const MapButton = styled.div<{ position: MapControlPosition }>`
     ${flexRowCenter};
     padding: 10px;
     background: ${COLOR.WHITE};

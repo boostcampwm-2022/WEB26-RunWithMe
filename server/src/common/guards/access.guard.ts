@@ -1,11 +1,11 @@
 import { Request } from "express";
 import { Observable } from "rxjs";
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import { AuthService } from "src/auth/auth.service";
+import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
 
 @Injectable()
 export class AccessGuard implements CanActivate {
-    constructor(private authService: AuthService) {}
+    constructor(private jwtService: CustomJwtService) {}
 
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const request = context.switchToHttp().getRequest();
@@ -18,7 +18,7 @@ export class AccessGuard implements CanActivate {
             return false;
         }
 
-        this.authService.verifyAccessToken(jwtString);
+        this.jwtService.verifyAccessToken(jwtString);
         return true;
     }
 }

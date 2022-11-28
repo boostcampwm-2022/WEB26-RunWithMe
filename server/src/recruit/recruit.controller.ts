@@ -1,14 +1,14 @@
 import { Body, Controller, Get, Post, Query, Param, Req } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { CreateRecruitDto } from "./dto/create-recruit.dto";
-import { GetRecruitDto } from "./dto/get-recruit.dto";
-import { JoinRecruitDto } from "./dto/join-recruit.dto";
+import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
+import { CreateRecruitDto } from "./dto/request/create-recruit.request";
+import { GetRecruitDto } from "./dto/request/get-recruit.request";
+import { JoinRecruitDto } from "./dto/request/join-recruit.request";
 import { RecruitService } from "./recruit.service";
 import { Request } from "express";
 
 @Controller("recruit")
 export class RecruitController {
-    constructor(private readonly recruitService: RecruitService, private jwtService: JwtService) {}
+    constructor(private readonly recruitService: RecruitService, private jwtService: CustomJwtService) {}
 
     @Get()
     async getRecruits(@Query() queryParams: GetRecruitDto) {
@@ -72,12 +72,7 @@ export class RecruitController {
     @Get(":id")
     async getRecruitDetail(@Param("id") recruitId: number, @Req() request: Request) {
         const jwtString = request.headers["authorization"].split("Bearer")[1].trim();
-        const { userIdx } = this.jwtService.verify(jwtString, { secret: process.env.ACCESS_SECRET });
-        const data = await this.recruitService.getRecruitDetail(recruitId);
-        return {
-            ...data,
-            isAuthor: data.authorId === userIdx,
-            isParticipating: await this.recruitService.isParticipating(recruitId, userIdx),
-        };
+        const data = await this.recruitService.getRecruitDetail(jwtString, recruitId);
+        return data;
     }
 }

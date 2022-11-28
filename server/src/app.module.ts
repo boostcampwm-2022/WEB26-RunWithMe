@@ -16,6 +16,7 @@ import { AuthModule } from "./auth/auth.module";
 import type { ClientOpts } from "redis";
 import { RecruitModule } from "./recruit/recruit.module";
 import { CourseModule } from "./course/course.module";
+import { CustomJwtModule } from "./common/modules/custom-jwt/custom-jwt.module";
 
 @Module({
     imports: [
@@ -44,6 +45,7 @@ import { CourseModule } from "./course/course.module";
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, "..", "..", "client", "build"),
         }),
+        CustomJwtModule,
         UserModule,
         AuthModule,
         RecruitModule,

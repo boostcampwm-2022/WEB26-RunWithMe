@@ -32,6 +32,7 @@ import { CourseModule } from "./course/course.module";
             synchronize: true,
             logging: true,
             entities: [User, Course, Recruit, UserRecruit, HDong],
+            poolSize: 10,
         }),
         CacheModule.register<ClientOpts>({
             isGlobal: true,

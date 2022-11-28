@@ -5,7 +5,7 @@ import { faker } from "@faker-js/faker";
 import { useRecoilValue } from "recoil";
 import { userState } from "#atoms/userState";
 import usePost from "#hooks/http/useHttpPost";
-import axios from "axios";
+import { hdongs } from "#constants/hdongs";
 export const CenterWrapper = styled.div`
     ${flexRowCenter}
     flex-direction: column;
@@ -69,16 +69,16 @@ const Mock = () => {
             });
             randomPath.push({ lat: randMa, lng: randQa });
         }
-        const myID = userInfo.userId;
         const randomImg = faker.image.cats(680, 480, true);
-        const randomDong = faker.lorem.word();
-
+        const maxHdong = hdongs.length;
+        const randomHcodeIdx = faker.datatype.number({ max: maxHdong - 1, min: 0 });
         const randomCourse = {
             title: randomTitle,
             img: randomImg,
             path: randomPath,
-            userId: myID,
-            hCode: "1111111111",
+            userId: 1,
+            pathLength: 3000,
+            hCode: hdongs[randomHcodeIdx][0],
         };
         console.log(randomCourse);
         return randomCourse;
@@ -86,11 +86,10 @@ const Mock = () => {
 
     const sendAxiosRequest = async (course: any) => {
         const response = await post("/course", course);
-        const r = await axios.post("localhost:4000/course", course);
-        console.log(r);
+        console.log(response);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         for (let i = 0; i < reps; i++) {
             sendAxiosRequest(generateRandomCourse());
         }

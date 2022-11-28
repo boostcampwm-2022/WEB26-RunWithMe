@@ -4,7 +4,7 @@ import {
     ValidatorConstraint,
     ValidatorConstraintInterface,
 } from "class-validator";
-import { LatLng } from "../type/lat-lng";
+import { LatLng } from "../types/lat-lng";
 
 @ValidatorConstraint({ name: "isValidPath", async: false })
 class isValidPathConstraint implements ValidatorConstraintInterface {

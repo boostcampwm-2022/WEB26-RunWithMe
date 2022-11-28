@@ -1,4 +1,4 @@
-import { RawRecruitData } from "../type/raw-recruit-data";
+import { RawRecruitData } from "../types/raw-recruit-data";
 
 export const plainToGetRecruitDto = (plainRecruitData: RawRecruitData) => {
     const {

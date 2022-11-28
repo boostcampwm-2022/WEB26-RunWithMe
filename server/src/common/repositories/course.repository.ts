@@ -1,7 +1,7 @@
 import { CustomRepository } from "src/common/typeorm/typeorm.decorator";
 import { Repository } from "typeorm";
 import { Course } from "src/common/entities/course.entity";
-import { CourseData } from "src/common/type/course-data";
+import { CourseData } from "src/common/types/course-data";
 
 @CustomRepository(Course)
 export class CourseRepository extends Repository<Course> {

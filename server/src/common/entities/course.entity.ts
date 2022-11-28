@@ -1,4 +1,4 @@
-import { LatLng } from "src/common/type/lat-lng";
+import { LatLng } from "src/common/types/lat-lng";
 import { User } from "src/common/entities/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { HDong } from "./h_dong.entity";

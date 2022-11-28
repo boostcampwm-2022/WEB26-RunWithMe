@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { RecruitRepository } from "./recruit.repository";
+import { RecruitRepository } from "../common/repositories/recruit.repository";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
 import { GetRecruitDto } from "./dto/get-recruit.dto";
 import { Recruit } from "src/common/entities/recruit.entity";

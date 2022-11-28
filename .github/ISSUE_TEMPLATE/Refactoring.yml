@@ -1,0 +1,23 @@
+name: 리팩토링 템플릿
+description: 리팩토링을 위한 이슈를 작성하세요.
+title: "refactor: "
+labels: ["refactor"]
+body:
+    - type: textarea
+      attributes:
+          label: 리팩토링 배경
+          description: 현재 상태와 리팩토링 배경에 대해 간단히 설명해주세요.
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: 기대효과
+          description: 리팩토링을 통해서 얻게 될 기대효과에 대해 간단히 설명해주세요.
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: 체크리스트
+          description: 작업에 필요한 과정이나 연관된 이슈들을 링크해주세요.
+      validations:
+          required: false

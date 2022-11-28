@@ -1,21 +1,10 @@
-import {
-    Body,
-    Controller,
-    Get,
-    Post,
-    UseGuards,
-    Query,
-    Param,
-    Req,
-    HttpException,
-    BadRequestException,
-} from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, Param, Req } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { AccessGuard } from "src/common/guard/access.guard";
 import { CreateRecruitDto } from "./dto/create-recruit.dto";
 import { GetRecruitDto } from "./dto/get-recruit.dto";
 import { JoinRecruitDto } from "./dto/join-recruit.dto";
 import { RecruitService } from "./recruit.service";
+import { Request } from "express";
 
 @Controller("recruit")
 export class RecruitController {
@@ -33,8 +22,6 @@ export class RecruitController {
     @Post()
     async create(@Body() createRecruitDto: CreateRecruitDto) {
         const recruitEntity = await this.recruitService.create(createRecruitDto);
-        // TODO: 응답 리팩토링하기 entity -> 응답 dto 변환 후 인터셉터가 상태코드 넣어서 처리하게끔 바꾸기
-        // 매번 상태코드와 데이터 넣어주는 방식이 깔끔하지 못한 느낌.
         return {
             statusCode: 201,
             data: {
@@ -45,10 +32,9 @@ export class RecruitController {
     // @UseGuards(AccessGuard)
     @Post("join")
     async register(@Body() joinRecruitDto: JoinRecruitDto) {
-        console.log(joinRecruitDto);
         const recruitId = joinRecruitDto.getRecruitId();
         const userId = joinRecruitDto.getUserId();
-        if (!(await this.recruitService.isExistRecruit(recruitId))) {
+        if (!(await this.recruitService.isExistingRecruit(recruitId))) {
             return {
                 statusCode: 409,
                 error: "conflict",
@@ -85,11 +71,9 @@ export class RecruitController {
 
     @Get(":id")
     async getRecruitDetail(@Param("id") recruitId: number, @Req() request: Request) {
-        console.log("a");
         const jwtString = request.headers["authorization"].split("Bearer")[1].trim();
         const { userIdx } = this.jwtService.verify(jwtString, { secret: process.env.ACCESS_SECRET });
         const data = await this.recruitService.getRecruitDetail(recruitId);
-        // return 1;
         return {
             ...data,
             isAuthor: data.authorId === userIdx,

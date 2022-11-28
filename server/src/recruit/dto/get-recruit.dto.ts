@@ -8,7 +8,7 @@ export class GetRecruitDto {
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
-    private time?: number;
+    private hour?: number;
 
     @IsOptional()
     @Type(() => Number)
@@ -66,8 +66,8 @@ export class GetRecruitDto {
         return this.query;
     }
 
-    getTime(): number | undefined {
-        return this.time;
+    getHour(): number | undefined {
+        return this.hour;
     }
 
     getDist(): number | undefined {

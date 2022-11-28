@@ -5,7 +5,8 @@ import Input from "#components/Input/Input";
 import Button from "#components/Button/Button";
 import useInput from "#hooks/useInput";
 import { PLACEHOLDER } from "#constants/placeholder";
-import { idValidator, passwordValidator } from "#utils/valitationUtils";
+import { idValidator, passwordValidator } from "#utils/validationUtils";
+
 import { useSetRecoilState } from "recoil";
 import { InputWrapper, OptionsWrapper } from "./SignUp.styles";
 import { userState } from "#atoms/userState";

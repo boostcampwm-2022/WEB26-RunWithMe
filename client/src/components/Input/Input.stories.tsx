@@ -31,5 +31,5 @@ export const SubText = Template.bind({});
 SubText.args = {
     placeholder: "placeholder",
     type: "number",
-    subText: "min/km",
+    child: "min/km",
 };

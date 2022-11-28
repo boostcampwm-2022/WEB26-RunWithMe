@@ -32,16 +32,14 @@ export class CourseService {
             queryParams.getMaxLength(),
         );
 
-        return courseList.map(({ id, title, img, path, pathLength, name, createdAt, user }) => {
+        return courseList.map(({ id, title, img, path, pathLength, createdAt, user, hCode }) => {
             return {
                 id,
                 title,
                 img,
-                path,
+                path: JSON.parse(path),
                 pathLength,
-                hDong: {
-                    name,
-                },
+                hDong: hCode,
                 createdAt,
                 user,
             };

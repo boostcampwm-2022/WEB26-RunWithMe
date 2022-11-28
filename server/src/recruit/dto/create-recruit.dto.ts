@@ -18,9 +18,6 @@ export class CreateRecruitDto {
     @IsNumber()
     private pace: number;
 
-    @IsNumberString()
-    private hCode: string;
-
     @Type(() => Number)
     @IsNumber()
     private userId: number;
@@ -29,15 +26,7 @@ export class CreateRecruitDto {
     @IsNumber()
     private courseId: number;
 
-    getHCode(): string {
-        return this.hCode;
-    }
-
-    setHCodeToName(name: string): void {
-        this.hCode = name;
-    }
-
     toEntity(): Recruit {
-        return Recruit.of(this.title, this.startTime, this.maxPpl, this.pace, this.hCode, this.userId, this.courseId);
+        return Recruit.of(this.title, this.startTime, this.maxPpl, this.pace, this.userId, this.courseId);
     }
 }

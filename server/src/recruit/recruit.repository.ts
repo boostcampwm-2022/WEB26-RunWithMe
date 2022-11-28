@@ -9,6 +9,7 @@ export class RecruitRepository extends Repository<Recruit> {
     async createOne(recruitEntity: Recruit): Promise<Recruit> {
         return this.save(recruitEntity);
     }
+
     async findRecruitDetail(recruitId: number) {
         await this.findOneById(recruitId);
         return this.createQueryBuilder("recruit")
@@ -17,7 +18,7 @@ export class RecruitRepository extends Repository<Recruit> {
             .innerJoinAndSelect("recruit.user", "user")
             .select([
                 "recruit.title AS title",
-                "recruit.startTime AS startTime",
+                "STR_TO_DATE(recruit.startTime) AS startTime",
                 "recruit.name AS name",
                 "recruit.maxPpl AS maxPpl",
                 "recruit.pace AS pace",
@@ -38,16 +39,18 @@ export class RecruitRepository extends Repository<Recruit> {
         query?: string | undefined,
         title?: boolean | undefined,
         author?: boolean | undefined,
-        time?: number | undefined,
+        hour?: number | undefined,
         minLen?: number | undefined,
         maxLen?: number | undefined,
     ): Promise<RawRecruitData[]> {
         return this.createQueryBuilder("recruit")
             .innerJoinAndSelect("recruit.course", "course")
+            .innerJoinAndSelect("course.user", "u")
+            .innerJoinAndSelect("course.hCode", "h_dong")
             .leftJoinAndSelect("recruit.userRecruits", "user_recruit")
             .innerJoinAndSelect("recruit.user", "user")
             .where("recruit.startTime > NOW()")
-            .andWhere(time ? `recruit.startTime < DATE_ADD(NOW(), INTERVAL :time HOUR)` : "1=1", { time })
+            .andWhere(hour ? `recruit.startTime < DATE_ADD(NOW(), INTERVAL :hour HOUR)` : "1=1", { hour })
             .andWhere(maxLen && minLen >= 0 ? `course.pathLength >= :minLen and course.pathLength < :maxLen` : "1=1", {
                 minLen,
                 maxLen,
@@ -76,9 +79,9 @@ export class RecruitRepository extends Repository<Recruit> {
                 "course.img",
                 "course.path",
                 "course.pathLength",
-                "course.hCode",
-                "course.name",
+                "h_dong.name",
                 "course.createdAt",
+                "u.userId AS course_userId",
             ])
             .groupBy("recruit.id")
             .offset((page - 1) * pageSize)

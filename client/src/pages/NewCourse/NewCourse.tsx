@@ -12,16 +12,17 @@ import { useCallback } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "#atoms/userState";
 import { useNavigate } from "react-router-dom";
-import { courseTitleValidator } from "#utils/valitationUtils";
+import { courseTitleValidator } from "#utils/validationUtils";
 import { RegionResponse } from "#types/Region";
 import { CourseForm } from "./NewCourse.styles";
+import { LOCAL_API_PATH } from "#types/LocalAPIType";
 //#endregion
 const img =
     "https://kr.object.ncloudstorage.com/j199/img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202022-11-20%20%EC%98%A4%ED%9B%84%204.01.56.png";
 const NewCourse = () => {
     const { userIdx: userId } = useRecoilValue(userState);
     const [title, onChangeTitle] = useInput(courseTitleValidator);
-    const query = useLocalAPI<RegionResponse>("/geo/coord2regioncode.json");
+    const query = useLocalAPI<RegionResponse>(LOCAL_API_PATH.REGION_CODE);
     const { post } = useHttpPost();
     const navigate = useNavigate();
 

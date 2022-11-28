@@ -1,13 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Course } from "src/entities/course.entity";
 
 @Entity("h_dong")
 export class HDong {
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column()
+    @PrimaryColumn()
     code: string;
 
     @Column()
     name: string;
+
+    @OneToMany(() => Course, (course) => course.hCode)
+    courses: Course[];
 }

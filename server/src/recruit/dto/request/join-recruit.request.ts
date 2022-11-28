@@ -1,6 +1,6 @@
 import { Type } from "class-transformer";
 import { IsNumber } from "class-validator";
-import { UserRecruit } from "../../common/entities/user_recruit.entity";
+import { UserRecruit } from "src/common/entities/user_recruit.entity";
 
 export class JoinRecruitDto {
     @Type(() => Number)

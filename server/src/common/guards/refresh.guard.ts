@@ -1,11 +1,11 @@
 import { Request } from "express";
 import { Observable } from "rxjs";
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import { AuthService } from "src/auth/auth.service";
+import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
 
 @Injectable()
 export class RefreshGuard implements CanActivate {
-    constructor(private authService: AuthService) {}
+    constructor(private jwtService: CustomJwtService) {}
 
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const request = context.switchToHttp().getRequest();
@@ -17,7 +17,7 @@ export class RefreshGuard implements CanActivate {
         if (!jwtString) {
             return false;
         }
-        this.authService.verifyRefreshToken(jwtString);
+        this.jwtService.verifyRefreshToken(jwtString);
         return true;
     }
 }

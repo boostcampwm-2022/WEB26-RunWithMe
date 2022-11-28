@@ -1,5 +1,5 @@
 import { LOCAL_API_PATH } from "#types/LocalAPIType";
-import { PlaceInfo, PlaceSearchResponse } from "#types/Place";
+import { PlaceInfo } from "#types/Place";
 import { useCallback, useState } from "react";
 import useLocalAPI from "./useLocalAPI";
 

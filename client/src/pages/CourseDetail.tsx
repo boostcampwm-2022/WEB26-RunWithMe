@@ -7,23 +7,23 @@ import { useCallback, useEffect, useState } from "react";
 import Input from "#components/Input/Input";
 import { COLOR } from "styles/color";
 import styled from "styled-components";
-import { flexRowSpaceArround } from "styles/flex";
+import { flexRowSpaceAround } from "styles/flex";
 import { PLACEHOLDER } from "#constants/placeholder";
 import PaceInput from "#components/Input/PaceInput/PaceInput";
 import usePaceInput from "#hooks/usePaceInput";
 import useInput from "#hooks/useInput";
-import { recruitTitleValidator } from "#utils/valitationUtils";
+import { recruitTitleValidator } from "#utils/validationUtils";
 import useHttpPost from "#hooks/http/useHttpPost";
 import { useNavigate, useParams } from "react-router-dom";
 import { InputWrapper } from "./SignUp.styles";
 import StartTimeInput from "#components/Input/StartTimeInput/StartTimeInput";
 import MaxPplInput from "#components/Input/MaxPplInput/MaxPplInput";
-import useStartTimtInput from "#hooks/useStartTimeInput";
+import useStartTimeInput from "#hooks/useStartTimeInput";
 import useMaxPplInput from "#hooks/useMaxPplInput";
 import useHttpGet from "#hooks/http/useHttpGet";
 
 const Buttons = styled.div`
-    ${flexRowSpaceArround}
+    ${flexRowSpaceAround}
     padding-top: 16px;
 `;
 
@@ -31,11 +31,11 @@ const CourseDetail = () => {
     const [courseTitle, setCourseTitle] = useState("제목");
     const [startPoint, setStartPoint] = useState("출발점");
     const [totalLength, setTotalLength] = useState("총거리");
-    const [author, setAuther] = useState("게시자");
+    const [author, setAuthor] = useState("게시자");
 
     const [title, onChangeTitle, titleError] = useInput(recruitTitleValidator);
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
-    const { startTime, onChangeStartTime } = useStartTimtInput();
+    const { startTime, onChangeStartTime } = useStartTimeInput();
     const { maxPpl, onChangeMaxPpl } = useMaxPplInput();
 
     const { renderMap } = useMap({
@@ -43,7 +43,7 @@ const CourseDetail = () => {
         center: { lat: 33.450701, lng: 126.570667 },
     });
 
-    const checkFormValtidation = () => title && maxPpl && startTime && pace;
+    const checkFormValidation = () => title && maxPpl && startTime && pace;
 
     const [showModal, setShowModal] = useState(false);
     const { post } = useHttpPost();
@@ -56,10 +56,9 @@ const CourseDetail = () => {
     };
 
     const onSubmitRecruit = async () => {
-        if (!checkFormValtidation()) return;
+        if (!checkFormValidation()) return;
         try {
-            console.log({ title, courId: id, startTime, maxPpl, pace });
-            await post("/recruit", { title, courId: id, startTime, maxPpl, pace });
+            await post("/recruit", { title, courseId: id, startTime, maxPpl, pace });
             navigate(`/recruit/${id}`);
         } catch (error: any) {
             alert(error.message);
@@ -72,7 +71,7 @@ const CourseDetail = () => {
             setCourseTitle(response.title);
             setTotalLength(response.totalLength);
             setStartPoint(response.name);
-            setAuther(response.userId);
+            setAuthor(response.userId);
         } catch {}
     }, []);
 

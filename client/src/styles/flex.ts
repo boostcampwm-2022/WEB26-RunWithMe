@@ -5,7 +5,7 @@ export const flexRowSpaceBetween = css`
     justify-content: space-between;
 `;
 
-export const flexRowSpaceArround = css`
+export const flexRowSpaceAround = css`
     display: flex;
     justify-content: space-around;
 `;

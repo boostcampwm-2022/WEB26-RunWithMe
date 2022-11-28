@@ -1,13 +1,18 @@
 import { Injectable } from "@nestjs/common";
 import { RecruitRepository } from "../common/repositories/recruit.repository";
-import { CreateRecruitDto } from "./dto/create-recruit.dto";
-import { GetRecruitDto } from "./dto/get-recruit.dto";
+import { CreateRecruitDto } from "./dto/request/create-recruit.request";
+import { GetRecruitDto } from "./dto/request/get-recruit.request";
 import { Recruit } from "src/common/entities/recruit.entity";
-import { UserRecruitRepository } from "src/user_recruit.repository";
+import { UserRecruitRepository } from "src/common/repositories/user_recruit.repository";
 import { plainToGetRecruitDto } from "src/common/utils/plainToGetRecruitDto";
+import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
 @Injectable()
 export class RecruitService {
-    constructor(private recruitRepository: RecruitRepository, private userRecruitRepository: UserRecruitRepository) {}
+    constructor(
+        private recruitRepository: RecruitRepository,
+        private userRecruitRepository: UserRecruitRepository,
+        private jwtService: CustomJwtService,
+    ) {}
 
     async create(createRecruitDto: CreateRecruitDto): Promise<Recruit> {
         const recruitEntity = createRecruitDto.toEntity();
@@ -47,8 +52,14 @@ export class RecruitService {
             .map(plainToGetRecruitDto);
     }
 
-    async getRecruitDetail(recruitId: number) {
-        return await this.recruitRepository.findRecruitDetail(recruitId);
+    async getRecruitDetail(jwtString: string, recruitId: number) {
+        const { userIdx } = this.jwtService.verifyAccessToken(jwtString);
+        const data = await this.recruitRepository.findRecruitDetail(recruitId);
+        return {
+            ...data,
+            isAuthor: data.authorId === userIdx,
+            isParticipating: await this.isParticipating(recruitId, userIdx),
+        };
     }
 
     async isExistingRecruit(recruitId: number): Promise<number | null> {

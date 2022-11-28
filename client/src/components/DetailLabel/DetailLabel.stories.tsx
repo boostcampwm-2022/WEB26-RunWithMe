@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import DetailLabel from "./DetailLabel";
 
 export default {
-    title: "Example/DetailLabel",
+    title: "Label/DetailLabel",
     component: DetailLabel,
 } as ComponentMeta<typeof DetailLabel>;
 

@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import FilterBar from "./FilterBar";
 
 export default {
-    title: "Example/FilterBar",
+    title: "Filter/FilterBar",
     component: FilterBar,
 } as ComponentMeta<typeof FilterBar>;
 

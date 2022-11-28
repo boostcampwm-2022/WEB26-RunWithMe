@@ -1,4 +1,4 @@
-import { MapControlPotition } from "#types/MapControlProps";
+import { MapControlPosition } from "#types/MapControlProps";
 import styled, { css } from "styled-components";
 import { COLOR } from "styles/color";
 import { flexColumn, flexRowCenter, flexRowSpaceBetween } from "styles/flex";
@@ -12,7 +12,7 @@ const SearchBarItemStyle = css`
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
 `;
 
-export const SearchContainer = styled.div<{ position: MapControlPotition }>`
+export const SearchContainer = styled.div<{ position: MapControlPosition }>`
     ${flexColumn}
     align-items: center;
     position: absolute;

@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react";
-import SignUp from "#pages/SignUp";
-import Login from "#pages/Login";
-import MainPage from "#pages/MainPage";
-import Courses from "#pages/Courses";
+import SignUp from "#pages/SignUp/SignUp";
+import Login from "#pages/Login/Login";
+import MainPage from "#pages/MainPage/MainPage";
+import Courses from "#pages/Courses/Courses";
 import { useRecoilState } from "recoil";
 import { userState } from "#atoms/userState";
 import { Route, Routes } from "react-router-dom";
 import NewCourse from "#pages/NewCourse/NewCourse";
-import RecruitDetail from "#pages/RecruitDetail";
-import CourseDetail from "#pages/CourseDetail";
+import RecruitDetail from "#pages/RecruitDetail/RecruitDetail";
+import CourseDetail from "#pages/CourseDetail/CourseDetail";
 import useGet from "#hooks/http/useHttpGet";
 import { TIME } from "#constants/time";
-import Recruits from "#pages/Recruits";
+import Recruits from "#pages/Recruits/Recruits";
 
 function App() {
     const [userInfo, setUserInfo] = useRecoilState(userState);

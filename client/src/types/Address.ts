@@ -1,8 +1,8 @@
-export interface LocalSearchResponse {
-    documents: LocalData[];
+export interface AddressSearchResponse {
+    documents: Address[];
 }
 
-export interface LocalData {
+export interface Address {
     address: {
         address_name: string;
         b_code: string;

@@ -1,14 +1,13 @@
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 
-export const LogoWrapper = styled.div`
+export const Logo = styled.div`
     color: ${COLOR.BLACK};
     width: 100%;
     margin: 50px 0;
     height: 29px;
     font-size: 2.4rem;
     font-weight: bold;
-    font-family: "Noto Sans KR";
     text-align: center;
 `;
 
@@ -38,12 +37,12 @@ export const OptionsWrapper = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
-    div {
+    span {
         cursor: pointer;
         padding: 0 1rem;
     }
 
-    div:not(:last-child) {
+    span:not(:last-child) {
         border-right: 0.1rem solid grey;
     }
 `;

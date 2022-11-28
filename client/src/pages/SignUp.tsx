@@ -12,8 +12,10 @@ import PaceInput from "#components/Input/PaceInput/PaceInput";
 import useHttpPost from "#hooks/http/useHttpPost";
 import { Address } from "#types/Address";
 import AddressSearchInput from "#components/Input/AddressSearchInput/AddressSearchInput";
+import useAuth from "#hooks/useAuth";
 
 const SignUp = () => {
+    useAuth(false);
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
     const [password, onChangePassword, passwordError] = useInput(passwordValidator);
     const [region, setRegion] = useState<Address | null>(null);
@@ -39,7 +41,7 @@ const SignUp = () => {
 
     return (
         <>
-            <Header loggedIn={false} text="회원가입"></Header>
+            <Header text="회원가입"></Header>
             <Logo>RunWithMe</Logo>
             <InputWrapper>
                 <Input placeholder={PLACEHOLDER.ID} type="text" onChange={onChangeUserId}></Input>

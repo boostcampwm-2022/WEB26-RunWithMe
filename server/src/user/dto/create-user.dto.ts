@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { IsNumber, IsNumberString } from "class-validator";
-import { IsValidId, IsValidPassword } from "src/common/decorator";
-import { User } from "../../entities/user.entity";
+import { IsValidId, IsValidPassword } from "src/common/decorators";
+import { User } from "../../common/entities/user.entity";
 
 export class CreateUserDto {
     @IsValidId()

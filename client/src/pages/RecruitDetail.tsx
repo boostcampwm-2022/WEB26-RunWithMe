@@ -99,7 +99,7 @@ const RecruitDetail = () => {
     }, [userInfo]);
     return (
         <>
-            <Header loggedIn={true} text="모집 상세"></Header>
+            <Header text="모집 상세"></Header>
             {renderMap()}
             <Title>{title}</Title>
             <Content>

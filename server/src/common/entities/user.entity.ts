@@ -1,5 +1,5 @@
-import { Course } from "src/entities/course.entity";
-import { Recruit } from "src/entities/recruit.entity";
+import { Course } from "src/common/entities/course.entity";
+import { Recruit } from "src/common/entities/recruit.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRecruit } from "./user_recruit.entity";
 

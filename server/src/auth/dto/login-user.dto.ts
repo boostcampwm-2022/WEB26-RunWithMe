@@ -1,4 +1,4 @@
-import { IsValidId, IsValidPassword } from "src/common/decorator";
+import { IsValidId, IsValidPassword } from "src/common/decorators";
 
 export class LoginUserDto {
     @IsValidId()

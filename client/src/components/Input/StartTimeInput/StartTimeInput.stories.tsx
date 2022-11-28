@@ -8,4 +8,4 @@ export default {
     component: StartTimeInput,
 } as ComponentMeta<typeof StartTimeInput>;
 
-export const Template: ComponentStory<typeof StartTimeInput> = (args) => <StartTimeInput {...args} />;
+export const _StartTimeInput: ComponentStory<typeof StartTimeInput> = (args) => <StartTimeInput {...args} />;

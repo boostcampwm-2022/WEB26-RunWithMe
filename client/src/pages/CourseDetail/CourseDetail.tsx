@@ -15,12 +15,12 @@ import useInput from "#hooks/useInput";
 import { recruitTitleValidator } from "#utils/validationUtils";
 import useHttpPost from "#hooks/http/useHttpPost";
 import { useNavigate, useParams } from "react-router-dom";
-import { InputWrapper } from "./SignUp.styles";
 import StartTimeInput from "#components/Input/StartTimeInput/StartTimeInput";
 import MaxPplInput from "#components/Input/MaxPplInput/MaxPplInput";
 import useStartTimeInput from "#hooks/useStartTimeInput";
 import useMaxPplInput from "#hooks/useMaxPplInput";
 import useHttpGet from "#hooks/http/useHttpGet";
+import { InputWrapper } from "#pages/SignUp/SignUp.styles";
 
 const Buttons = styled.div`
     ${flexRowSpaceAround}

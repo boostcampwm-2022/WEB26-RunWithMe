@@ -8,11 +8,11 @@ import { PLACEHOLDER } from "#constants/placeholder";
 import { idValidator, passwordValidator } from "#utils/validationUtils";
 
 import { useSetRecoilState } from "recoil";
-import { InputWrapper, OptionsWrapper } from "./SignUp.styles";
 import { userState } from "#atoms/userState";
 import { LogoWrapper } from "./Login.styles";
 import useHttpPost from "#hooks/http/useHttpPost";
 import useAuth from "#hooks/useAuth";
+import { InputWrapper, OptionsWrapper } from "#pages/SignUp/SignUp.styles";
 
 const Login = () => {
     useAuth(false);

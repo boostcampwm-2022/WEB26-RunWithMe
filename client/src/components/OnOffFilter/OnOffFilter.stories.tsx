@@ -4,14 +4,13 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import OnOffFilter from "./OnOffFilter";
 
 export default {
-    title: "Example/OnOffFilter",
+    title: "Filter/OnOffFilter",
     component: OnOffFilter,
 } as ComponentMeta<typeof OnOffFilter>;
 
-const Template: ComponentStory<typeof OnOffFilter> = (args) => <OnOffFilter {...args} />;
+export const _OnOffFilter: ComponentStory<typeof OnOffFilter> = (args) => <OnOffFilter {...args} />;
 
-export const Text = Template.bind({});
-Text.args = {
+_OnOffFilter.args = {
     filterState: true,
     filterName: "제목",
     toggleFilterState: console.log,

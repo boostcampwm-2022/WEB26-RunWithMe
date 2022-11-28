@@ -1,7 +1,7 @@
 import { CustomRepository } from "src/common/typeorm/typeorm.decorator";
-import { Recruit } from "src/entities/recruit.entity";
+import { Recruit } from "src/common/entities/recruit.entity";
 import { Repository } from "typeorm";
-import { RawRecruitData } from "src/common/type/raw-recruit-data";
+import { RawRecruitData } from "src/common/types/raw-recruit-data";
 import { BadRequestException } from "@nestjs/common";
 
 @CustomRepository(Recruit)

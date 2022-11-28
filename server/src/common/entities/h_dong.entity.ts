@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
-import { Course } from "src/entities/course.entity";
+import { Course } from "src/common/entities/course.entity";
 
 @Entity("h_dong")
 export class HDong {

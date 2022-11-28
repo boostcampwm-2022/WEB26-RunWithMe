@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { IsNumber, IsNumberString, IsString } from "class-validator";
-import { IsValidDateTime } from "src/common/decorator";
-import { Recruit } from "../../entities/recruit.entity";
+import { IsValidDateTime } from "src/common/decorators";
+import { Recruit } from "../../common/entities/recruit.entity";
 
 export class CreateRecruitDto {
     @IsString()

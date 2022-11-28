@@ -5,7 +5,7 @@ import MoreButton from "./MoreButton";
 import { MemoryRouter } from "react-router-dom";
 
 export default {
-    title: "Example/MoreButton",
+    title: "Button/MoreButton",
     component: MoreButton,
 } as ComponentMeta<typeof MoreButton>;
 

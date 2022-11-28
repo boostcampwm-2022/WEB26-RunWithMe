@@ -8,10 +8,10 @@ interface StartTimeInputProps {
 }
 
 const StartTimeInput = ({ width, onChangeTime }: StartTimeInputProps) => {
-    const now_utc = Date.now();
+    const nowUtc = Date.now();
     const timeOff = new Date().getTimezoneOffset() * 60000;
-    const today = new Date(now_utc - timeOff).toISOString().substring(0, 16);
-    const possibleTime = new Date(now_utc - timeOff + 1000 * 60 * 60).toISOString().substring(0, 16);
+    const today = new Date(nowUtc - timeOff).toISOString().substring(0, 16);
+    const possibleTime = new Date(nowUtc - timeOff + 1000 * 60 * 60).toISOString().substring(0, 16);
 
     const onInput: FormEventHandler<HTMLInputElement> = useCallback((e) => {
         const value = e.currentTarget.value;

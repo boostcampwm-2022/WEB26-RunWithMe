@@ -1,7 +1,7 @@
 import { CustomRepository } from "src/common/typeorm/typeorm.decorator";
 import { Repository } from "typeorm";
 import { Course } from "src/entities/course.entity";
-import { CourseData } from "src/common/type/raw-course-data";
+import { CourseData } from "src/common/type/course-data";
 
 @CustomRepository(Course)
 export class CourseRepository extends Repository<Course> {
@@ -17,9 +17,10 @@ export class CourseRepository extends Repository<Course> {
         author?: boolean | undefined,
         minLen?: number | undefined,
         maxLen?: number | undefined,
-    ): Promise<CourseData[]> {
+    ) {
         return this.createQueryBuilder("course")
             .innerJoinAndSelect("course.user", "user")
+            .innerJoinAndSelect("course.hCode", "h_dong")
             .where("1=1")
             .andWhere(maxLen && minLen >= 0 ? `course.pathLength >= :minLen and course.pathLength < :maxLen` : "1=1", {
                 minLen,
@@ -41,8 +42,7 @@ export class CourseRepository extends Repository<Course> {
                 "course.img",
                 "course.path",
                 "course.pathLength",
-                "course.hCode",
-                "course.name",
+                "h_dong.name",
                 "course.createdAt",
                 "user.userId",
             ])

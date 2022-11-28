@@ -19,13 +19,10 @@ export class CreateCourseDto {
     @IsNumber()
     private userId: number;
 
-    @IsString()
-    private name: string;
-
     @IsNumberString()
     private hCode: string;
 
     toEntity() {
-        return Course.of(this.title, this.img, this.path, this.pathLength, this.hCode, this.userId, this.name);
+        return Course.of(this.title, this.img, this.path, this.pathLength, this.hCode, this.userId);
     }
 }

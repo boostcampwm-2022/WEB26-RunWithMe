@@ -46,6 +46,7 @@ export class RecruitRepository extends Repository<Recruit> {
         return this.createQueryBuilder("recruit")
             .innerJoinAndSelect("recruit.course", "course")
             .innerJoinAndSelect("course.user", "u")
+            .innerJoinAndSelect("course.hCode", "h_dong")
             .leftJoinAndSelect("recruit.userRecruits", "user_recruit")
             .innerJoinAndSelect("recruit.user", "user")
             .where("recruit.startTime > NOW()")
@@ -78,8 +79,7 @@ export class RecruitRepository extends Repository<Recruit> {
                 "course.img",
                 "course.path",
                 "course.pathLength",
-                "course.hCode",
-                "course.name",
+                "h_dong.name",
                 "course.createdAt",
                 "u.userId AS course_userId",
             ])

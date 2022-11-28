@@ -4,20 +4,12 @@ import { CreateRecruitDto } from "./dto/create-recruit.dto";
 import { GetRecruitDto } from "./dto/get-recruit.dto";
 import { Recruit } from "src/entities/recruit.entity";
 import { UserRecruitRepository } from "src/user_recruit.repository";
-import { HDongRepository } from "src/common/repository/h_dong.repository";
 import { plainToGetRecruitDto } from "src/common/utils/plainToGetRecruitDto";
 @Injectable()
 export class RecruitService {
-    constructor(
-        private recruitRepository: RecruitRepository,
-        private hDongRepository: HDongRepository,
-        private userRecruitRepository: UserRecruitRepository,
-    ) {}
+    constructor(private recruitRepository: RecruitRepository, private userRecruitRepository: UserRecruitRepository) {}
 
     async create(createRecruitDto: CreateRecruitDto): Promise<Recruit> {
-        const code = createRecruitDto.getHCode();
-        const { name } = await this.hDongRepository.findOneBy({ code });
-        createRecruitDto.setHCodeToName(name);
         const recruitEntity = createRecruitDto.toEntity();
         return this.recruitRepository.createOne(recruitEntity);
     }
@@ -59,7 +51,7 @@ export class RecruitService {
         return await this.recruitRepository.findRecruitDetail(recruitId);
     }
 
-    async isExistRecruit(recruitId: number): Promise<number | null> {
+    async isExistingRecruit(recruitId: number): Promise<number | null> {
         const recruitEntity = await this.recruitRepository.findOneById(recruitId);
         if (recruitEntity) {
             return recruitEntity.userId;

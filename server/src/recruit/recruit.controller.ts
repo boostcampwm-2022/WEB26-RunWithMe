@@ -22,8 +22,6 @@ export class RecruitController {
     @Post()
     async create(@Body() createRecruitDto: CreateRecruitDto) {
         const recruitEntity = await this.recruitService.create(createRecruitDto);
-        // TODO: 응답 리팩토링하기 entity -> 응답 dto 변환 후 인터셉터가 상태코드 넣어서 처리하게끔 바꾸기
-        // 매번 상태코드와 데이터 넣어주는 방식이 깔끔하지 못한 느낌.
         return {
             statusCode: 201,
             data: {
@@ -36,7 +34,7 @@ export class RecruitController {
     async register(@Body() joinRecruitDto: JoinRecruitDto) {
         const recruitId = joinRecruitDto.getRecruitId();
         const userId = joinRecruitDto.getUserId();
-        if (!(await this.recruitService.isExistRecruit(recruitId))) {
+        if (!(await this.recruitService.isExistingRecruit(recruitId))) {
             return {
                 statusCode: 409,
                 error: "conflict",

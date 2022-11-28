@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Course } from "src/common/entities/course.entity";
+import { HDong } from "src/common/entities/h_dong.entity";
 import { CourseRepository } from "../common/repositories/course.repository";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { GetCourseDto } from "./dto/get-course.dto";
@@ -44,5 +45,19 @@ export class CourseService {
                 user,
             };
         });
+    }
+
+    async getCourseDetail(recruitId: number) {
+        const data = await this.courseRepository.findCourseDetail(recruitId);
+        const { title, path, pathLength } = data;
+        return { title, path, pathLength, hDong: data.hCode, userId: data.user.userId };
+    }
+
+    async isExistingCourse(recruitId: number): Promise<boolean> {
+        const courseEntity = await this.courseRepository.findOneById(recruitId);
+        if (courseEntity) {
+            return true;
+        }
+        return false;
     }
 }

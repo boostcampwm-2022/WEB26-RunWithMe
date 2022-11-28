@@ -1,12 +1,21 @@
 import { CustomRepository } from "src/common/typeorm/typeorm.decorator";
 import { Repository } from "typeorm";
 import { Course } from "src/common/entities/course.entity";
-import { CourseData } from "src/common/types/course-data";
+import { BadRequestException } from "@nestjs/common";
 
 @CustomRepository(Course)
 export class CourseRepository extends Repository<Course> {
     async createOne(courseEntity: Course): Promise<Course> {
         return this.save(courseEntity);
+    }
+
+    async findCourseDetail(courseId: number) {
+        return this.createQueryBuilder("course")
+            .innerJoinAndSelect("course.hCode", "h_dong")
+            .innerJoinAndSelect("course.user", "user")
+            .select(["course.title", "course.path", "course.pathLength", "user.userId", "h_dong.name"])
+            .where("course.id = :courseId", { courseId })
+            .getOne();
     }
 
     async findAll(
@@ -49,5 +58,12 @@ export class CourseRepository extends Repository<Course> {
             .offset((page - 1) * pageSize)
             .limit(pageSize)
             .getMany();
+    }
+    async findOneById(id: number): Promise<Course> {
+        const data = await this.findOneBy({ id });
+        if (!data) {
+            throw new BadRequestException();
+        }
+        return data;
     }
 }

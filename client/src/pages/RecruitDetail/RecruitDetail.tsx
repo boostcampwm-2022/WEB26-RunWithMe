@@ -1,6 +1,6 @@
 import Header from "#components/Header/Header";
 import Button from "#components/Button/Button";
-import { Content, Title } from "./RecruitDetail.styles";
+import { Content, Title } from "../RecruitDetail.styles";
 import { useParams } from "react-router-dom";
 import { userState } from "#atoms/userState";
 import { useRecoilValue } from "recoil";

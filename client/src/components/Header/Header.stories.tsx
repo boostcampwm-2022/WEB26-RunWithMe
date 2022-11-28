@@ -2,15 +2,18 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { MemoryRouter } from "react-router-dom";
 import Header from "./Header";
+import { RecoilRoot } from "recoil";
 
 export default {
-    title: "Example/Header",
+    title: "Header/Header",
     component: Header,
 } as ComponentMeta<typeof Header>;
 
 const Template: ComponentStory<typeof Header> = (args) => (
     <MemoryRouter>
-        <Header {...args} />
+        <RecoilRoot>
+            <Header {...args} />
+        </RecoilRoot>
     </MemoryRouter>
 );
 export const Login = Template.bind({});

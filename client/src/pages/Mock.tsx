@@ -2,8 +2,6 @@ import { useState } from "react";
 import styled from "styled-components";
 import { flexRowCenter } from "styles/flex";
 import { faker } from "@faker-js/faker";
-import { useRecoilValue } from "recoil";
-import { userState } from "#atoms/userState";
 import usePost from "#hooks/http/useHttpPost";
 import { hdongs } from "#constants/hdongs";
 export const CenterWrapper = styled.div`
@@ -22,7 +20,6 @@ export const CenterWrapper = styled.div`
 const jejuExURL =
     "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/01cbb930-acab-4ec5-81c1-e72f91577cf8/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221126%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221126T161717Z&X-Amz-Expires=86400&X-Amz-Signature=aa2dd5105d1e161e950b30b4e9f01cc8bfaf78b8f9463ec47f8a616860728fbf&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject";
 const Mock = () => {
-    const userInfo = useRecoilValue(userState);
     const [reps, setReps] = useState(0);
     const [maxLat, setMaxLat] = useState(33.462789834085406);
     const [maxLng, setMaxLng] = useState(126.58443060603571);

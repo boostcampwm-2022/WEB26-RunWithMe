@@ -16,10 +16,8 @@ const Template: ComponentStory<typeof Header> = (args) => (
 export const Login = Template.bind({});
 Login.args = {
     text: "코스 목록",
-    loggedIn: true,
 };
 export const Logout = Template.bind({});
 Logout.args = {
     text: "코스 목록",
-    loggedIn: false,
 };

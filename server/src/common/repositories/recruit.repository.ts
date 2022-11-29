@@ -21,6 +21,7 @@ export class RecruitRepository extends Repository<Recruit> {
                 "recruit.maxPpl AS maxPpl",
                 "recruit.pace AS pace",
                 "recruit.userId AS authorId",
+                "recruit.startTime AS startTime",
                 "user.userId AS userId",
                 "COUNT(user_recruit.userId) AS currentPpl",
                 "course.path AS path",

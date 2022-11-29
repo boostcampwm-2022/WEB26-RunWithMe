@@ -3,7 +3,7 @@ import Button from "#components/Button/Button";
 import useMap from "#hooks/useMap";
 import { Content, Title } from "./CourseDetail.styles";
 import Modal from "#components/Modal/Modal";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import Input from "#components/Input/Input";
 import { COLOR } from "styles/color";
 import styled from "styled-components";
@@ -19,10 +19,10 @@ import StartTimeInput from "#components/Input/StartTimeInput/StartTimeInput";
 import MaxPplInput from "#components/Input/MaxPplInput/MaxPplInput";
 import useStartTimeInput from "#hooks/useStartTimeInput";
 import useMaxPplInput from "#hooks/useMaxPplInput";
-import useHttpGet from "#hooks/http/useHttpGet";
 import { InputWrapper } from "#pages/SignUp/SignUp.styles";
 import { useRecoilState } from "recoil";
 import { userState } from "#atoms/userState";
+import useCourseDetailQuery from "#hooks/queries/useCourseDetailQuery";
 
 const Buttons = styled.div`
     ${flexRowSpaceAround}
@@ -32,10 +32,8 @@ const Buttons = styled.div`
 const CourseDetail = () => {
     const [userInfo] = useRecoilState(userState);
 
-    const [courseTitle, setCourseTitle] = useState("제목");
-    const [startPoint, setStartPoint] = useState("출발점");
-    const [totalLength, setTotalLength] = useState(0);
-    const [author, setAuthor] = useState("게시자");
+    const { id } = useParams();
+    const { data, isLoading } = useCourseDetailQuery(Number(id));
 
     const [title, onChangeTitle, titleError] = useInput(recruitTitleValidator);
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
@@ -51,8 +49,6 @@ const CourseDetail = () => {
 
     const [showModal, setShowModal] = useState(false);
     const { post } = useHttpPost();
-    const { get } = useHttpGet();
-    const { id } = useParams();
     const navigate = useNavigate();
 
     const handleToggleModal = () => {
@@ -62,7 +58,7 @@ const CourseDetail = () => {
     const onSubmitRecruit = async () => {
         if (!checkFormValidation()) return;
         try {
-            const { data } = await post("/recruit", {
+            const { data }: { data: any } = await post("/recruit", {
                 title,
                 courseId: id,
                 startTime,
@@ -77,42 +73,32 @@ const CourseDetail = () => {
         }
     };
 
-    const getCourseDetail = useCallback(async () => {
-        try {
-            const response = await get(`/course/${id}`);
-            setCourseTitle(response.title);
-            setTotalLength(response.pathLength / 1000);
-            setStartPoint(response.hDong.name);
-            setAuthor(response.userId);
-        } catch {}
-    }, []);
-
-    useEffect(() => {
-        getCourseDetail();
-    }, []);
+    if (isLoading) return <div>Loading...</div>;
 
     return (
         <>
             <Header text="코스 상세"></Header>
             {renderMap()}
-            <Title>{courseTitle}</Title>
-            <Content>
-                <div>
-                    <span>출발점</span>
-                    <p>{startPoint}</p>
-                </div>
-                <div>
-                    <span>총 거리</span>
-                    <p>{totalLength}km</p>
-                </div>
-                <div>
-                    <span>게시자</span>
-                    <p>{author}</p>
-                </div>
-                <Button width="fit" onClick={handleToggleModal}>
-                    이 코스로 모집하기
-                </Button>
-            </Content>
+            <Title>{data?.title}</Title>
+            {data && (
+                <Content>
+                    <div>
+                        <span>출발점</span>
+                        <p>{data.hDong.name}</p>
+                    </div>
+                    <div>
+                        <span>총 거리</span>
+                        <p>{(data.pathLength / 3000).toFixed(2)}km</p>
+                    </div>
+                    <div>
+                        <span>게시자</span>
+                        <p>{data.userId}</p>
+                    </div>
+                    <Button width="fit" onClick={handleToggleModal}>
+                        이 코스로 모집하기
+                    </Button>
+                </Content>
+            )}
             <InputWrapper>
                 <Modal toggled={showModal} toggleVisible={handleToggleModal}>
                     <Input placeholder={PLACEHOLDER.TITLE} type="text" onChange={onChangeTitle}></Input>

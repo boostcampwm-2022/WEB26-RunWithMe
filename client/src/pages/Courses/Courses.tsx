@@ -30,9 +30,8 @@ const Courses = () => {
 
     const [cardList, setCardList] = useState<Course[]>([]);
     const [searchContent, setSearchContent] = useState("");
-    const handleSearchContentChange = (e: React.FormEvent<HTMLInputElement>) => {
-        setSearchContent(e.currentTarget.value);
-    };
+    const handleSearchContentChange = (e: React.FormEvent<HTMLInputElement>) => setSearchContent(e.currentTarget.value);
+
     const page = useRef(1);
     const incrementPage = () => {
         page.current++;
@@ -51,7 +50,7 @@ const Courses = () => {
     };
 
     const sendCourseFetchRequest = async () => {
-        const response = await get("/course", courseQueryParams());
+        const response: any = await get("/course", courseQueryParams());
         if (response.data.length == 0) setHasMore(false);
 
         setCardList((prev) => [...prev, ...response.data]);

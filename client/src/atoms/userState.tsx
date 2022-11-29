@@ -1,12 +1,7 @@
+import AuthRefreshRes from "#types/dto/AuthRefreshRes";
 import { atom } from "recoil";
 
-interface userState {
-    accessToken?: string;
-    userId?: string;
-    userIdx: number;
-}
-
-export const userState = atom<userState>({
+export const userState = atom<AuthRefreshRes>({
     key: "userState",
     default: {
         accessToken: "",

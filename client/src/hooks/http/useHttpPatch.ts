@@ -1,19 +1,13 @@
 import useAxios from "./useAxios";
 const useHttpPatch = () => {
-    const { isLoading, setIsLoading, error, setError, axios } = useAxios();
+    const { axios } = useAxios();
 
     const patch = (url: string, data: { [key: string]: any }) => {
-        setError(null);
-        setIsLoading(true);
-        return axios
-            .patch(url, data)
-            .then((res) => {
-                setIsLoading(false);
-                return res.data;
-            })
-            .catch(setError);
+        return axios.patch(url, data).then((res) => {
+            return res.data;
+        });
     };
-    return { isLoading, error, patch };
+    return { patch };
 };
 
 export default useHttpPatch;

@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Course } from "src/common/entities/course.entity";
+import { HDong } from "src/common/entities/h_dong.entity";
 import { CourseRepository } from "../common/repositories/course.repository";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { GetCourseDto } from "./dto/get-course.dto";

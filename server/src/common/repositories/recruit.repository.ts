@@ -89,11 +89,7 @@ export class RecruitRepository extends Repository<Recruit> {
     }
 
     async findOneById(id: number): Promise<Recruit> {
-        const data = await this.findOneBy({ id });
-        if (!data) {
-            throw new BadRequestException();
-        }
-        return data;
+        return await this.findOneBy({ id });
     }
 
     async getMaxPpl(id: number) {

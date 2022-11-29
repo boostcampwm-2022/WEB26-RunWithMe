@@ -1,12 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { RecruitRepository } from "../common/repositories/recruit.repository";
-import { CreateRecruitDto } from "./dto/request/create-recruit.request";
+import { CreateRecruitReqDto } from "./dto/request/create-recruit.request";
 import { GetRecruitDto } from "./dto/request/get-recruit.request";
 import { Recruit } from "src/common/entities/recruit.entity";
 import { UserRecruitRepository } from "src/common/repositories/user_recruit.repository";
 import { plainToGetRecruitDto } from "src/common/utils/plainToGetRecruitDto";
 import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
 import { DataSource, FindOneOptions, Repository } from "typeorm";
+import { UserRecruit } from "src/common/entities/user_recruit.entity";
+import { plainToInstance } from "class-transformer";
+import { JoinRecruitDto } from "./dto/request/join-recruit.request";
 @Injectable()
 export class RecruitService {
     constructor(
@@ -16,20 +19,20 @@ export class RecruitService {
         private dataSource: DataSource,
     ) {}
 
-    async create(createRecruitDto: CreateRecruitDto) {
+    async create(createRecruitDto: CreateRecruitReqDto) {
         const queryRunner = this.dataSource.createQueryRunner();
-        await queryRunner.connect();
-        await queryRunner.startTransaction();
+        let recruitEntity;
 
-        try {
-            const recruitEntity = await this.recruitRepository.createOne(createRecruitDto.toEntity());
-            this.userRecruitRepository.createUserRecruit(recruitEntity.userId, recruitEntity.id);
-            return recruitEntity;
-        } catch (error: any) {
-            await queryRunner.rollbackTransaction();
-        } finally {
-            await queryRunner.release();
-        }
+        await queryRunner.connect();
+        await queryRunner.manager.transaction(async (manager) => {
+            recruitEntity = await manager.save(createRecruitDto.toEntity());
+            const userRecruitDto = plainToInstance(JoinRecruitDto, {
+                userId: recruitEntity.userId,
+                recruitId: recruitEntity.id,
+            });
+            await manager.save(userRecruitDto.toEntity());
+        });
+        return recruitEntity;
     }
 
     async getMany(queryParams: GetRecruitDto) {
@@ -115,7 +118,7 @@ export class RecruitService {
         return recruitEntity.userId === userId;
     }
 
-    join(userId: number, recruitId: number) {
-        this.userRecruitRepository.createUserRecruit(userId, recruitId);
+    join(createUserRecruitDto: JoinRecruitDto) {
+        this.userRecruitRepository.createUserRecruit(createUserRecruitDto.toEntity());
     }
 }

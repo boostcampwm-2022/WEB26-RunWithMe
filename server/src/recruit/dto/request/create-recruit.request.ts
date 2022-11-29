@@ -2,7 +2,7 @@ import { Type } from "class-transformer";
 import { IsNumber, IsString } from "class-validator";
 import { Recruit } from "../../../common/entities/recruit.entity";
 
-export class CreateRecruitDto {
+export class CreateRecruitReqDto {
     @IsString()
     private title: string;
 

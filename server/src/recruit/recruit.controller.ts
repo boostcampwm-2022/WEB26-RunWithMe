@@ -1,16 +1,19 @@
 import { Body, Controller, Get, Post, Query, Param, Req, NotFoundException } from "@nestjs/common";
-import { CreateRecruitDto } from "./dto/request/create-recruit.request";
+import { CreateRecruitReqDto } from "./dto/request/create-recruit.request";
 import { GetRecruitDto } from "./dto/request/get-recruit.request";
 import { JoinRecruitDto } from "./dto/request/join-recruit.request";
 import { RecruitService } from "./recruit.service";
 import { Request } from "express";
-import { ApiOperation } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { CreateRecruitResDto } from "./dto/response/create-recruit.response";
+import { ResponseEntity } from "src/common/response/response.entity";
 
 @Controller("recruit")
+@ApiTags("모집글 관리")
 export class RecruitController {
     constructor(private readonly recruitService: RecruitService) {}
 
-    @ApiOperation({ summary: "모집글 조회/검색/필터 API" })
+    @ApiOperation({ summary: "모집글 조회/검색/필터", description: "등록된 모집글들을 조회/검색/필터링한다" })
     @Get()
     async getMany(@Query() queryParams: GetRecruitDto) {
         const recruitList = await this.recruitService.getMany(queryParams);
@@ -20,19 +23,17 @@ export class RecruitController {
         };
     }
 
-    @ApiOperation({ summary: "모집글 등록 API" })
+    @ApiOperation({ summary: "모집글 등록", description: "모집글을 등록한다" })
     @Post()
-    async create(@Body() createRecruitDto: CreateRecruitDto) {
+    async create(@Body() createRecruitDto: CreateRecruitReqDto) {
         const recruitEntity = await this.recruitService.create(createRecruitDto);
-        return {
-            statusCode: 201,
-            data: {
-                recruitId: recruitEntity.id,
-            },
-        };
+        const recruitResDto = CreateRecruitResDto.fromEntity(recruitEntity);
+        const sth = ResponseEntity.OK_WITH<CreateRecruitResDto>(recruitResDto);
+        console.log(sth);
+        return sth;
     }
 
-    @ApiOperation({ summary: "" })
+    @ApiOperation({ summary: "모집 참가", description: "모집글에 참여한다" })
     @Post("join")
     async register(@Body() joinRecruitDto: JoinRecruitDto) {
         const recruitId = joinRecruitDto.getRecruitId();
@@ -66,12 +67,13 @@ export class RecruitController {
                 message: "Maximum cap reached",
             };
         }
-        this.recruitService.join(userId, recruitId);
+        this.recruitService.join(joinRecruitDto);
         return {
             statusCode: 201,
         };
     }
 
+    @ApiOperation({ summary: "모집 상세", description: "모집 상세내용을 가져온다" })
     @Get(":id")
     async getOne(@Param("id") recruitId: number, @Req() request: Request) {
         const jwtString = request.headers["authorization"].split("Bearer")[1].trim();

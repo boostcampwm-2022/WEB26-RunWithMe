@@ -11,7 +11,6 @@ export const CardWrapper = styled.div`
     overflow: hidden;
     img {
         width: 100%;
-        max-height: 200px;
     }
 `;
 export const Summary = styled.div`

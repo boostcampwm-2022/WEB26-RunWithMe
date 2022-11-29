@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Header from "#components/Header/Header";
 import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
@@ -36,11 +36,13 @@ const Recruits = () => {
         setSearchContent(e.currentTarget.value);
     };
 
-    const [page, setPage] = useState(1);
+    const page = useRef(1);
 
     const incrementPage = () => {
-        setPage(page + 1);
+        page.current++;
     };
+
+    const [hasMore, setHasMore] = useState(true);
 
     const recruitQueryParams = () => {
         const param: any = {};
@@ -51,13 +53,21 @@ const Recruits = () => {
         param.maxLen = (currentDistanceFilter.max * 1000).toString();
         param.minLen = (currentDistanceFilter.min * 1000).toString();
         param.time = currentTimeFilter.max.toString();
+        param.page = page.current.toString();
 
         return param;
     };
 
     const sendRecruitFetchRequest = async () => {
         const response = await get("/recruit", recruitQueryParams());
+        if (response.data.length == 0) setHasMore(false);
         setCardList((prev) => [...prev, ...response.data]);
+        incrementPage();
+    };
+
+    const resetSearchResultCards = () => {
+        page.current = 1;
+        setCardList([]);
     };
 
     useEffect(() => {
@@ -70,8 +80,7 @@ const Recruits = () => {
             <SearchBar
                 placeholder={PLACEHOLDER.SEARCH}
                 onClick={() => {
-                    setPage(1);
-                    setCardList([]);
+                    resetSearchResultCards();
                     sendRecruitFetchRequest();
                 }}
                 content={searchContent}
@@ -119,10 +128,10 @@ const Recruits = () => {
             <InfiniteScroll
                 dataLength={cardList.length}
                 next={() => {
-                    incrementPage();
+                    if (!hasMore) return;
                     sendRecruitFetchRequest();
                 }}
-                hasMore={true}
+                hasMore={hasMore}
                 loader={<h4>Loading...</h4>}
             >
                 <RecruitList>

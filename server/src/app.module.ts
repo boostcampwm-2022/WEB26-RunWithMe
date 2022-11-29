@@ -33,6 +33,7 @@ import { CustomJwtModule } from "./common/modules/custom-jwt/custom-jwt.module";
             synchronize: true,
             logging: true,
             entities: [User, Course, Recruit, UserRecruit, HDong],
+            poolSize: 10,
         }),
         CacheModule.register<ClientOpts>({
             isGlobal: true,

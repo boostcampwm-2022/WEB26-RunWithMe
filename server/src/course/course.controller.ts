@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
+import { Body, ConflictException, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { CourseService } from "./course.service";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { GetCourseDto } from "./dto/get-course.dto";
@@ -30,11 +30,7 @@ export class CourseController {
     @Get(":id")
     async getCourseDetail(@Param("id") courseId: number) {
         if (!(await this.courseService.isExistingCourse(courseId))) {
-            return {
-                statusCode: 409,
-                error: "conflict",
-                message: "Does not exist or has been deleted",
-            };
+            throw new ConflictException("Does not exist or has been deleted");
         }
         const data = await this.courseService.getCourseDetail(courseId);
         return data;

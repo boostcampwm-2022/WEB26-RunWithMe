@@ -8,6 +8,7 @@ import useHttpPost from "#hooks/http/useHttpPost";
 import useHttpGet from "#hooks/http/useHttpGet";
 import { useEffect, useState, useCallback } from "react";
 import useShowMap from "#hooks/useShowMap";
+import { getPaceFormat } from "#utils/paceUtils";
 
 const RecruitDetail = () => {
     const { id } = useParams();
@@ -24,10 +25,6 @@ const RecruitDetail = () => {
     const [currentPpl, setCurrentPpl] = useState("현재 인원");
     const [path, setPath] = useState([]);
     const [middlePoint, setMiddlePoint] = useState({ lat: 0, lng: 0 });
-
-    const getPaceFormat = (sec: number): string => {
-        return `${parseInt(String(sec / 60))}'${sec % 60}"`;
-    };
 
     const getTimeFormat = (timeZone: string): string => {
         const date = timeZone.split("T")[0].split("-");
@@ -81,7 +78,7 @@ const RecruitDetail = () => {
         try {
             const response = await get(`/recruit/${id}`);
             setTitle(response.title);
-            setPathLength(response.pathLength / 100);
+            setPathLength(response.pathLength / 1000);
             setStartPoint(response.hDong.name);
             setPace(getPaceFormat(response.pace));
             setStartTime(getTimeFormat(response.startTime));

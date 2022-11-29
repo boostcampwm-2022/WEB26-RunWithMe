@@ -34,7 +34,7 @@ const CourseDetail = () => {
 
     const [courseTitle, setCourseTitle] = useState("제목");
     const [startPoint, setStartPoint] = useState("출발점");
-    const [totalLength, setTotalLength] = useState("총거리");
+    const [totalLength, setTotalLength] = useState(0);
     const [author, setAuthor] = useState("게시자");
 
     const [title, onChangeTitle, titleError] = useInput(recruitTitleValidator);
@@ -81,8 +81,8 @@ const CourseDetail = () => {
         try {
             const response = await get(`/course/${id}`);
             setCourseTitle(response.title);
-            setTotalLength(response.totalLength);
-            setStartPoint(response.name);
+            setTotalLength(response.pathLength / 1000);
+            setStartPoint(response.hDong.name);
             setAuthor(response.userId);
         } catch {}
     }, []);

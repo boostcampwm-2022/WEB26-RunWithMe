@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Param, Req } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, Param, Req, ConflictException } from "@nestjs/common";
 import { CreateRecruitDto } from "./dto/request/create-recruit.request";
 import { GetRecruitDto } from "./dto/request/get-recruit.request";
 import { JoinRecruitDto } from "./dto/request/join-recruit.request";
@@ -72,11 +72,7 @@ export class RecruitController {
     async getRecruitDetail(@Param("id") recruitId: number, @Req() request: Request) {
         const jwtString = request.headers["authorization"].split("Bearer")[1].trim();
         if (!(await this.recruitService.isExistingRecruit(recruitId))) {
-            return {
-                statusCode: 409,
-                error: "conflict",
-                message: "Does not exist or has been deleted",
-            };
+            throw new ConflictException("Does not exist or has been deleted");
         }
         const data = await this.recruitService.getRecruitDetail(jwtString, recruitId);
         return data;

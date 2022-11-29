@@ -1,5 +1,9 @@
 import { Type } from "class-transformer";
 import { IsNumber, IsString } from "class-validator";
+<<<<<<< HEAD
+=======
+import { IsValidDateTime } from "src/common/decorators";
+>>>>>>> develop
 import { Recruit } from "../../../common/entities/recruit.entity";
 
 export class CreateRecruitDto {

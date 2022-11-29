@@ -68,7 +68,6 @@ export class RecruitService {
     async getRecruitDetail(jwtString: string, recruitId: number) {
         const { userIdx } = this.jwtService.verifyAccessToken(jwtString);
         const data = await this.recruitRepository.findRecruitDetail(recruitId);
-        console.log(data);
         const { title, maxPpl, pace, userId, currentPpl, path, pathLength, startTime } = data;
 
         return {

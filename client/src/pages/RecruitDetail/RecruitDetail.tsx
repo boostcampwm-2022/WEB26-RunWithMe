@@ -77,7 +77,6 @@ const RecruitDetail = () => {
     const getRecruitDetail = useCallback(async () => {
         try {
             const response = await get(`/recruit/${id}`);
-            console.log(response);
             setTitle(response.title);
             setPathLength(response.pathLength / 1000);
             setStartPoint(response.hDong.name);

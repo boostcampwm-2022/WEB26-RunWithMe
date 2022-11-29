@@ -9,6 +9,7 @@ import useHttpGet from "#hooks/http/useHttpGet";
 import { useEffect, useState, useCallback } from "react";
 import useShowMap from "#hooks/useShowMap";
 import { getPaceFormat } from "#utils/paceUtils";
+import { getMiddlePoint } from "#utils/pathUtils";
 
 const RecruitDetail = () => {
     const { id } = useParams();
@@ -33,6 +34,7 @@ const RecruitDetail = () => {
             time[1]
         }분`;
     };
+
     const onSubmitJoin = async () => {
         try {
             await post("/recruit/join", {
@@ -44,6 +46,7 @@ const RecruitDetail = () => {
             alert(error.message);
         }
     };
+
     const renderMap = useCallback(
         useShowMap({
             height: `${window.innerHeight - 307}px`,
@@ -51,29 +54,9 @@ const RecruitDetail = () => {
             runningPath: path,
             level: 5,
         }).renderMap,
-        [path, middlePoint],
+        [path],
     );
-    const getMiddlePoint = (path: { lat: number; lng: number }[]) => {
-        let minLat = 90;
-        let maxLat = -90;
-        let minLng = 180;
-        let maxLng = -180;
-        for (const point of path) {
-            if (minLat > point.lat) {
-                minLat = point.lat;
-            }
-            if (maxLat < point.lat) {
-                maxLat = point.lat;
-            }
-            if (minLng > point.lng) {
-                minLng = point.lng;
-            }
-            if (maxLng < point.lng) {
-                maxLng = point.lng;
-            }
-        }
-        return { lat: (minLat + maxLat) / 2, lng: (minLng + maxLng) / 2 };
-    };
+
     const getRecruitDetail = useCallback(async () => {
         try {
             const response = await get(`/recruit/${id}`);

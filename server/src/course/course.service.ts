@@ -45,4 +45,18 @@ export class CourseService {
             };
         });
     }
+
+    async getCourseDetail(recruitId: number) {
+        const data = await this.courseRepository.findCourseDetail(recruitId);
+        const { title, path, pathLength } = data;
+        return { title, path, pathLength, hDong: data.hCode, userId: data.user.userId };
+    }
+
+    async isExistingCourse(recruitId: number): Promise<boolean> {
+        const courseEntity = await this.courseRepository.findOneById(recruitId);
+        if (courseEntity) {
+            return true;
+        }
+        return false;
+    }
 }

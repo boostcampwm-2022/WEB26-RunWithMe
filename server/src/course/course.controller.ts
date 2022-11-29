@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, ConflictException, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { CourseService } from "./course.service";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { GetCourseDto } from "./dto/get-course.dto";
@@ -25,5 +25,14 @@ export class CourseController {
             statusCode: 200,
             data: courseList,
         };
+    }
+
+    @Get(":id")
+    async getCourseDetail(@Param("id") courseId: number) {
+        if (!(await this.courseService.isExistingCourse(courseId))) {
+            throw new ConflictException("Does not exist or has been deleted");
+        }
+        const data = await this.courseService.getCourseDetail(courseId);
+        return data;
     }
 }

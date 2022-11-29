@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsNumber, IsNumberString, IsString } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
 import { IsValidDateTime } from "src/common/decorators";
 import { Recruit } from "../../../common/entities/recruit.entity";
 

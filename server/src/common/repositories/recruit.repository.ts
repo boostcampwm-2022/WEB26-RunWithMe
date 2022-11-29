@@ -11,15 +11,13 @@ export class RecruitRepository extends Repository<Recruit> {
     }
 
     async findRecruitDetail(recruitId: number) {
-        await this.findOneById(recruitId);
         return this.createQueryBuilder("recruit")
             .innerJoinAndSelect("recruit.course", "course")
+            .innerJoinAndSelect("course.hCode", "h_dong")
             .leftJoinAndSelect("recruit.userRecruits", "user_recruit")
             .innerJoinAndSelect("recruit.user", "user")
             .select([
                 "recruit.title AS title",
-                "STR_TO_DATE(recruit.startTime) AS startTime",
-                "recruit.name AS name",
                 "recruit.maxPpl AS maxPpl",
                 "recruit.pace AS pace",
                 "recruit.userId AS authorId",
@@ -28,6 +26,7 @@ export class RecruitRepository extends Repository<Recruit> {
                 "course.path AS path",
                 "course.pathLength AS pathLength",
                 "user.userId AS userId",
+                "h_dong.name",
             ])
             .where("recruit.id = :recruitId", { recruitId })
             .getRawOne();

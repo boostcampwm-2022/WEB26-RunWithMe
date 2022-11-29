@@ -1,10 +1,11 @@
 import ZoomControl from "#components/MapControl/ZoomControl/ZoomControl";
 import { LatLng } from "#types/LatLng";
 import { MapProps } from "#types/MapProps";
+import { getBounds } from "#utils/pathUtils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useZoomControl from "./useZoomControl";
 
-const useShowMap = ({ height = "100vh", center, level = 1, runningPath }: MapProps) => {
+const useShowMap = ({ height = "50vh", center, level = 1, runningPath }: MapProps) => {
     const container = useRef<HTMLDivElement>(null);
     const map = useRef<kakao.maps.Map>();
     const polyLineRef = useRef<kakao.maps.Polyline>();
@@ -17,15 +18,24 @@ const useShowMap = ({ height = "100vh", center, level = 1, runningPath }: MapPro
             center: new kakao.maps.LatLng(center.lat, center.lng),
             level,
         });
+        if (!runningPath) return;
         polyLineRef.current = new kakao.maps.Polyline({
             map: map.current,
             path,
         });
         DrawPath(runningPath);
-    }, [runningPath]);
+        const pathBounds = getBounds(runningPath);
+        const sw = new kakao.maps.LatLng(pathBounds.minLat, pathBounds.minLng);
+        const ne = new kakao.maps.LatLng(pathBounds.maxLat, pathBounds.maxLng);
+        const mapBounds = new kakao.maps.LatLngBounds(sw, ne);
+        // const bounds = map.current.LatLngBounds();
+        map.current.setBounds(mapBounds);
+    }, [runningPath, map]);
+
     const getLaMaByLatLng = (point: LatLng): kakao.maps.LatLng => {
         return new kakao.maps.LatLng(point.lat, point.lng);
     };
+
     const DrawPath = useCallback(
         async (path: { lat: number; lng: number }[] | undefined) => {
             if (!path) {

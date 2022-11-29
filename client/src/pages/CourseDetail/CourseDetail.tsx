@@ -1,6 +1,5 @@
 import Header from "#components/Header/Header";
 import Button from "#components/Button/Button";
-import useMap from "#hooks/useMap";
 import { Content, Title } from "./CourseDetail.styles";
 import Modal from "#components/Modal/Modal";
 import { useCallback, useEffect, useState } from "react";
@@ -21,8 +20,10 @@ import useStartTimeInput from "#hooks/useStartTimeInput";
 import useMaxPplInput from "#hooks/useMaxPplInput";
 import useHttpGet from "#hooks/http/useHttpGet";
 import { InputWrapper } from "#pages/SignUp/SignUp.styles";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { userState } from "#atoms/userState";
+import useShowMap from "#hooks/useShowMap";
+import { getMiddlePoint } from "#utils/pathUtils";
 
 const Buttons = styled.div`
     ${flexRowSpaceAround}
@@ -30,22 +31,27 @@ const Buttons = styled.div`
 `;
 
 const CourseDetail = () => {
-    const [userInfo] = useRecoilState(userState);
-
+    const userInfo = useRecoilValue(userState);
     const [courseTitle, setCourseTitle] = useState("제목");
     const [startPoint, setStartPoint] = useState("출발점");
     const [totalLength, setTotalLength] = useState(0);
     const [author, setAuthor] = useState("게시자");
+
+    const [path, setPath] = useState([]);
 
     const [title, onChangeTitle, titleError] = useInput(recruitTitleValidator);
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
     const { startTime, onChangeStartTime } = useStartTimeInput();
     const { maxPpl, onChangeMaxPpl } = useMaxPplInput();
 
-    const { renderMap } = useMap({
-        height: `70vh`,
-        center: { lat: 33.450701, lng: 126.570667 },
-    });
+    const renderMap = useCallback(
+        useShowMap({
+            height: `70vh`,
+            center: getMiddlePoint(path),
+            runningPath: path,
+        }).renderMap,
+        [path],
+    );
 
     const checkFormValidation = () => title && maxPpl && startTime && pace;
 
@@ -84,6 +90,7 @@ const CourseDetail = () => {
             setTotalLength(response.pathLength / 1000);
             setStartPoint(response.hDong.name);
             setAuthor(response.userId);
+            setPath(JSON.parse(response.path));
         } catch {}
     }, []);
 

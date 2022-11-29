@@ -4,20 +4,23 @@ import { GetRecruitDto } from "./dto/request/get-recruit.request";
 import { JoinRecruitDto } from "./dto/request/join-recruit.request";
 import { RecruitService } from "./recruit.service";
 import { Request } from "express";
+import { ApiOperation } from "@nestjs/swagger";
 
 @Controller("recruit")
 export class RecruitController {
     constructor(private readonly recruitService: RecruitService) {}
 
+    @ApiOperation({ summary: "모집글 조회/검색/필터 API" })
     @Get()
-    async getRecruits(@Query() queryParams: GetRecruitDto) {
-        const recruitList = await this.recruitService.getRecruitList(queryParams);
+    async getMany(@Query() queryParams: GetRecruitDto) {
+        const recruitList = await this.recruitService.getMany(queryParams);
         return {
             statusCode: 200,
             data: recruitList,
         };
     }
 
+    @ApiOperation({ summary: "모집글 등록 API" })
     @Post()
     async create(@Body() createRecruitDto: CreateRecruitDto) {
         const recruitEntity = await this.recruitService.create(createRecruitDto);
@@ -28,7 +31,8 @@ export class RecruitController {
             },
         };
     }
-    // @UseGuards(AccessGuard)
+
+    @ApiOperation({ summary: "" })
     @Post("join")
     async register(@Body() joinRecruitDto: JoinRecruitDto) {
         const recruitId = joinRecruitDto.getRecruitId();
@@ -69,12 +73,12 @@ export class RecruitController {
     }
 
     @Get(":id")
-    async getRecruitDetail(@Param("id") recruitId: number, @Req() request: Request) {
+    async getOne(@Param("id") recruitId: number, @Req() request: Request) {
         const jwtString = request.headers["authorization"].split("Bearer")[1].trim();
         if (!(await this.recruitService.isExistingRecruit(recruitId))) {
             throw new NotFoundException("Does not exist or has been deleted");
         }
-        const data = await this.recruitService.getRecruitDetail(jwtString, recruitId);
+        const data = await this.recruitService.getOne(jwtString, recruitId);
         return data;
     }
 }

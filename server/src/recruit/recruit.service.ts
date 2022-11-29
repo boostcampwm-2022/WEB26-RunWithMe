@@ -32,7 +32,7 @@ export class RecruitService {
         }
     }
 
-    async getRecruitList(queryParams: GetRecruitDto) {
+    async getMany(queryParams: GetRecruitDto) {
         if (queryParams.getQuery() === "") {
             return [];
         }
@@ -65,7 +65,7 @@ export class RecruitService {
             .map(plainToGetRecruitDto);
     }
 
-    async getRecruitDetail(jwtString: string, recruitId: number) {
+    async getOne(jwtString: string, recruitId: number) {
         const { userIdx } = this.jwtService.verifyAccessToken(jwtString);
         const data = await this.recruitRepository.findRecruitDetail(recruitId);
         return {

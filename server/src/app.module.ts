@@ -4,8 +4,6 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import * as redisStore from "cache-manager-ioredis";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { User } from "./common/entities/user.entity";
 import { Course } from "./common/entities/course.entity";
 import { Recruit } from "./common/entities/recruit.entity";
@@ -55,9 +53,7 @@ import { HttpRequestBodyModule } from "./common/interceptors/http-request/http-r
         RecruitModule,
         CourseModule,
     ],
-    controllers: [AppController],
     providers: [
-        AppService,
         {
             provide: APP_INTERCEPTOR,
             useClass: HttpRequestBodyInterceptor,

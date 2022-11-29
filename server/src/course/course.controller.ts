@@ -19,8 +19,8 @@ export class CourseController {
     }
 
     @Get()
-    async getCourses(@Query() queryParams: GetCourseDto) {
-        const courseList = await this.courseService.getCourseList(queryParams);
+    async getMany(@Query() queryParams: GetCourseDto) {
+        const courseList = await this.courseService.getMany(queryParams);
         return {
             statusCode: 200,
             data: courseList,
@@ -28,11 +28,11 @@ export class CourseController {
     }
 
     @Get(":id")
-    async getCourseDetail(@Param("id") courseId: number) {
+    async getOne(@Param("id") courseId: number) {
         if (!(await this.courseService.isExistingCourse(courseId))) {
             throw new NotFoundException("Does not exist or has been deleted");
         }
-        const data = await this.courseService.getCourseDetail(courseId);
+        const data = await this.courseService.getOne(courseId);
         return data;
     }
 }

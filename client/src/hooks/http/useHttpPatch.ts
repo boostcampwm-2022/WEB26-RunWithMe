@@ -1,5 +1,5 @@
 import useAxios from "./useAxios";
-const usePatch = () => {
+const useHttpPatch = () => {
     const { isLoading, setIsLoading, error, setError, axios } = useAxios();
 
     const patch = (url: string, data: { [key: string]: any }) => {
@@ -16,4 +16,4 @@ const usePatch = () => {
     return { isLoading, error, patch };
 };
 
-export default usePatch;
+export default useHttpPatch;

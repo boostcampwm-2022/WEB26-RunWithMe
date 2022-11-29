@@ -1,5 +1,5 @@
 import useAxios from "./useAxios";
-const useGet = () => {
+const useHttpGet = () => {
     const { isLoading, setIsLoading, error, setError, axios } = useAxios();
 
     const get = (url: string, query?: { [key: string]: any }) => {
@@ -18,4 +18,4 @@ const useGet = () => {
     return { isLoading, error, get };
 };
 
-export default useGet;
+export default useHttpGet;

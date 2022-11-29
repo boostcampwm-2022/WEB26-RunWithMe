@@ -16,7 +16,7 @@ const useAxios = () => {
     );
 
     useEffect(() => {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${userInfo.accessToken}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${userInfo.accessToken || ""}`;
     }, [userInfo]);
 
     return { isLoading, setIsLoading, error, setError, axios };

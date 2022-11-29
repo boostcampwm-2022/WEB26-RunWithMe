@@ -1,5 +1,5 @@
 import useAxios from "./useAxios";
-const useGet = () => {
+const useHttpPost = () => {
     const { isLoading, setIsLoading, error, setError, axios } = useAxios();
 
     const post = (url: string, data: { [key: string]: any }) => {
@@ -23,4 +23,4 @@ const useGet = () => {
     return { isLoading, error, post };
 };
 
-export default useGet;
+export default useHttpPost;

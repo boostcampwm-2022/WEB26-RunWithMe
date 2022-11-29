@@ -4,8 +4,6 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import * as redisStore from "cache-manager-ioredis";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { User } from "./common/entities/user.entity";
 import { Course } from "./common/entities/course.entity";
 import { Recruit } from "./common/entities/recruit.entity";
@@ -17,6 +15,9 @@ import type { ClientOpts } from "redis";
 import { RecruitModule } from "./recruit/recruit.module";
 import { CourseModule } from "./course/course.module";
 import { CustomJwtModule } from "./common/modules/custom-jwt/custom-jwt.module";
+import { APP_INTERCEPTOR } from "@nestjs/core";
+import { HttpRequestBodyInterceptor } from "./common/interceptors/http-request/http-request-body.interceptor";
+import { HttpRequestBodyModule } from "./common/interceptors/http-request/http-request-body.module";
 
 @Module({
     imports: [
@@ -33,6 +34,7 @@ import { CustomJwtModule } from "./common/modules/custom-jwt/custom-jwt.module";
             synchronize: true,
             logging: true,
             entities: [User, Course, Recruit, UserRecruit, HDong],
+            poolSize: 10,
         }),
         CacheModule.register<ClientOpts>({
             isGlobal: true,
@@ -44,13 +46,18 @@ import { CustomJwtModule } from "./common/modules/custom-jwt/custom-jwt.module";
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, "..", "..", "client", "build"),
         }),
+        HttpRequestBodyModule,
         CustomJwtModule,
         UserModule,
         AuthModule,
         RecruitModule,
         CourseModule,
     ],
-    controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: HttpRequestBodyInterceptor,
+        },
+    ],
 })
 export class AppModule {}

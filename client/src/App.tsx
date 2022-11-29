@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import NewCourse from "#pages/NewCourse/NewCourse";
 import RecruitDetail from "#pages/RecruitDetail/RecruitDetail";
 import CourseDetail from "#pages/CourseDetail/CourseDetail";
+import Mock from "#pages/Mock";
 import Recruits from "#pages/Recruits/Recruits";
 import useRefreshQuery from "#hooks/queries/useRefreshQuery";
 
@@ -26,6 +27,9 @@ function App() {
             </Route>
             <Route path="recruit">
                 <Route path=":id" element={<RecruitDetail />} />
+            </Route>
+            <Route path="mock">
+                <Route path="course" element={<Mock />} />
             </Route>
         </Routes>
     );

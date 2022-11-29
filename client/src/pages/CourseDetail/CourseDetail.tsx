@@ -21,6 +21,8 @@ import useStartTimeInput from "#hooks/useStartTimeInput";
 import useMaxPplInput from "#hooks/useMaxPplInput";
 import useHttpGet from "#hooks/http/useHttpGet";
 import { InputWrapper } from "#pages/SignUp/SignUp.styles";
+import { useRecoilState } from "recoil";
+import { userState } from "#atoms/userState";
 
 const Buttons = styled.div`
     ${flexRowSpaceAround}
@@ -28,9 +30,11 @@ const Buttons = styled.div`
 `;
 
 const CourseDetail = () => {
+    const [userInfo] = useRecoilState(userState);
+
     const [courseTitle, setCourseTitle] = useState("제목");
     const [startPoint, setStartPoint] = useState("출발점");
-    const [totalLength, setTotalLength] = useState("총거리");
+    const [totalLength, setTotalLength] = useState(0);
     const [author, setAuthor] = useState("게시자");
 
     const [title, onChangeTitle, titleError] = useInput(recruitTitleValidator);
@@ -58,8 +62,16 @@ const CourseDetail = () => {
     const onSubmitRecruit = async () => {
         if (!checkFormValidation()) return;
         try {
-            await post("/recruit", { title, courseId: id, startTime, maxPpl, pace });
-            navigate(`/recruit/${id}`);
+            const { data } = await post("/recruit", {
+                title,
+                courseId: id,
+                startTime,
+                maxPpl,
+                pace: pace.minute * 60 + pace.second,
+                userId: userInfo.userIdx,
+            });
+
+            navigate(`/recruit/${data.recruitId}`);
         } catch (error: any) {
             alert(error.message);
         }
@@ -69,8 +81,8 @@ const CourseDetail = () => {
         try {
             const response = await get(`/course/${id}`);
             setCourseTitle(response.title);
-            setTotalLength(response.totalLength);
-            setStartPoint(response.name);
+            setTotalLength(response.pathLength / 1000);
+            setStartPoint(response.hDong.name);
             setAuthor(response.userId);
         } catch {}
     }, []);

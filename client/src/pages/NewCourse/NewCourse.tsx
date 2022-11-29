@@ -46,7 +46,7 @@ const NewCourse = () => {
                 hCode,
                 name,
             });
-            navigate(`/course/${response.courseId}`);
+            navigate(`/course/${response.data.courseId}`);
         } catch (error: any) {
             alert(error.message);
         }

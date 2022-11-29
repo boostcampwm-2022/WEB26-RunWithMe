@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, NotFoundException, Param, Post, Query } from "@nestjs/common";
 import { CourseService } from "./course.service";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { GetCourseDto } from "./dto/get-course.dto";
@@ -19,11 +19,20 @@ export class CourseController {
     }
 
     @Get()
-    async getCourses(@Query() queryParams: GetCourseDto) {
-        const courseList = await this.courseService.getCourseList(queryParams);
+    async getMany(@Query() queryParams: GetCourseDto) {
+        const courseList = await this.courseService.getMany(queryParams);
         return {
             statusCode: 200,
             data: courseList,
         };
+    }
+
+    @Get(":id")
+    async getOne(@Param("id") courseId: number) {
+        if (!(await this.courseService.isExistingCourse(courseId))) {
+            throw new NotFoundException("Does not exist or has been deleted");
+        }
+        const data = await this.courseService.getOne(courseId);
+        return data;
     }
 }

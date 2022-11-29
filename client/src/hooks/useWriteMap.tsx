@@ -46,7 +46,6 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
         async (mouseEvent: kakao.maps.event.MouseEvent) => {
             if (!polyLineRef.current) return;
             const position = mouseEvent.latLng;
-            console.log(mouseEvent.latLng);
             const isRoad = await checkIsRoad(position);
             if (isRoad) {
                 const newPath = [...polyLineRef.current.getPath(), position];

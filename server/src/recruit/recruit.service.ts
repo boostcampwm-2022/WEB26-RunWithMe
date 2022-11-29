@@ -6,20 +6,33 @@ import { Recruit } from "src/common/entities/recruit.entity";
 import { UserRecruitRepository } from "src/common/repositories/user_recruit.repository";
 import { plainToGetRecruitDto } from "src/common/utils/plainToGetRecruitDto";
 import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
+import { DataSource, FindOneOptions, Repository } from "typeorm";
 @Injectable()
 export class RecruitService {
     constructor(
         private recruitRepository: RecruitRepository,
         private userRecruitRepository: UserRecruitRepository,
         private jwtService: CustomJwtService,
+        private dataSource: DataSource,
     ) {}
 
-    async create(createRecruitDto: CreateRecruitDto): Promise<Recruit> {
-        const recruitEntity = createRecruitDto.toEntity();
-        return this.recruitRepository.createOne(recruitEntity);
+    async create(createRecruitDto: CreateRecruitDto) {
+        const queryRunner = this.dataSource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+
+        try {
+            const recruitEntity = await this.recruitRepository.createOne(createRecruitDto.toEntity());
+            this.userRecruitRepository.createUserRecruit(recruitEntity.userId, recruitEntity.id);
+            return recruitEntity;
+        } catch (error: any) {
+            await queryRunner.rollbackTransaction();
+        } finally {
+            await queryRunner.release();
+        }
     }
 
-    async getRecruitList(queryParams: GetRecruitDto) {
+    async getMany(queryParams: GetRecruitDto) {
         if (queryParams.getQuery() === "") {
             return [];
         }
@@ -52,22 +65,32 @@ export class RecruitService {
             .map(plainToGetRecruitDto);
     }
 
-    async getRecruitDetail(jwtString: string, recruitId: number) {
+    async getOne(jwtString: string, recruitId: number) {
         const { userIdx } = this.jwtService.verifyAccessToken(jwtString);
         const data = await this.recruitRepository.findRecruitDetail(recruitId);
+        const { title, maxPpl, pace, userId, currentPpl, path, pathLength, startTime } = data;
+
         return {
-            ...data,
+            title,
+            maxPpl,
+            pace,
+            userId,
+            currentPpl,
+            path,
+            pathLength,
+            startTime,
+            hDong: { name: data.h_dong_name },
             isAuthor: data.authorId === userIdx,
             isParticipating: await this.isParticipating(recruitId, userIdx),
         };
     }
 
-    async isExistingRecruit(recruitId: number): Promise<number | null> {
+    async isExistingRecruit(recruitId: number): Promise<boolean> {
         const recruitEntity = await this.recruitRepository.findOneById(recruitId);
         if (recruitEntity) {
-            return recruitEntity.userId;
+            return true;
         }
-        return null;
+        return false;
     }
 
     async isParticipating(recruitId: number, userId: number): Promise<boolean> {

@@ -8,6 +8,7 @@ import useHttpPost from "#hooks/http/useHttpPost";
 import useHttpGet from "#hooks/http/useHttpGet";
 import { useEffect, useState, useCallback } from "react";
 import useShowMap from "#hooks/useShowMap";
+import { getPaceFormat } from "#utils/paceUtils";
 
 const RecruitDetail = () => {
     const { id } = useParams();
@@ -16,17 +17,14 @@ const RecruitDetail = () => {
     const { get } = useHttpGet();
     const [title, setTitle] = useState("제목");
     const [startPoint, setStartPoint] = useState("출발점");
-    const [pace, setPace] = useState("페이스ㄴ");
+    const [pathLength, setPathLength] = useState(0);
+    const [pace, setPace] = useState("페이스");
     const [startTime, setStartTime] = useState("집합 일시");
     const [author, setAuthor] = useState("게시자");
     const [maxPpl, setMaxPpl] = useState("최대 인원");
     const [currentPpl, setCurrentPpl] = useState("현재 인원");
     const [path, setPath] = useState([]);
     const [middlePoint, setMiddlePoint] = useState({ lat: 0, lng: 0 });
-
-    const getPaceFormat = (sec: number): string => {
-        return `${parseInt(String(sec / 60))}'${sec % 60}"`;
-    };
 
     const getTimeFormat = (timeZone: string): string => {
         const date = timeZone.split("T")[0].split("-");
@@ -80,7 +78,8 @@ const RecruitDetail = () => {
         try {
             const response = await get(`/recruit/${id}`);
             setTitle(response.title);
-            setStartPoint(response.name);
+            setPathLength(response.pathLength / 1000);
+            setStartPoint(response.hDong.name);
             setPace(getPaceFormat(response.pace));
             setStartTime(getTimeFormat(response.startTime));
             setAuthor(response.userId);
@@ -106,6 +105,10 @@ const RecruitDetail = () => {
                 <div>
                     <span>출발점</span>
                     <p>{startPoint}</p>
+                </div>
+                <div>
+                    <span>총거리</span>
+                    <p>{pathLength}km</p>
                 </div>
                 <div>
                     <span>페이스</span>

@@ -31,8 +31,4 @@ export class UserService {
             existsCode: false,
         };
     }
-
-    async getUserIdxByUserId(userId: string) {
-        return await this.userRepository.findUserIdxByUserId(userId);
-    }
 }

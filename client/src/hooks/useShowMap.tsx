@@ -9,7 +9,7 @@ const useShowMap = ({ height = "50vh", center, level = 1, runningPath }: MapProp
     const container = useRef<HTMLDivElement>(null);
     const map = useRef<kakao.maps.Map>();
     const polyLineRef = useRef<kakao.maps.Polyline>();
-    const [path, setPath] = useState<kakao.maps.LatLng[]>([]);
+    const [path] = useState<kakao.maps.LatLng[]>([]);
     const { zoomIn, zoomOut } = useZoomControl(map);
 
     useEffect(() => {
@@ -28,7 +28,6 @@ const useShowMap = ({ height = "50vh", center, level = 1, runningPath }: MapProp
         const sw = new kakao.maps.LatLng(pathBounds.minLat, pathBounds.minLng);
         const ne = new kakao.maps.LatLng(pathBounds.maxLat, pathBounds.maxLng);
         const mapBounds = new kakao.maps.LatLngBounds(sw, ne);
-        // const bounds = map.current.LatLngBounds();
         map.current.setBounds(mapBounds);
     }, [runningPath, map]);
 
@@ -37,17 +36,12 @@ const useShowMap = ({ height = "50vh", center, level = 1, runningPath }: MapProp
     };
 
     const DrawPath = useCallback(
-        async (path: { lat: number; lng: number }[] | undefined) => {
+        async (path: LatLng[] | undefined) => {
             if (!path) {
                 return;
             }
             if (!polyLineRef.current) return;
-            for (const point of path) {
-                const position = getLaMaByLatLng(point);
-                const newPath = [...polyLineRef.current.getPath(), position];
-                setPath(newPath);
-                polyLineRef.current.setPath(newPath);
-            }
+            polyLineRef.current.setPath(path.map((point) => getLaMaByLatLng(point)));
         },
         [polyLineRef],
     );

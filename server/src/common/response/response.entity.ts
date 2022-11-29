@@ -2,56 +2,75 @@ import { ApiProperty } from "@nestjs/swagger";
 import { ResponseStatus } from "src/common/response/response.status";
 import { Exclude, Expose } from "class-transformer";
 
-export class ResponseEntity<T> {
-    @Exclude() private readonly _statusCode: string;
-    @Exclude() private readonly _message: string;
-    @Exclude() private readonly _data: T;
+export class ResponseEntity {
+    @Exclude() private readonly _statusCode: number;
+    @Exclude() private readonly _data?: any;
+    @Exclude() private readonly _error?: string;
+    @Exclude() private readonly _message?: string;
 
-    private constructor(status: ResponseStatus, message: string, data: T) {
-        this._statusCode = ResponseStatus[status];
+    private constructor(status: ResponseStatus);
+    private constructor(status: ResponseStatus, data: any);
+    private constructor(status: ResponseStatus, data: any, error: string, message: string);
+    private constructor(status?: ResponseStatus, data?: any, error?: string, message?: string) {
+        this._statusCode = status;
+        this._data = Array.isArray(data) ? [...data] : typeof data === "object" ? { ...data } : undefined;
+        this._error = error;
         this._message = message;
-        this._data = data;
     }
 
-    static OK(): ResponseEntity<string> {
-        return new ResponseEntity<string>(ResponseStatus.OK, "", "");
+    static OK(): ResponseEntity {
+        return new ResponseEntity(ResponseStatus.OK);
     }
 
-    static OK_WITH<T>(data: T): ResponseEntity<T> {
-        return new ResponseEntity<T>(ResponseStatus.OK, "", data);
+    static OK_WITH_DATA(data: any): ResponseEntity {
+        return new ResponseEntity(ResponseStatus.OK, data);
     }
 
-    static ERROR(): ResponseEntity<string> {
-        return new ResponseEntity<string>(ResponseStatus.SERVER_ERROR, "서버 에러가 발생했습니다.", "");
+    static CREATED(): ResponseEntity {
+        return new ResponseEntity(ResponseStatus.CREATED);
     }
 
-    static ERROR_WITH(message: string, code: ResponseStatus = ResponseStatus.SERVER_ERROR): ResponseEntity<string> {
-        return new ResponseEntity<string>(code, message, "");
+    static CREATED_WITH_DATA(data: any): ResponseEntity {
+        return new ResponseEntity(ResponseStatus.CREATED, data);
     }
 
-    static ERROR_WITH_DATA<T>(
-        message: string,
-        code: ResponseStatus = ResponseStatus.SERVER_ERROR,
-        data: T,
-    ): ResponseEntity<T> {
-        return new ResponseEntity<T>(code, message, data);
+    static BAD_REQUEST(message: string): ResponseEntity {
+        return new ResponseEntity(ResponseStatus.BAD_REQUEST, undefined, "Bad Request", message);
+    }
+
+    static UNAUTHORIZED(message = "로그인이 필요한 서비스입니다"): ResponseEntity {
+        return new ResponseEntity(ResponseStatus.UNAUTHORIZED, undefined, "UnAuthorized", message);
+    }
+
+    static NOT_FOUND(message: string): ResponseEntity {
+        return new ResponseEntity(ResponseStatus.NOT_FOUND, undefined, "Not Found", message);
+    }
+
+    static LOCKED(message: string): ResponseEntity {
+        return new ResponseEntity(ResponseStatus.LOCKED, undefined, "Locked", message);
     }
 
     @ApiProperty()
     @Expose()
-    get statusCode(): string {
+    get statusCode(): number {
         return this._statusCode;
+    }
+
+    @ApiProperty()
+    @Expose()
+    get data(): any {
+        return this._data;
+    }
+
+    @ApiProperty()
+    @Expose()
+    get error(): string {
+        return this._error;
     }
 
     @ApiProperty()
     @Expose()
     get message(): string {
         return this._message;
-    }
-
-    @ApiProperty()
-    @Expose()
-    get data(): T {
-        return this._data;
     }
 }

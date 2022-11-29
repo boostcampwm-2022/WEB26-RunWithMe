@@ -18,6 +18,7 @@ export class RecruitRepository extends Repository<Recruit> {
             .innerJoinAndSelect("recruit.user", "user")
             .select([
                 "recruit.title AS title",
+                "recruit.startTime AS startTime",
                 "recruit.maxPpl AS maxPpl",
                 "recruit.pace AS pace",
                 "recruit.userId AS authorId",

@@ -11,7 +11,8 @@ import RecruitDetail from "#pages/RecruitDetail/RecruitDetail";
 import CourseDetail from "#pages/CourseDetail/CourseDetail";
 import useGet from "#hooks/http/useHttpGet";
 import { TIME } from "#constants/time";
-import Mock from "#pages/Mock";
+import MockCourses from "#pages/MockCourses";
+import MockRecruits from "#pages/MockRecruits";
 import Recruits from "#pages/Recruits/Recruits";
 
 function App() {
@@ -59,7 +60,8 @@ function App() {
                 <Route path=":id" element={<RecruitDetail />} />
             </Route>
             <Route path="mock">
-                <Route path="course" element={<Mock />} />
+                <Route path="courses" element={<MockCourses />} />
+                <Route path="recruits" element={<MockRecruits />} />
             </Route>
         </Routes>
     );

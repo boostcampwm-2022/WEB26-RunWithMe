@@ -60,4 +60,10 @@ export class CourseService {
         }
         return false;
     }
+
+    async getCount() {
+        const courseCount = await this.courseRepository.countAll();
+        console.log(courseCount);
+        return courseCount;
+    }
 }

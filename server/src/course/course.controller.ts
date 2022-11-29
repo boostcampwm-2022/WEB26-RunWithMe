@@ -1,4 +1,5 @@
 import { Body, Controller, Get, NotFoundException, Param, Post, Query } from "@nestjs/common";
+import { count } from "console";
 import { CourseService } from "./course.service";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { GetCourseDto } from "./dto/get-course.dto";
@@ -24,6 +25,14 @@ export class CourseController {
         return {
             statusCode: 200,
             data: courseList,
+        };
+    }
+    @Get("count")
+    async getCount() {
+        const courseCount = await this.courseService.getCount();
+        return {
+            statusCode: 200,
+            data: courseCount,
         };
     }
 

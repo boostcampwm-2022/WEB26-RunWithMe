@@ -62,7 +62,7 @@ const CourseDetail = () => {
     const onSubmitRecruit = async () => {
         if (!checkFormValidation()) return;
         try {
-            const data = await post("/recruit", {
+            const { data } = await post("/recruit", {
                 title,
                 courseId: id,
                 startTime,
@@ -71,7 +71,7 @@ const CourseDetail = () => {
                 userId: userInfo.userIdx,
             });
 
-            navigate(`/recruit/${data.data.recruitId}`);
+            navigate(`/recruit/${data.recruitId}`);
         } catch (error: any) {
             alert(error.message);
         }

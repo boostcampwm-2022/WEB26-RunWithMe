@@ -69,7 +69,7 @@ const CourseDetail = () => {
         try {
             const response = await get(`/course/${id}`);
             setCourseTitle(response.title);
-            setTotalLength(response.pathLength / 100);
+            setTotalLength(response.pathLength / 1000);
             setStartPoint(response.hDong.name);
             setAuthor(response.userId);
         } catch {}

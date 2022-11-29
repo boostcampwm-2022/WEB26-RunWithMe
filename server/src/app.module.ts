@@ -17,6 +17,9 @@ import type { ClientOpts } from "redis";
 import { RecruitModule } from "./recruit/recruit.module";
 import { CourseModule } from "./course/course.module";
 import { CustomJwtModule } from "./common/modules/custom-jwt/custom-jwt.module";
+import { APP_INTERCEPTOR } from "@nestjs/core";
+import { HttpRequestBodyInterceptor } from "./common/interceptors/http-request/http-request-body.interceptor";
+import { HttpRequestBodyModule } from "./common/interceptors/http-request/http-request-body.module";
 
 @Module({
     imports: [
@@ -45,6 +48,7 @@ import { CustomJwtModule } from "./common/modules/custom-jwt/custom-jwt.module";
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, "..", "..", "client", "build"),
         }),
+        HttpRequestBodyModule,
         CustomJwtModule,
         UserModule,
         AuthModule,
@@ -52,6 +56,12 @@ import { CustomJwtModule } from "./common/modules/custom-jwt/custom-jwt.module";
         CourseModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: HttpRequestBodyInterceptor,
+        },
+    ],
 })
 export class AppModule {}

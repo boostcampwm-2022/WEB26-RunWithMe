@@ -68,8 +68,18 @@ export class RecruitService {
     async getRecruitDetail(jwtString: string, recruitId: number) {
         const { userIdx } = this.jwtService.verifyAccessToken(jwtString);
         const data = await this.recruitRepository.findRecruitDetail(recruitId);
+        const { title, maxPpl, pace, userId, currentPpl, path, pathLength, startTime } = data;
+
         return {
-            ...data,
+            title,
+            maxPpl,
+            pace,
+            userId,
+            currentPpl,
+            path,
+            pathLength,
+            startTime,
+            hDong: { name: data.h_dong_name },
             isAuthor: data.authorId === userIdx,
             isParticipating: await this.isParticipating(recruitId, userIdx),
         };

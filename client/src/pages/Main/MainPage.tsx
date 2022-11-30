@@ -5,8 +5,8 @@ import CourseCard from "#components/Card/CourseCard/CourseCard";
 import { CarouselWrapper, ListTitle, MainPageContainer, TitleWrapper } from "./MainPage.styles";
 import RecruitTextCard from "#components/Card/RecruitTextCard/RecruitTextCard";
 import useCoursesQuery from "#hooks/queries/useCoursesQuery";
-import { recruit } from "./MainPage.data";
 import { useEffect } from "react";
+import useRecruitsQuery from "#hooks/queries/useRecruitsQuery";
 
 const settings: Settings = {
     centerMode: true,
@@ -17,10 +17,10 @@ const settings: Settings = {
 };
 
 const MainPage = () => {
-    const { data: course, isLoading } = useCoursesQuery();
-
-    if (isLoading) return <div>Loading...</div>;
-    if (!course) return <div>404</div>;
+    const { data: course, isLoading: coursesLoading } = useCoursesQuery();
+    const { data: recruit, isLoading: recruitsLoading } = useRecruitsQuery();
+    if (coursesLoading || recruitsLoading) return <div>Loading...</div>;
+    if (!course || !recruit) return <div>404</div>;
 
     return (
         <>
@@ -29,7 +29,7 @@ const MainPage = () => {
                 <div>
                     <TitleWrapper>
                         <ListTitle>코스 목록</ListTitle>
-                        <MoreButton to="/course" />
+                        <MoreButton to="/courses" />
                     </TitleWrapper>
                     <CarouselWrapper>
                         <Slider {...settings}>
@@ -42,11 +42,11 @@ const MainPage = () => {
                 <div>
                     <TitleWrapper>
                         <ListTitle>모집 목록</ListTitle>
-                        <MoreButton to="recruit" />
+                        <MoreButton to="recruits" />
                     </TitleWrapper>
                     <CarouselWrapper>
                         <Slider {...settings}>
-                            {new Array(10).fill(recruit).map((r, idx) => (
+                            {recruit.data.map((r: any, idx: any) => (
                                 <RecruitTextCard data={r} key={idx} />
                             ))}
                         </Slider>

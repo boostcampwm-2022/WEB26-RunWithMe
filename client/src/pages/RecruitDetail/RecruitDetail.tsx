@@ -15,12 +15,14 @@ const RecruitDetail = () => {
 
     const { data, isLoading } = useRecruitDetailQuery(Number(id));
     const { post } = useHttpPost<null, { recruitId: string }>();
-    post("/recruit/join", { recruitId: String(id) });
+
+    if (isLoading) return <div>Loading...</div>;
+    if (!data) return <div>404</div>;
     const renderMap = useCallback(
         useShowMap({
             height: `${window.innerHeight - 307}px`,
-            center: getMiddlePoint(typeof data?.course.path === "string" ? JSON.parse(data?.course.path || `[]`) : []),
-            runningPath: typeof data?.course.path === "string" ? JSON.parse(data?.course.path || `[]`) : [],
+            center: getMiddlePoint(data.path),
+            runningPath: data.path,
             level: 5,
         }).renderMap,
         [data],
@@ -32,9 +34,6 @@ const RecruitDetail = () => {
         } catch {}
     }, []);
 
-    if (isLoading) return <div>Loading...</div>;
-    if (!data) return <div>404</div>;
-
     return (
         <>
             <Header text="모집 상세"></Header>
@@ -43,11 +42,11 @@ const RecruitDetail = () => {
             <Content>
                 <div>
                     <span>출발점</span>
-                    <p>{data.course.hDong.name}</p>
+                    <p>{data.hDong.name}</p>
                 </div>
                 <div>
                     <span>총거리</span>
-                    <p>{data.course.pathLength}km</p>
+                    <p>{data.pathLength}km</p>
                 </div>
                 <div>
                     <span>페이스</span>

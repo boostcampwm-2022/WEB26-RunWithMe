@@ -37,7 +37,7 @@ const NewCourse = () => {
             const regions = await query({ x, y });
             // [0]: BCode, [1]: HCode
             const { code: hCode, region_3depth_name: name } = regions.documents[1];
-            const response = await post("/course", {
+            const response: any = await post("/course", {
                 title,
                 path: path.map(getLatLngByXY),
                 img,

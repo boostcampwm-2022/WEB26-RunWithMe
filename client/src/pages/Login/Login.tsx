@@ -29,7 +29,7 @@ const Login = () => {
     const onSubmitLogin = async () => {
         if (!checkFormValidation()) return;
         try {
-            const response = await post("/auth/login", { userId, password });
+            const response: any = await post("/auth/login", { userId, password });
             setUserInfo(response.data);
             navigate("/");
         } catch (error: any) {

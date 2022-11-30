@@ -1,14 +1,14 @@
-import { LatLng } from "#types/LatLng";
-
-const getLatLngByPoint = (point: kakao.maps.LatLng): LatLng => {
-    return { lat: point.getLat(), lng: point.getLng() };
+export const getMiddlePoint = (path: { lat: number; lng: number }[]) => {
+    const bounds = getBounds(path);
+    return { lat: (bounds.minLat + bounds.maxLat) / 2, lng: (bounds.minLng + bounds.maxLng) / 2 };
 };
 
-export const getMiddlePoint = (path: { lat: number; lng: number }[]) => {
+export const getBounds = (path: { lat: number; lng: number }[]) => {
     let minLat = 90;
     let maxLat = -90;
     let minLng = 180;
     let maxLng = -180;
+
     for (const point of path) {
         if (minLat > point.lat) {
             minLat = point.lat;
@@ -23,7 +23,11 @@ export const getMiddlePoint = (path: { lat: number; lng: number }[]) => {
             maxLng = point.lng;
         }
     }
-    return { lat: (minLat + maxLat) / 2, lng: (minLng + maxLng) / 2 };
-};
 
-export default getLatLngByPoint;
+    return {
+        minLat,
+        maxLat,
+        minLng,
+        maxLng,
+    };
+};

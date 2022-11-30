@@ -1,26 +1,19 @@
+import { AxiosResponse } from "axios";
 import useAxios from "./useAxios";
-const useGet = () => {
-    const { isLoading, setIsLoading, error, setError, axios } = useAxios();
+const useHttpPost = <Res = any, Req = any>() => {
+    const { axios } = useAxios();
 
-    const post = (url: string, data: { [key: string]: any }) => {
-        setError(null);
-        setIsLoading(true);
+    const post = (url: string, data: Req): Promise<AxiosResponse<Res>> => {
         return axios
             .post(url, data)
             .then((res) => {
-                setIsLoading(false);
-                const data = res.data;
-                if (data.statusCode >= 400) {
-                    throw new Error(data.message);
-                }
                 return res.data;
             })
             .catch((error) => {
-                setError(error);
                 throw error;
             });
     };
-    return { isLoading, error, post };
+    return { post };
 };
 
-export default useGet;
+export default useHttpPost;

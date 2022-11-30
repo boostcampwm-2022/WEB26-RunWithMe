@@ -12,17 +12,16 @@ import PaceInput from "#components/Input/PaceInput/PaceInput";
 import useHttpPost from "#hooks/http/useHttpPost";
 import { Address } from "#types/Address";
 import AddressSearchInput from "#components/Input/AddressSearchInput/AddressSearchInput";
-import useAuth from "#hooks/useAuth";
+import PostUserBody from "#types/dto/PostUserBody";
 
 const SignUp = () => {
-    useAuth(false);
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
     const [password, onChangePassword, passwordError] = useInput(passwordValidator);
     const [region, setRegion] = useState<Address | null>(null);
     const [confirmPassword, onChangeConfirmPassword, confirmPasswordError] = useInput(
         confirmPasswordValidator(String(password)),
     );
-    const { post } = useHttpPost();
+    const { post } = useHttpPost<null, PostUserBody>();
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
     const navigate = useNavigate();
 
@@ -30,7 +29,12 @@ const SignUp = () => {
 
     const onSubmitSignUp = async () => {
         if (!checkFormValidation()) return;
-        const userInfo = { userId, password, hCode: region?.address.h_code, pace: pace.minute * 60 + pace.second };
+        const userInfo: PostUserBody = {
+            userId: userId as string,
+            password: password as string,
+            hCode: (region && region.address.h_code) || "",
+            pace: pace.minute * 60 + pace.second,
+        };
         try {
             await post("/user", userInfo);
             navigate("/", { replace: true });

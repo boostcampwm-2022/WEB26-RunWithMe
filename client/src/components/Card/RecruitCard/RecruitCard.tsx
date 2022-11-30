@@ -1,5 +1,5 @@
 import { Recruit } from "#types/Recruit";
-import { getDisplayPaceString } from "#utils/stringtils";
+import { getDisplayPaceString } from "#utils/stringUtils";
 import Card from "../Card";
 import { LOCATION_ICON, RULER_ICON, RUNNING_ICON, USER_ICON } from "#assets/icons";
 import { CardTitle, PeopleWrapper, SummaryBody, SummaryHead, UserIdLabel } from "../Card.styles";

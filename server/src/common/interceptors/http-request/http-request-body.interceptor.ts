@@ -8,12 +8,18 @@ export class HttpRequestBodyInterceptor implements NestInterceptor {
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest();
-        const accessToken = request.headers["authorization"];
+        let accessToken = request.headers["authorization"];
 
         if (accessToken) {
             try {
+                accessToken = accessToken.split("Bearer")[1].trim();
                 const { userIdx } = this.jwtService.verifyAccessToken(accessToken);
-                request.body.userId = userIdx;
+                if (request.method === "GET") {
+                    request.params.userId = userIdx;
+                }
+                if (request.method === "POST") {
+                    request.body.userId = userIdx;
+                }
             } catch (err) {}
         }
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Param, Req, NotFoundException } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, Param } from "@nestjs/common";
 import { CreateRecruitReqDto } from "./dto/request/create.request";
 import { GetRecruitDto } from "./dto/request/get-many.request";
 import { JoinRecruitDto } from "./dto/request/join-recruit.request";
@@ -56,7 +56,6 @@ export class RecruitController {
     @ApiOperation({ summary: "모집 상세", description: "모집 상세내용을 가져온다" })
     @Get(":id")
     async getOne(@Param("id") recruitId: number, @Param("userId") userId: number) {
-        console.log(userId);
         if (!(await this.recruitService.isExistingRecruit(recruitId))) {
             return ResponseEntity.NOT_FOUND("존재하지 않는 게시글입니다");
         }

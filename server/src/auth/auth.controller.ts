@@ -1,11 +1,10 @@
-import { Body, Controller, flatten, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import { LoginUserReqDto } from "./dto/request/login-user.request";
-import { plainToClass } from "class-transformer";
 import { AccessGuard } from "src/common/guards/access.guard";
 import { RefreshGuard } from "src/common/guards/refresh.guard";
-import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 
 @Controller("auth")
 @ApiTags("인증/인가 관리")

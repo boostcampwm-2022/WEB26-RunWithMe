@@ -12,11 +12,9 @@ import PaceInput from "#components/Input/PaceInput/PaceInput";
 import useHttpPost from "#hooks/http/useHttpPost";
 import { Address } from "#types/Address";
 import AddressSearchInput from "#components/Input/AddressSearchInput/AddressSearchInput";
-import useAuth from "#hooks/useAuth";
 import PostUserBody from "#types/dto/PostUserBody";
 
 const SignUp = () => {
-    useAuth(false);
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
     const [password, onChangePassword, passwordError] = useInput(passwordValidator);
     const [region, setRegion] = useState<Address | null>(null);

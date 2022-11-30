@@ -2,7 +2,7 @@ import React from "react";
 import SignUp from "#pages/SignUp/SignUp";
 import Login from "#pages/Login/Login";
 import MenuPage from "#pages/Menu/MenuPage";
-import MainPage from "#pages/Main2/MainPage";
+import MainPage from "#pages/Main/MainPage";
 import Courses from "#pages/Courses/Courses";
 import { Route, Routes } from "react-router-dom";
 import NewCourse from "#pages/NewCourse/NewCourse";

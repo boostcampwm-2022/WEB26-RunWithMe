@@ -4,7 +4,9 @@ import Slider, { Settings } from "react-slick";
 import CourseCard from "#components/Card/CourseCard/CourseCard";
 import { CarouselWrapper, ListTitle, MainPageContainer, TitleWrapper } from "./MainPage.styles";
 import RecruitTextCard from "#components/Card/RecruitTextCard/RecruitTextCard";
-import { course, recruit } from "./MainPage.data";
+import useCoursesQuery from "#hooks/queries/useCoursesQuery";
+import { recruit } from "./MainPage.data";
+import { useEffect } from "react";
 
 const settings: Settings = {
     centerMode: true,
@@ -15,6 +17,11 @@ const settings: Settings = {
 };
 
 const MainPage = () => {
+    const { data: course, isLoading } = useCoursesQuery();
+
+    if (isLoading) return <div>Loading...</div>;
+    if (!course) return <div>404</div>;
+
     return (
         <>
             <Header isMain={true} text="RunWithMe" />
@@ -26,7 +33,7 @@ const MainPage = () => {
                     </TitleWrapper>
                     <CarouselWrapper>
                         <Slider {...settings}>
-                            {new Array(10).fill(course).map((c, idx) => (
+                            {course.data.map((c: any, idx: any) => (
                                 <CourseCard data={c} key={idx} />
                             ))}
                         </Slider>

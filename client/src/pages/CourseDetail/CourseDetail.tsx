@@ -1,9 +1,8 @@
 import Header from "#components/Header/Header";
 import Button from "#components/Button/Button";
-import useMap from "#hooks/useMap";
 import { Content, Title } from "./CourseDetail.styles";
 import Modal from "#components/Modal/Modal";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Input from "#components/Input/Input";
 import { COLOR } from "styles/color";
 import styled from "styled-components";
@@ -20,8 +19,10 @@ import MaxPplInput from "#components/Input/MaxPplInput/MaxPplInput";
 import useStartTimeInput from "#hooks/useStartTimeInput";
 import useMaxPplInput from "#hooks/useMaxPplInput";
 import { InputWrapper } from "#pages/SignUp/SignUp.styles";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { userState } from "#atoms/userState";
+import useShowMap from "#hooks/useShowMap";
+import { getMiddlePoint } from "#utils/pathUtils";
 import useCourseDetailQuery from "#hooks/queries/useCourseDetailQuery";
 
 const Buttons = styled.div`
@@ -30,20 +31,23 @@ const Buttons = styled.div`
 `;
 
 const CourseDetail = () => {
-    const [userInfo] = useRecoilState(userState);
-
     const { id } = useParams();
     const { data, isLoading } = useCourseDetailQuery(Number(id));
+    const userInfo = useRecoilValue(userState);
 
     const [title, onChangeTitle, titleError] = useInput(recruitTitleValidator);
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
     const { startTime, onChangeStartTime } = useStartTimeInput();
     const { maxPpl, onChangeMaxPpl } = useMaxPplInput();
 
-    const { renderMap } = useMap({
-        height: `70vh`,
-        center: { lat: 33.450701, lng: 126.570667 },
-    });
+    const renderMap = useCallback(
+        useShowMap({
+            height: `70vh`,
+            center: getMiddlePoint(typeof data?.path === "string" ? JSON.parse(data?.path || `[]`) : []),
+            runningPath: typeof data?.path === "string" ? JSON.parse(data?.path || `[]`) : [],
+        }).renderMap,
+        [data],
+    );
 
     const checkFormValidation = () => title && maxPpl && startTime && pace;
 

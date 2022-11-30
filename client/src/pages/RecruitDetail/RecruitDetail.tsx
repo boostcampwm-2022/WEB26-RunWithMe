@@ -1,43 +1,40 @@
-import Header from "#components/Header/Header";
-import Button from "#components/Button/Button";
-import { Content, Title } from "../RecruitDetail.styles";
 import { useParams } from "react-router-dom";
 import useHttpPost from "#hooks/http/useHttpPost";
 import { useCallback } from "react";
 import useShowMap from "#hooks/useShowMap";
-import { getPaceFormat } from "#utils/paceUtils";
 import useRecruitDetailQuery from "#hooks/queries/useRecruitDetailQuery";
-import { getTimeFormat } from "#utils/stringUtils";
 import { getMiddlePoint } from "#utils/mapUtils";
+import Header from "#components/Header/Header";
+import { Content, Title } from "#pages/RecruitDetail.styles";
+import { getTimeFormat } from "#utils/stringUtils";
+import { getPaceFormat } from "#utils/paceUtils";
+import Button from "#components/Button/Button";
 
 const RecruitDetail = () => {
     const { id } = useParams();
-    const { post } = useHttpPost();
-
-    const onSubmitJoin = async () => {
-        try {
-            await post("/recruit/join", {
-                recruitId: id,
-            });
-            alert("참여 완료");
-        } catch (error: any) {
-            alert(error.message);
-        }
-    };
 
     const { data, isLoading } = useRecruitDetailQuery(Number(id));
-
+    const { post } = useHttpPost<null, { recruitId: string }>();
+    post("/recruit/join", { recruitId: String(id) });
     const renderMap = useCallback(
         useShowMap({
             height: `${window.innerHeight - 307}px`,
-            center: getMiddlePoint(data?.course.path || []),
-            runningPath: data?.course.path,
+            center: getMiddlePoint(typeof data?.course.path === "string" ? JSON.parse(data?.course.path || `[]`) : []),
+            runningPath: typeof data?.course.path === "string" ? JSON.parse(data?.course.path || `[]`) : [],
             level: 5,
         }).renderMap,
         [data],
     );
+
+    const onSubmitJoin = useCallback(async () => {
+        try {
+            await post("/recruit/join", { recruitId: String(id) });
+        } catch {}
+    }, []);
+
     if (isLoading) return <div>Loading...</div>;
     if (!data) return <div>404</div>;
+
     return (
         <>
             <Header text="모집 상세"></Header>

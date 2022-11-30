@@ -1,5 +1,5 @@
 import useAxios from "./useAxios";
-const useHttpGet = <Res>() => {
+const useHttpGet = <Res = any>() => {
     const { axios } = useAxios();
 
     const get = (url: string, query?: { [key: string]: any }): Promise<Res> => {

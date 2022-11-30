@@ -5,9 +5,11 @@ import { useRecoilValue } from "recoil";
 
 /**
  * @param {boolean} withAuth - true: 로그인된 유저만 접근 가능 / false: 로그인된 유저는 접근 불가능
+ * 잠시 닫아둘게용
  */
 const useAuth = (withAuth = true) => {
     const user = useRecoilValue(userState);
+    console.log(withAuth);
     // const navigate = useNavigate();
     // useEffect(() => {
     //     if (withAuth && !user.accessToken) {

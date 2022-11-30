@@ -1,7 +1,7 @@
-interface AuthRefreshRes {
+interface UserInfo {
     accessToken: string;
     userId: string;
     userIdx: number;
 }
 
-export default AuthRefreshRes;
+export default UserInfo;

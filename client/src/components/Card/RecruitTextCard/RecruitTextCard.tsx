@@ -1,6 +1,6 @@
 import DetailLabel from "#components/DetailLabel/DetailLabel";
 import { Recruit } from "#types/Recruit";
-import { getDisplayPaceString } from "#utils/stringtils";
+import { getDisplayPaceString } from "#utils/stringUtils";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 

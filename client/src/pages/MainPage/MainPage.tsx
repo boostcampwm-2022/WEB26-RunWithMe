@@ -27,11 +27,9 @@ const MainPage = () => {
     const handleRecruitsClick = () => {
         navigate("/recruits");
     };
-
     const handleMainPage = () => {
         navigate("/main");
     };
-
     const handleCourseMockClick = () => {
         navigate("/mock/course");
     };

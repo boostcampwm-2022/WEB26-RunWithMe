@@ -1,8 +1,8 @@
 import { Body, Controller, Get, NotFoundException, Param, Post, Query } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CourseService } from "./course.service";
-import { CreateCourseDto } from "./dto/create-course.dto";
-import { GetCourseDto } from "./dto/get-course.dto";
+import { CreateCourseDto } from "./dto/request/create-course.dto";
+import { GetCourseDto } from "./dto/request/get-course.dto";
 
 @Controller("course")
 @ApiTags("코스 관리")

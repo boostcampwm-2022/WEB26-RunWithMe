@@ -1,4 +1,4 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor, RequestTimeoutException } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
 
@@ -13,7 +13,13 @@ export class HttpRequestBodyInterceptor implements NestInterceptor {
         if (accessToken) {
             try {
                 const { userIdx } = this.jwtService.verifyAccessToken(accessToken);
-                request.body.userId = userIdx;
+                if (request.method === "GET") {
+                    request.params.userId = userIdx;
+                }
+
+                if (request.method === "POST") {
+                    request.body.userId = userIdx;
+                }
             } catch (err) {}
         }
 

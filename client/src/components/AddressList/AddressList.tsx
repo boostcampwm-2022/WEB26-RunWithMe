@@ -1,17 +1,17 @@
-import { LocalData } from "#types/Local";
+import { Address } from "#types/Address";
 import { MouseEventHandler } from "react";
 import { PlaceList } from "./AddressList.styles";
 interface AddressListProps {
-    data: LocalData[];
-    onClickLocal: (local: LocalData) => MouseEventHandler;
+    data: Address[];
+    onClickAddress: (address: Address) => MouseEventHandler;
 }
 
-const AddressList = ({ data, onClickLocal }: AddressListProps) => {
+const AddressList = ({ data, onClickAddress }: AddressListProps) => {
     return (
         <PlaceList>
-            {data.map((local) => (
-                <li key={local.address.h_code} onClick={onClickLocal(local)}>
-                    {local.address_name}
+            {data.map((address) => (
+                <li key={address.address.h_code} onClick={onClickAddress(address)}>
+                    {address.address_name}
                 </li>
             ))}
         </PlaceList>

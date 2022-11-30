@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { Course } from "src/entities/course.entity";
-import { CourseRepository } from "./course.repository";
+import { Course } from "src/common/entities/course.entity";
+import { HDong } from "src/common/entities/h_dong.entity";
+import { CourseRepository } from "../common/repositories/course.repository";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { GetCourseDto } from "./dto/get-course.dto";
 
@@ -13,7 +14,7 @@ export class CourseService {
         return this.courseRepository.createOne(courseEntity);
     }
 
-    async getCourseList(queryParams: GetCourseDto) {
+    async getMany(queryParams: GetCourseDto) {
         if (queryParams.getQuery() === "") {
             return [];
         }
@@ -32,19 +33,31 @@ export class CourseService {
             queryParams.getMaxLength(),
         );
 
-        return courseList.map(({ id, title, img, path, pathLength, name, createdAt, user }) => {
+        return courseList.map(({ id, title, img, path, pathLength, createdAt, user, hCode }) => {
             return {
                 id,
                 title,
                 img,
-                path,
+                path: JSON.parse(path),
                 pathLength,
-                hDong: {
-                    name,
-                },
+                hDong: hCode,
                 createdAt,
                 user,
             };
         });
+    }
+
+    async getOne(recruitId: number) {
+        const data = await this.courseRepository.findCourseDetail(recruitId);
+        const { title, path, pathLength } = data;
+        return { title, path, pathLength, hDong: data.hCode, userId: data.user.userId };
+    }
+
+    async isExistingCourse(recruitId: number): Promise<boolean> {
+        const courseEntity = await this.courseRepository.findOneById(recruitId);
+        if (courseEntity) {
+            return true;
+        }
+        return false;
     }
 }

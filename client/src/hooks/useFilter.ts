@@ -1,15 +1,8 @@
 import { useState } from "react";
-const useFilter = (initialFilterState: string): [string, (selectedFilter: string) => void] => {
-    const [filterState, setFilterState] = useState<string>(initialFilterState);
-    /*
-        initialFilter object example
-        {
-            currentFilter : '5km 이내'
-            options: ['5km 이내', '3km 이내', '1km 이내']
-        }
-    */
-
-    const setCurrentFilterState = (selectedFilter: string) => {
+import { FilterOption } from "#types/FilterOption";
+const useFilter = (initialFilterState: FilterOption): [FilterOption, (selectedFilter: FilterOption) => void] => {
+    const [filterState, setFilterState] = useState<FilterOption>(initialFilterState);
+    const setCurrentFilterState = (selectedFilter: FilterOption) => {
         setFilterState(selectedFilter);
     };
 

@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import PlusButton from "./PlusButton";
 
 export default {
-    title: "Example/PlusButton",
+    title: "Button/PlusButton",
     component: PlusButton,
 } as ComponentMeta<typeof PlusButton>;
 

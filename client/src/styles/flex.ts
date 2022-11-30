@@ -5,6 +5,11 @@ export const flexRowSpaceBetween = css`
     justify-content: space-between;
 `;
 
+export const flexRowSpaceAround = css`
+    display: flex;
+    justify-content: space-around;
+`;
+
 export const flexRowCenter = css`
     display: flex;
     justify-content: center;

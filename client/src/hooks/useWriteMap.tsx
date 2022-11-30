@@ -16,13 +16,13 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     const [pathLength, setPathLength] = useState(0);
     const { zoomIn, zoomOut } = useZoomControl(map);
 
-    const checkIsRoad = (position: kakao.maps.LatLng) => {
+    const checkIsRoad = useCallback((position: kakao.maps.LatLng) => {
         return new Promise((resolve) =>
-            roadviewClient.getNearestPanoId(position, 10, (panoId: any) => {
+            roadviewClient.getNearestPanoId(position, 5, (panoId: any) => {
                 resolve(!!panoId);
             }),
         );
-    };
+    }, []);
 
     useEffect(() => {
         if (!container.current) return;
@@ -46,7 +46,6 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
         async (mouseEvent: kakao.maps.event.MouseEvent) => {
             if (!polyLineRef.current) return;
             const position = mouseEvent.latLng;
-            console.log(mouseEvent.latLng);
             const isRoad = await checkIsRoad(position);
             if (isRoad) {
                 const newPath = [...polyLineRef.current.getPath(), position];

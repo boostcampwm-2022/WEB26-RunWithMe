@@ -43,8 +43,8 @@ const CourseDetail = () => {
     const renderMap = useCallback(
         useShowMap({
             height: `70vh`,
-            center: getMiddlePoint(typeof data?.path === "string" ? JSON.parse(data?.path || `[]`) : []),
-            runningPath: typeof data?.path === "string" ? JSON.parse(data?.path || `[]`) : [],
+            center: getMiddlePoint(data?.path || []),
+            runningPath: data?.path || [],
         }).renderMap,
         [data],
     );

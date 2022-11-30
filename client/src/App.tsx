@@ -13,8 +13,8 @@ import Recruits from "#pages/Recruits/Recruits";
 import useRefreshQuery from "#hooks/queries/useRefreshQuery";
 
 function App() {
-    useRefreshQuery();
-
+    const { isLoading } = useRefreshQuery();
+    if (isLoading) return <div>Loading...</div>;
     return (
         <Routes>
             <Route path="/" element={<MainPage />} />

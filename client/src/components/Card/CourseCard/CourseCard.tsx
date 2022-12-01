@@ -9,7 +9,7 @@ interface CourseCardProps {
 
 const CourseCard = ({ data }: CourseCardProps) => {
     return (
-        <Card img={data.img} to={`/course/${data.id}`}>
+        <Card img={data.img} to={`/course/${data.id}`} path={data.path}>
             <CardTitle>{data.title}</CardTitle>
             <SummaryBody>
                 <div>

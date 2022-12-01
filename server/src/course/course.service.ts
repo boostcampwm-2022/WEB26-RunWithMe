@@ -18,7 +18,7 @@ export class CourseService {
             return [];
         }
 
-        if (!queryParams.getTitle() && !queryParams.getAuthor()) {
+        if (!queryParams.getTitle() && !queryParams.getAuthor() && queryParams.getQuery()) {
             return [];
         }
 

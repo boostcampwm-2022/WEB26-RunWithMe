@@ -43,6 +43,18 @@ export class RecruitRepository extends Repository<Recruit> {
         minLen?: number | undefined,
         maxLen?: number | undefined,
     ): Promise<RawRecruitData[]> {
+        console.log(
+            `
+            page: ${page}
+            pageSize: ${pageSize}
+            query: ${query}
+            title: ${title}
+            author: ${author}
+            hour: ${hour}
+            minLen: ${minLen}
+            maxLen: ${maxLen}
+            `,
+        );
         return this.createQueryBuilder("recruit")
             .innerJoinAndSelect("recruit.course", "course")
             .innerJoinAndSelect("course.user", "u")

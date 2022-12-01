@@ -46,6 +46,6 @@ export class CourseController {
             throw new NotFoundException("Does not exist or has been deleted");
         }
         const data = await this.courseService.getOne(courseId);
-        return data;
+        return { statusCode: 200, data };
     }
 }

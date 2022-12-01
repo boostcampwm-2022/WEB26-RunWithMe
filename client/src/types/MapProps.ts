@@ -11,5 +11,5 @@ export interface MapProps {
      * 숫자가 작을수록 zoom-in
      */
     level?: number;
-    runningPath?: { lat: number; lng: number }[];
+    runningPath?: LatLng[];
 }

@@ -8,8 +8,7 @@ const useHttpGet = <Res = any>() => {
                 params: query,
             })
             .then((res) => {
-                const data: Res = res.data;
-                return data;
+                return res.data;
             });
     };
     return { get };

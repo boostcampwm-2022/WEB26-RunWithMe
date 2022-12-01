@@ -32,11 +32,10 @@ export class CourseService {
             queryParams.getMaxLength(),
         );
 
-        return courseList.map(({ id, title, img, path, pathLength, createdAt, user, hCode }) => {
+        return courseList.map(({ id, title, path, pathLength, createdAt, user, hCode }) => {
             return {
                 id,
                 title,
-                img,
                 path: JSON.parse(path),
                 pathLength,
                 hDong: hCode,
@@ -62,7 +61,6 @@ export class CourseService {
 
     async getCount() {
         const courseCount = await this.courseRepository.countAll();
-        console.log(courseCount);
         return courseCount;
     }
 }

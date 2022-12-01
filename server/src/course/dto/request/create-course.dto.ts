@@ -7,9 +7,6 @@ export class CreateCourseDto {
     @IsString()
     private title: string;
 
-    @IsString()
-    private img: string;
-
     @isValidPath()
     private path: LatLng[];
 
@@ -23,6 +20,6 @@ export class CreateCourseDto {
     private hCode: string;
 
     toEntity() {
-        return Course.of(this.title, this.img, this.path, this.pathLength, this.hCode, this.userId);
+        return Course.of(this.title, this.path, this.pathLength, this.hCode, this.userId);
     }
 }

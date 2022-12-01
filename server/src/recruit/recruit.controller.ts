@@ -27,7 +27,7 @@ export class RecruitController {
     async create(@Body() createRecruitDto: CreateRecruitReqDto) {
         const recruitEntity = await this.recruitService.create(createRecruitDto);
         const recruitResDto = CreateResponseDto.fromEntity(recruitEntity);
-        return ResponseEntity.OK_WITH_DATA(recruitResDto);
+        return ResponseEntity.CREATED_WITH_DATA(recruitResDto);
     }
 
     @ApiOperation({ summary: "모집 참가", description: "모집글에 참여한다" })

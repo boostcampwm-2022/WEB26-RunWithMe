@@ -18,4 +18,4 @@ jobs:
         script: |
             cd /root/runwithme
             git pull https://github.com/boostcampwm-2022/WEB26-RunWithMe.git release
-            docker-compose down && docker-compose build --no-cache && docker-compose up
+            docker-compose down && docker-compose build --no-cache && docker-compose up -d

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useHttpPost from "#hooks/http/useHttpPost";
 import { useCallback, useState } from "react";
 import useShowMap from "#hooks/useShowMap";
@@ -13,7 +13,6 @@ import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
 
 const RecruitDetail = () => {
     const { id } = useParams();
-
     const { data: recruit, isLoading } = useRecruitDetailQuery(Number(id));
     const { post } = useHttpPost<null, { recruitId: string }>();
 
@@ -34,7 +33,11 @@ const RecruitDetail = () => {
     const onSubmitJoin = useCallback(async () => {
         try {
             await post("/recruit/join", { recruitId: String(id) });
-        } catch {}
+        } catch (error: any) {
+            alert(error.message);
+        } finally {
+            window.location.reload();
+        }
     }, []);
 
     if (isLoading) return <div>Loading...</div>;

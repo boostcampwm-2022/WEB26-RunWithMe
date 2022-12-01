@@ -5,7 +5,7 @@ import { JoinRecruitDto } from "./dto/request/join-recruit.request";
 import { RecruitService } from "./recruit.service";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CreateResponseDto } from "./dto/response/create.response";
-import { ResponseEntity } from "src/common/response/response.entity";
+import { ResponseEntity } from "../common/response/response.entity";
 import { GetManyResponseDto } from "./dto/response/get-many.response";
 import { GetOneResponseDto } from "./dto/response/get-one.response";
 
@@ -27,7 +27,7 @@ export class RecruitController {
     async create(@Body() createRecruitDto: CreateRecruitReqDto) {
         const recruitEntity = await this.recruitService.create(createRecruitDto);
         const recruitResDto = CreateResponseDto.fromEntity(recruitEntity);
-        return ResponseEntity.OK_WITH_DATA(recruitResDto);
+        return ResponseEntity.CREATED_WITH_DATA(recruitResDto);
     }
 
     @ApiOperation({ summary: "모집 참가", description: "모집글에 참여한다" })

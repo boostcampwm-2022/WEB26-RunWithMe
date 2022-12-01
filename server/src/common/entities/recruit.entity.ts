@@ -1,4 +1,4 @@
-import { User } from "src/common/entities/user.entity";
+import { User } from "./user.entity";
 import {
     Column,
     CreateDateColumn,
@@ -9,8 +9,8 @@ import {
     PrimaryGeneratedColumn,
     JoinColumn,
 } from "typeorm";
-import { Course } from "./course.entity";
-import { UserRecruit } from "./user_recruit.entity";
+import { Course } from "../entities/course.entity";
+import { UserRecruit } from "../entities/user_recruit.entity";
 
 @Entity("recruit")
 export class Recruit {

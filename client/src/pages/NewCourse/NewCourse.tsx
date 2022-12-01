@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { courseTitleValidator } from "#utils/validationUtils";
 import { RegionResponse } from "#types/Region";
 import { CourseForm } from "./NewCourse.styles";
-import useAuth from "#hooks/useAuth";
 import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
 import { LOCAL_API_PATH } from "#types/LocalAPIType";
 //#endregion

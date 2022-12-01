@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useHttpPost from "#hooks/http/useHttpPost";
 import { useCallback, useState } from "react";
 import useShowMap from "#hooks/useShowMap";

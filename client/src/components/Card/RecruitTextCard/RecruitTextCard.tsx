@@ -11,6 +11,14 @@ const Card = styled.div`
     div:not(:last-child) {
         margin-bottom: 30px;
     }
+    h2 {
+        display: block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 100%;
+        margin-bottom: 12px;
+    }
 `;
 
 interface RecruitTextCardProps {
@@ -21,6 +29,7 @@ const RecruitTextCard = ({ data }: RecruitTextCardProps) => {
     const navigate = useNavigate();
     return (
         <Card onClick={() => navigate(`/recruit/${data.id}`)}>
+            <h2>{data.title}</h2>
             <DetailLabel title="출발점" value={data.course.hDong.name || ""} />
             <DetailLabel title="총거리" value={`${(data.course.pathLength / 1000).toFixed(1)}km`} />
             <DetailLabel title="페이스" value={getDisplayPaceString(data.pace)} />

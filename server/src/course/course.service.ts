@@ -49,7 +49,7 @@ export class CourseService {
     async getOne(recruitId: number) {
         const data = await this.courseRepository.findCourseDetail(recruitId);
         const { title, path, pathLength } = data;
-        return { title, path, pathLength, hDong: data.hCode, userId: data.user.userId };
+        return { title, path: JSON.parse(path), pathLength, hDong: data.hCode, userId: data.user.userId };
     }
 
     async isExistingCourse(recruitId: number): Promise<boolean> {
@@ -58,5 +58,11 @@ export class CourseService {
             return true;
         }
         return false;
+    }
+
+    async getCount() {
+        const courseCount = await this.courseRepository.countAll();
+        console.log(courseCount);
+        return courseCount;
     }
 }

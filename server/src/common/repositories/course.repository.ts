@@ -66,4 +66,7 @@ export class CourseRepository extends Repository<Course> {
         }
         return data;
     }
+    async countAll() {
+        return await this.count();
+    }
 }

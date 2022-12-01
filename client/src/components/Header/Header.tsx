@@ -16,7 +16,6 @@ const HeaderWrapper = styled.div`
     img {
         width: 24px;
         height: 24px;
-        cursor: pointer;
     }
     div {
         width: 24px;
@@ -26,14 +25,16 @@ const HeaderWrapper = styled.div`
 
 interface HeaderProps {
     text: string;
+    isMain?: boolean;
 }
 
-const Header = ({ text }: HeaderProps) => {
+const Header = ({ text, isMain = false }: HeaderProps) => {
     const navigate = useNavigate();
     const userInfo = useRecoilValue(userState);
     return (
         <HeaderWrapper>
-            <img src={ARROW_LEFT_ICON} onClick={() => navigate(-1)} />
+            {isMain ? <div /> : <img src={ARROW_LEFT_ICON} onClick={() => navigate(-1)} />}
+
             <p>{text}</p>
             <img src={USER_CIRCLE_ICON} onClick={() => navigate(userInfo.accessToken ? "/mypage" : "/login")} />
         </HeaderWrapper>

@@ -27,14 +27,13 @@ const MainPage = () => {
     const handleRecruitsClick = () => {
         navigate("/recruits");
     };
+
     const handleMainPage = () => {
         navigate("/main");
     };
+
     const handleCourseMockClick = () => {
-        navigate("/mock/courses");
-    };
-    const handleRecruitMockClick = () => {
-        navigate("/mock/recruits");
+        navigate("/mock/course");
     };
 
     return (
@@ -48,7 +47,6 @@ const MainPage = () => {
             <button onClick={handleCourseDetailClick}>코스상세 </button>
             <button onClick={handleMainPage}>메인 </button>
             <button onClick={handleCourseMockClick}>코스 더미데이터 생성</button>
-            <button onClick={handleRecruitMockClick}>모집 더미데이터 생성</button>
         </>
     );
 };

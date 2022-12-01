@@ -30,6 +30,14 @@ export class CourseController {
             data: courseList,
         };
     }
+    @Get("count")
+    async getCount() {
+        const courseCount = await this.courseService.getCount();
+        return {
+            statusCode: 200,
+            data: courseCount,
+        };
+    }
 
     @ApiOperation({ summary: "코스 상세", description: "코스 상세내용을 가져온다" })
     @Get(":id")
@@ -38,6 +46,6 @@ export class CourseController {
             throw new NotFoundException("Does not exist or has been deleted");
         }
         const data = await this.courseService.getOne(courseId);
-        return data;
+        return { statusCode: 200, data };
     }
 }

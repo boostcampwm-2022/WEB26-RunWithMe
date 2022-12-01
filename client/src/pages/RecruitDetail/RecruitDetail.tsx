@@ -14,19 +14,16 @@ import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
 const RecruitDetail = () => {
     const { id } = useParams();
 
-    const { data, isLoading } = useRecruitDetailQuery(Number(id));
+    const { data: recruit, isLoading } = useRecruitDetailQuery(Number(id));
     const { post } = useHttpPost<null, { recruitId: string }>();
 
-    if (isLoading) return <div>Loading...</div>;
-    if (!data) return <div>404</div>;
     const renderMap = useCallback(
         useShowMap({
-            height: `${window.innerHeight - 307}px`,
-            center: getMiddlePoint(data.path),
-            runningPath: data.path,
-            level: 5,
+            height: `70vh`,
+            center: getMiddlePoint(recruit?.path || []),
+            runningPath: recruit?.path || [],
         }).renderMap,
-        [data],
+        [recruit],
     );
 
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -40,36 +37,39 @@ const RecruitDetail = () => {
         } catch {}
     }, []);
 
+    if (isLoading) return <div>Loading...</div>;
+    if (!recruit) return <div>404</div>;
+
     return (
         <>
             <Header text="모집 상세"></Header>
             {renderMap()}
-            <Title>{data.title}</Title>
+            <Title>{recruit.title}</Title>
             <Content>
                 <div>
                     <span>출발점</span>
-                    <p>{data.hDong.name}</p>
+                    <p>{recruit.hDong.name}</p>
                 </div>
                 <div>
                     <span>총거리</span>
-                    <p>{data.pathLength}km</p>
+                    <p>{recruit.pathLength}km</p>
                 </div>
                 <div>
                     <span>페이스</span>
-                    <p>{getPaceFormat(data.pace)}/km</p>
+                    <p>{getPaceFormat(recruit.pace)}/km</p>
                 </div>
                 <div>
                     <span>집합 일시</span>
-                    <p>{getTimeFormat(data.startTime)}</p>
+                    <p>{getTimeFormat(recruit.startTime)}</p>
                 </div>
                 <div>
                     <span>게시자</span>
-                    <p>{data.userId}</p>
+                    <p>{recruit.userId}</p>
                 </div>
                 <div>
                     <span>참가 현황</span>
                     <p>
-                        {data.currentPpl} / {data.maxPpl}
+                        {recruit.currentPpl} / {recruit.maxPpl}
                     </p>
                 </div>
                 <Button width="fit" onClick={handleToggleConfirmModal}>

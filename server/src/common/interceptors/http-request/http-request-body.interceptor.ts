@@ -8,7 +8,7 @@ export class HttpRequestBodyInterceptor implements NestInterceptor {
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest();
-        const accessToken = request.headers["authorization"].split("Bearer")[1].trim();
+        let accessToken = request.headers["authorization"];
 
         if (accessToken) {
             try {

@@ -5,7 +5,6 @@ import CourseCard from "#components/Card/CourseCard/CourseCard";
 import { CarouselWrapper, ListTitle, MainPageContainer, TitleWrapper } from "./MainPage.styles";
 import RecruitTextCard from "#components/Card/RecruitTextCard/RecruitTextCard";
 import useCoursesQuery from "#hooks/queries/useCoursesQuery";
-import { useEffect } from "react";
 import useRecruitsQuery from "#hooks/queries/useRecruitsQuery";
 
 const settings: Settings = {

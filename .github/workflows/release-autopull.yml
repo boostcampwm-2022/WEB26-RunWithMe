@@ -16,6 +16,6 @@ jobs:
         password: ${{secrets.REMOTE_PASSWORD}}
         port: ${{secrets.REMOTE_SSH_PORT}}
         script: |
-          cd /root/runwithme
-          git pull https://${{secrets.PAT}}@github.com/boostcampwm-2022/WEB26-RunWithMe.git release
-          docker-compose restart runwithme
+            cd /root/runwithme
+            git pull https://github.com/boostcampwm-2022/WEB26-RunWithMe.git release
+            docker-compose down && docker-compose build --no-cache && docker-compose up

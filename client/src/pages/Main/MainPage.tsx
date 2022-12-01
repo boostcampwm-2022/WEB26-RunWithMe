@@ -6,6 +6,8 @@ import { CarouselWrapper, ListTitle, MainPageContainer, TitleWrapper } from "./M
 import RecruitTextCard from "#components/Card/RecruitTextCard/RecruitTextCard";
 import useCoursesQuery from "#hooks/queries/useCoursesQuery";
 import useRecruitsQuery from "#hooks/queries/useRecruitsQuery";
+import { Course } from "#types/Course";
+import { Recruit } from "#types/Recruit";
 
 const settings: Settings = {
     centerMode: true,
@@ -32,7 +34,7 @@ const MainPage = () => {
                     </TitleWrapper>
                     <CarouselWrapper>
                         <Slider {...settings}>
-                            {course.data.map((c: any, idx: any) => (
+                            {course.data.map((c: Course, idx: number) => (
                                 <CourseCard data={c} key={idx} />
                             ))}
                         </Slider>
@@ -45,7 +47,7 @@ const MainPage = () => {
                     </TitleWrapper>
                     <CarouselWrapper>
                         <Slider {...settings}>
-                            {recruit.data.map((r: any, idx: any) => (
+                            {recruit.data.map((r: Recruit, idx: number) => (
                                 <RecruitTextCard data={r} key={idx} />
                             ))}
                         </Slider>

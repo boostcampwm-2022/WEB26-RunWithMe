@@ -1,5 +1,5 @@
 import { instanceToPlain, plainToInstance, Expose, Type } from "class-transformer";
-import { Course } from "src/common/entities/course.entity";
+import { Course } from "../../../common/entities/course.entity";
 
 class LatLng {
     @Expose()

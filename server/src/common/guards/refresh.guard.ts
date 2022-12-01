@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { Observable } from "rxjs";
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
+import { CustomJwtService } from "../modules/custom-jwt/custom-jwt.service";
 
 @Injectable()
 export class RefreshGuard implements CanActivate {

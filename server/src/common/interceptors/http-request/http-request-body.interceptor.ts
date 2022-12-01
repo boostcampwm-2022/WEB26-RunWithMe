@@ -1,6 +1,6 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor, RequestTimeoutException } from "@nestjs/common";
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
+import { CustomJwtService } from "../../modules/custom-jwt/custom-jwt.service";
 
 @Injectable()
 export class HttpRequestBodyInterceptor implements NestInterceptor {

@@ -2,13 +2,12 @@ import { Injectable } from "@nestjs/common";
 import { RecruitRepository } from "../common/repositories/recruit.repository";
 import { CreateRecruitReqDto } from "./dto/request/create.request";
 import { GetRecruitDto } from "./dto/request/get-many.request";
-import { UserRecruitRepository } from "src/common/repositories/user_recruit.repository";
-import { plainToGetRecruitDto } from "src/common/utils/plainToGetRecruitDto";
-import { CustomJwtService } from "src/common/modules/custom-jwt/custom-jwt.service";
+import { UserRecruitRepository } from "../common/repositories/user_recruit.repository";
+import { plainToGetRecruitDto } from "../common/utils/plainToGetRecruitDto";
 import { DataSource } from "typeorm";
 import { plainToInstance } from "class-transformer";
 import { JoinRecruitDto } from "./dto/request/join-recruit.request";
-import { Recruit } from "src/common/entities/recruit.entity";
+import { Recruit } from "../common/entities/recruit.entity";
 @Injectable()
 export class RecruitService {
     constructor(
@@ -66,13 +65,22 @@ export class RecruitService {
             .map(plainToGetRecruitDto);
     }
 
-    async getOne(userId: number, recruitId: number) {
+    async getOne(_userId: number, recruitId: number) {
         const data = await this.recruitRepository.findRecruitDetail(recruitId);
+        const { title, maxPpl, pace, userId, currentPpl, path, pathLength, startTime } = data;
+
         return {
-            ...data,
-            path: JSON.parse(data.path),
-            isAuthor: data.authorId === userId,
-            isParticipating: await this.isParticipating(recruitId, userId),
+            title,
+            maxPpl,
+            pace,
+            userId,
+            currentPpl,
+            path: JSON.parse(path),
+            pathLength,
+            startTime,
+            hDong: { name: data.h_dong_name },
+            isAuthor: data.authorId === _userId,
+            isParticipating: await this.isParticipating(recruitId, _userId),
         };
     }
 

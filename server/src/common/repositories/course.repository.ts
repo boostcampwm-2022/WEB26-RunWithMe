@@ -48,7 +48,6 @@ export class CourseRepository extends Repository<Course> {
             .select([
                 "course.id",
                 "course.title",
-                "course.img",
                 "course.path",
                 "course.pathLength",
                 "h_dong.name",

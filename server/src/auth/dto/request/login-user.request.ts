@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsValidId, IsValidPassword } from "src/common/decorators";
+import { IsValidId, IsValidPassword } from "../../../common/decorators";
 
 export class LoginUserReqDto {
     @IsValidId()

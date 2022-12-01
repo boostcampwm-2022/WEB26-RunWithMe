@@ -1,7 +1,7 @@
 import { IsNumber, IsNumberString, IsString } from "class-validator";
-import { isValidPath } from "src/common/decorators/path.validator";
-import { LatLng } from "src/common/types/lat-lng";
-import { Course } from "src/common/entities/course.entity";
+import { isValidPath } from "../../../common/decorators/path.validator";
+import { LatLng } from "../../../common/types/lat-lng";
+import { Course } from "../../../common/entities/course.entity";
 
 export class CreateCourseDto {
     @IsString()

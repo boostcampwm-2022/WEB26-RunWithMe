@@ -5,7 +5,7 @@ import { JoinRecruitDto } from "./dto/request/join-recruit.request";
 import { RecruitService } from "./recruit.service";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CreateResponseDto } from "./dto/response/create.response";
-import { ResponseEntity } from "src/common/response/response.entity";
+import { ResponseEntity } from "../common/response/response.entity";
 import { GetManyResponseDto } from "./dto/response/get-many.response";
 import { GetOneResponseDto } from "./dto/response/get-one.response";
 

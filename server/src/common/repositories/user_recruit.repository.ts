@@ -1,4 +1,4 @@
-import { CustomRepository } from "src/common/typeorm/typeorm.decorator";
+import { CustomRepository } from "../typeorm/typeorm.decorator";
 import { Repository } from "typeorm";
 import { UserRecruit } from "../entities/user_recruit.entity";
 

@@ -2,8 +2,8 @@ import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import { LoginUserReqDto } from "./dto/request/login-user.request";
-import { AccessGuard } from "src/common/guards/access.guard";
-import { RefreshGuard } from "src/common/guards/refresh.guard";
+import { AccessGuard } from "../common/guards/access.guard";
+import { RefreshGuard } from "../common/guards/refresh.guard";
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 
 @Controller("auth")
@@ -70,5 +70,10 @@ export class AuthController {
                 userId: loginUserDto.getUserId(),
             },
         });
+    }
+
+    @Get("/test")
+    test() {
+        return "hello";
     }
 }

@@ -1,6 +1,6 @@
-import { Course } from "src/common/entities/course.entity";
-import { Recruit } from "src/common/entities/recruit.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Course } from "./course.entity";
+import { Recruit } from "./recruit.entity";
 import { UserRecruit } from "./user_recruit.entity";
 
 @Entity("user")

@@ -2,12 +2,12 @@ import { Injectable } from "@nestjs/common";
 import { RecruitRepository } from "../common/repositories/recruit.repository";
 import { CreateRecruitReqDto } from "./dto/request/create.request";
 import { GetRecruitDto } from "./dto/request/get-many.request";
-import { UserRecruitRepository } from "src/common/repositories/user_recruit.repository";
-import { plainToGetRecruitDto } from "src/common/utils/plainToGetRecruitDto";
+import { UserRecruitRepository } from "../common/repositories/user_recruit.repository";
+import { plainToGetRecruitDto } from "../common/utils/plainToGetRecruitDto";
 import { DataSource } from "typeorm";
 import { plainToInstance } from "class-transformer";
 import { JoinRecruitDto } from "./dto/request/join-recruit.request";
-import { Recruit } from "src/common/entities/recruit.entity";
+import { Recruit } from "../common/entities/recruit.entity";
 @Injectable()
 export class RecruitService {
     constructor(

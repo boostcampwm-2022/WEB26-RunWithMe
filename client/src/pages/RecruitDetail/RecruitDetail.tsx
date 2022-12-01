@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import useHttpPost from "#hooks/http/useHttpPost";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import useShowMap from "#hooks/useShowMap";
 import useRecruitDetailQuery from "#hooks/queries/useRecruitDetailQuery";
 import { getMiddlePoint } from "#utils/mapUtils";
@@ -9,6 +9,7 @@ import { Content, Title } from "#pages/RecruitDetail.styles";
 import { getTimeFormat } from "#utils/stringUtils";
 import { getPaceFormat } from "#utils/paceUtils";
 import Button from "#components/Button/Button";
+import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
 
 const RecruitDetail = () => {
     const { id } = useParams();
@@ -25,6 +26,11 @@ const RecruitDetail = () => {
         }).renderMap,
         [data],
     );
+
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const handleToggleConfirmModal = () => {
+        setShowConfirmModal(!showConfirmModal);
+    };
 
     const onSubmitJoin = useCallback(async () => {
         try {
@@ -67,10 +73,16 @@ const RecruitDetail = () => {
                         {data.currentPpl} / {data.maxPpl}
                     </p>
                 </div>
-                <Button width="fit" onClick={onSubmitJoin}>
+                <Button width="fit" onClick={handleToggleConfirmModal}>
                     참여하기
                 </Button>
             </Content>
+            <ConfirmModal
+                text="참여 하시겠습니까?"
+                showModal={showConfirmModal}
+                handleToggleModal={handleToggleConfirmModal}
+                confirmOnClick={onSubmitJoin}
+            ></ConfirmModal>
         </>
     );
 };

@@ -19,11 +19,10 @@ import MaxPplInput from "#components/Input/MaxPplInput/MaxPplInput";
 import useStartTimeInput from "#hooks/useStartTimeInput";
 import useMaxPplInput from "#hooks/useMaxPplInput";
 import { InputWrapper } from "#pages/SignUp/SignUp.styles";
-import { useRecoilValue } from "recoil";
-import { userState } from "#atoms/userState";
 import useShowMap from "#hooks/useShowMap";
 import { getMiddlePoint } from "#utils/pathUtils";
 import useCourseDetailQuery from "#hooks/queries/useCourseDetailQuery";
+import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
 
 const Buttons = styled.div`
     ${flexRowSpaceAround}
@@ -33,7 +32,6 @@ const Buttons = styled.div`
 const CourseDetail = () => {
     const { id } = useParams();
     const { data, isLoading } = useCourseDetailQuery(Number(id));
-    const userInfo = useRecoilValue(userState);
 
     const [title, onChangeTitle, titleError] = useInput(recruitTitleValidator);
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
@@ -49,18 +47,26 @@ const CourseDetail = () => {
         [data],
     );
 
-    const checkFormValidation = () => title && maxPpl && startTime && pace;
+    const checkFormValidation = () => {
+        if (title && startTime && pace) {
+            handleToggleConfirmModal();
+        }
+    };
 
-    const [showModal, setShowModal] = useState(false);
+    const [showRecruitModal, setShowRecruitModal] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
     const { post } = useHttpPost();
     const navigate = useNavigate();
 
-    const handleToggleModal = () => {
-        setShowModal(!showModal);
+    const handleToggleRecruitModal = () => {
+        setShowRecruitModal(!showRecruitModal);
+    };
+
+    const handleToggleConfirmModal = () => {
+        setShowConfirmModal(!showConfirmModal);
     };
 
     const onSubmitRecruit = async () => {
-        if (!checkFormValidation()) return;
         try {
             const { data }: { data: any } = await post("/recruit", {
                 title,
@@ -68,7 +74,6 @@ const CourseDetail = () => {
                 startTime,
                 maxPpl,
                 pace: pace.minute * 60 + pace.second,
-                userId: userInfo.userIdx,
             });
 
             navigate(`/recruit/${data.recruitId}`);
@@ -78,46 +83,51 @@ const CourseDetail = () => {
     };
 
     if (isLoading) return <div>Loading...</div>;
+    if (!data) return <div>404</div>;
 
     return (
         <>
             <Header text="코스 상세"></Header>
             {renderMap()}
             <Title>{data?.title}</Title>
-            {data && (
-                <Content>
-                    <div>
-                        <span>출발점</span>
-                        <p>{data.hDong.name}</p>
-                    </div>
-                    <div>
-                        <span>총 거리</span>
-                        <p>{(data.pathLength / 3000).toFixed(2)}km</p>
-                    </div>
-                    <div>
-                        <span>게시자</span>
-                        <p>{data.userId}</p>
-                    </div>
-                    <Button width="fit" onClick={handleToggleModal}>
-                        이 코스로 모집하기
-                    </Button>
-                </Content>
-            )}
+            <Content>
+                <div>
+                    <span>출발점</span>
+                    <p>{data.hDong.name}</p>
+                </div>
+                <div>
+                    <span>총 거리</span>
+                    <p>{(data.pathLength / 3000).toFixed(2)}km</p>
+                </div>
+                <div>
+                    <span>게시자</span>
+                    <p>{data.userId}</p>
+                </div>
+                <Button width="fit" onClick={handleToggleRecruitModal}>
+                    이 코스로 모집하기
+                </Button>
+            </Content>
             <InputWrapper>
-                <Modal toggled={showModal} toggleVisible={handleToggleModal}>
+                <Modal toggled={showRecruitModal} toggleVisible={handleToggleRecruitModal}>
                     <Input placeholder={PLACEHOLDER.TITLE} type="text" onChange={onChangeTitle}></Input>
                     <span>{titleError}</span>
                     <MaxPplInput onChangePpl={onChangeMaxPpl}></MaxPplInput>
                     <StartTimeInput onChangeTime={onChangeStartTime}></StartTimeInput>
                     <PaceInput onChangeMinute={onChangeMinute} onChangeSecond={onChangeSecond}></PaceInput>
                     <Buttons>
-                        <Button backgroundColor={COLOR.DARK_GRAY} onClick={handleToggleModal}>
+                        <Button backgroundColor={COLOR.DARK_GRAY} onClick={handleToggleRecruitModal}>
                             취소
                         </Button>
-                        <Button onClick={onSubmitRecruit}>등록</Button>
+                        <Button onClick={checkFormValidation}>등록</Button>
                     </Buttons>
                 </Modal>
             </InputWrapper>
+            <ConfirmModal
+                text="등록 하시겠습니까?"
+                showModal={showConfirmModal}
+                handleToggleModal={handleToggleConfirmModal}
+                confirmOnClick={onSubmitRecruit}
+            ></ConfirmModal>
         </>
     );
 };

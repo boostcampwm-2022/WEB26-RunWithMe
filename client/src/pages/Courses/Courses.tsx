@@ -13,6 +13,7 @@ import useGet from "#hooks/http/useHttpGet";
 import { LOCATION_ICON } from "#assets/icons";
 import CourseCard from "#components/Card/CourseCard/CourseCard";
 import { Course } from "#types/Course";
+import PlusButton from "#components/PlusButton/PlusButton";
 
 const CourseList = styled.div`
     padding: 2rem;
@@ -116,6 +117,7 @@ const Courses = () => {
                     ))}
                 </CourseList>
             </InfiniteScroll>
+            <PlusButton to="/course/new"></PlusButton>
         </>
     );
 };

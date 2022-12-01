@@ -12,14 +12,11 @@ import { useNavigate } from "react-router-dom";
 import { courseTitleValidator } from "#utils/validationUtils";
 import { RegionResponse } from "#types/Region";
 import { CourseForm } from "./NewCourse.styles";
-import useAuth from "#hooks/useAuth";
 import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
 import { LOCAL_API_PATH } from "#types/LocalAPIType";
 //#endregion
-const img =
-    "https://kr.object.ncloudstorage.com/j199/img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202022-11-20%20%EC%98%A4%ED%9B%84%204.01.56.png";
+
 const NewCourse = () => {
-    const { userIdx: userId } = useAuth();
     const [title, onChangeTitle] = useInput(courseTitleValidator);
     const query = useLocalAPI<RegionResponse>(LOCAL_API_PATH.REGION_CODE);
     const { post } = useHttpPost();
@@ -46,21 +43,19 @@ const NewCourse = () => {
             const { lng: x, lat: y } = getLatLngByXY(path[0]);
             const regions = await query({ x, y });
             // [0]: BCode, [1]: HCode
-            const { code: hCode, region_3depth_name: name } = regions.documents[1];
+
+            const { code: hCode } = regions.documents[1];
             const response: any = await post("/course", {
                 title,
                 path: path.map(getLatLngByXY),
-                img,
                 pathLength,
-                userId,
                 hCode,
-                name,
             });
             navigate(`/course/${response.data.courseId}`);
         } catch (error: any) {
             alert(error.message);
         }
-    }, [path]);
+    }, [path, title, pathLength]);
 
     return (
         <div style={{ height: "100vh", maxHeight: "100vh" }}>

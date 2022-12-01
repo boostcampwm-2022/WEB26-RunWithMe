@@ -10,7 +10,7 @@ interface RecruitCardProps {
 
 const RecruitCard = ({ data }: RecruitCardProps) => {
     return (
-        <Card img={data.course.img} to={`/recruit/${data.id}`} path={data.course.path}>
+        <Card to={`/recruit/${data.id}`} path={data.course.path}>
             <SummaryHead>
                 <CardTitle>{data.title}</CardTitle>
                 <PeopleWrapper>

@@ -12,9 +12,6 @@ export class Course {
     @Column({ type: "varchar", length: 512 })
     title: string;
 
-    @Column({ type: "varchar", length: 512 })
-    img: string;
-
     @Column({ type: "text" })
     path: string;
 
@@ -42,7 +39,6 @@ export class Course {
     static of(title: string, img: string, path: LatLng[], pathLength: number, hCode: string, userId: number) {
         const course = new Course();
         course.title = title;
-        course.img = img;
         course.path = JSON.stringify(path);
         course.hCode = hCode;
         course.pathLength = pathLength;

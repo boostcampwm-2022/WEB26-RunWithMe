@@ -18,7 +18,10 @@ export const Summary = styled.div`
 `;
 
 export const CardTitle = styled.p`
-    ${fontMedium(COLOR.BLACK, 700)}
+    ${fontMedium(COLOR.BLACK, 700)};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 export const SummaryBody = styled.div`

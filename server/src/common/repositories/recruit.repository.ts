@@ -76,7 +76,6 @@ export class RecruitRepository extends Repository<Recruit> {
                 "COUNT(user_recruit.id) AS currentPpl",
                 "course.id",
                 "course.title",
-                "course.img",
                 "course.path",
                 "course.pathLength",
                 "h_dong.name",

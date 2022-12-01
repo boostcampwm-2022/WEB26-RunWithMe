@@ -10,10 +10,11 @@ import CourseDetail from "#pages/CourseDetail/CourseDetail";
 import Mock from "#pages/Mock";
 import Recruits from "#pages/Recruits/Recruits";
 import useRefreshQuery from "#hooks/queries/useRefreshQuery";
+import MyPage from "#pages/MyPage/MyPage";
 
 function App() {
     const { isLoading } = useRefreshQuery();
-    if (isLoading) return <div>Loading...</div>;
+    // if (isLoading) return <div>Loading...</div>;
     return (
         <Routes>
             <Route path="/" element={<MainPage />} />
@@ -31,6 +32,7 @@ function App() {
             <Route path="mock">
                 <Route path="course" element={<Mock />} />
             </Route>
+            <Route path="me" element={<MyPage />}></Route>
         </Routes>
     );
 }

@@ -27,7 +27,7 @@ export class RecruitController {
     async create(@Body() createRecruitDto: CreateRecruitReqDto) {
         const recruitEntity = await this.recruitService.create(createRecruitDto);
         const recruitResDto = CreateResponseDto.fromEntity(recruitEntity);
-        return ResponseEntity.OK_WITH_DATA(recruitResDto);
+        return ResponseEntity.CREATED_WITH_DATA(recruitResDto);
     }
 
     @ApiOperation({ summary: "모집 참가", description: "모집글에 참여한다" })
@@ -56,7 +56,6 @@ export class RecruitController {
     @ApiOperation({ summary: "모집 상세", description: "모집 상세내용을 가져온다" })
     @Get(":id")
     async getOne(@Param("id") recruitId: number, @Param("userId") userId: number) {
-        console.log(userId);
         if (!(await this.recruitService.isExistingRecruit(recruitId))) {
             return ResponseEntity.NOT_FOUND("존재하지 않는 게시글입니다");
         }

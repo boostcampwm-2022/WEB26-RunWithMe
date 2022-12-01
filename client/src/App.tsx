@@ -1,52 +1,25 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import SignUp from "#pages/SignUp/SignUp";
 import Login from "#pages/Login/Login";
-import MainPage from "#pages/MainPage/MainPage";
+import MenuPage from "#pages/Menu/MenuPage";
+import MainPage from "#pages/Main/MainPage";
 import Courses from "#pages/Courses/Courses";
-import { useRecoilState } from "recoil";
-import { userState } from "#atoms/userState";
 import { Route, Routes } from "react-router-dom";
 import NewCourse from "#pages/NewCourse/NewCourse";
 import RecruitDetail from "#pages/RecruitDetail/RecruitDetail";
 import CourseDetail from "#pages/CourseDetail/CourseDetail";
-import useGet from "#hooks/http/useHttpGet";
-import { TIME } from "#constants/time";
-import Mock from "#pages/Mock";
+import MockCourses from "#pages/MockCourses";
+import MockRecruits from "#pages/MockRecruits";
 import Recruits from "#pages/Recruits/Recruits";
+import useRefreshQuery from "#hooks/queries/useRefreshQuery";
 
 function App() {
-    const [userInfo, setUserInfo] = useRecoilState(userState);
-    const [refreshRequestTimer, setRefreshRequestTimer] = useState<NodeJS.Timer | null>(null);
-    const { get } = useGet();
-
-    const getAccessToken = useCallback(async () => {
-        try {
-            const response = await get("/auth/refresh");
-            setUserInfo(response.data);
-        } catch {}
-    }, []);
-
-    useEffect(() => {
-        getAccessToken();
-    }, []);
-
-    useEffect(() => {
-        if (refreshRequestTimer) clearTimeout(refreshRequestTimer);
-        setRefreshRequestTimer(
-            setTimeout(() => {
-                getAccessToken();
-            }, TIME.ACCESS_TOKEN_EXPIRE_TIME - TIME.MINUTE_IN_SECONDS),
-        );
-
-        return () => {
-            if (!refreshRequestTimer) return;
-            clearTimeout(refreshRequestTimer);
-        };
-    }, [userInfo]);
-
+    const { isLoading } = useRefreshQuery();
+    if (isLoading) return <div>Loading...</div>;
     return (
         <Routes>
             <Route path="/" element={<MainPage />} />
+            <Route path="menu" element={<MenuPage />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login />} />
             <Route path="courses" element={<Courses />} />
@@ -59,7 +32,8 @@ function App() {
                 <Route path=":id" element={<RecruitDetail />} />
             </Route>
             <Route path="mock">
-                <Route path="course" element={<Mock />} />
+                <Route path="courses" element={<MockCourses />} />
+                <Route path="recruits" element={<MockRecruits />} />
             </Route>
         </Routes>
     );

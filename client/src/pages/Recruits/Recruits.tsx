@@ -59,7 +59,7 @@ const Recruits = () => {
     };
 
     const sendRecruitFetchRequest = async () => {
-        const response = await get("/recruit", recruitQueryParams());
+        const response: any = await get("/recruit", recruitQueryParams());
         if (response.data.length == 0) setHasMore(false);
         setCardList((prev) => [...prev, ...response.data]);
         incrementPage();

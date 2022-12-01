@@ -1,5 +1,4 @@
 import { instanceToPlain, plainToInstance, Expose, Type } from "class-transformer";
-import { Course } from "../../../common/entities/course.entity";
 
 class LatLng {
     @Expose()
@@ -38,7 +37,7 @@ export class CourseResponseDto {
     @Expose()
     createdAt: Date;
 
-    static fromEntity(course: Course) {
+    static fromEntity(course: any) {
         const data = instanceToPlain(course);
         return plainToInstance(CourseResponseDto, data, { excludeExtraneousValues: true });
     }

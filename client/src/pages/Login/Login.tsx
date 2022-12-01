@@ -11,11 +11,9 @@ import { useSetRecoilState } from "recoil";
 import { userState } from "#atoms/userState";
 import { LogoWrapper } from "./Login.styles";
 import useHttpPost from "#hooks/http/useHttpPost";
-import useAuth from "#hooks/useAuth";
 import { InputWrapper, OptionsWrapper } from "#pages/SignUp/SignUp.styles";
 
 const Login = () => {
-    useAuth(false);
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
     const [password, onChangePassword, passwordError] = useInput(passwordValidator);
     const { post } = useHttpPost();
@@ -29,7 +27,7 @@ const Login = () => {
     const onSubmitLogin = async () => {
         if (!checkFormValidation()) return;
         try {
-            const response = await post("/auth/login", { userId, password });
+            const response: any = await post("/auth/login", { userId, password });
             setUserInfo(response.data);
             navigate("/");
         } catch (error: any) {

@@ -1,12 +1,7 @@
+import UserInfo from "#types/UserInfo";
 import { atom } from "recoil";
 
-interface userState {
-    accessToken?: string;
-    userId?: string;
-    userIdx: number;
-}
-
-export const userState = atom<userState>({
+export const userState = atom<UserInfo>({
     key: "userState",
     default: {
         accessToken: "",

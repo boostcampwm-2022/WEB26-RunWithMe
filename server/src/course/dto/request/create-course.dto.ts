@@ -7,9 +7,6 @@ export class CreateCourseDto {
     @IsString()
     private title: string;
 
-    @IsString()
-    private img: string;
-
     @isValidPath()
     private path: LatLng[];
 

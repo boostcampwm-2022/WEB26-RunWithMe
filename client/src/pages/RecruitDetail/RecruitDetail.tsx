@@ -1,137 +1,87 @@
-import Header from "#components/Header/Header";
-import Button from "#components/Button/Button";
-import { Content, Title } from "../RecruitDetail.styles";
 import { useParams } from "react-router-dom";
-import { userState } from "#atoms/userState";
-import { useRecoilValue } from "recoil";
 import useHttpPost from "#hooks/http/useHttpPost";
-import useHttpGet from "#hooks/http/useHttpGet";
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import useShowMap from "#hooks/useShowMap";
+import useRecruitDetailQuery from "#hooks/queries/useRecruitDetailQuery";
+import { getMiddlePoint } from "#utils/mapUtils";
+import Header from "#components/Header/Header";
+import { Content, Title } from "#pages/RecruitDetail.styles";
+import { getTimeFormat } from "#utils/stringUtils";
 import { getPaceFormat } from "#utils/paceUtils";
+import Button from "#components/Button/Button";
+import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
 
 const RecruitDetail = () => {
     const { id } = useParams();
-    const userInfo = useRecoilValue(userState);
-    const { post } = useHttpPost();
-    const { get } = useHttpGet();
-    const [title, setTitle] = useState("제목");
-    const [startPoint, setStartPoint] = useState("출발점");
-    const [pathLength, setPathLength] = useState(0);
-    const [pace, setPace] = useState("페이스");
-    const [startTime, setStartTime] = useState("집합 일시");
-    const [author, setAuthor] = useState("게시자");
-    const [maxPpl, setMaxPpl] = useState("최대 인원");
-    const [currentPpl, setCurrentPpl] = useState("현재 인원");
-    const [path, setPath] = useState([]);
-    const [middlePoint, setMiddlePoint] = useState({ lat: 0, lng: 0 });
 
-    const getTimeFormat = (timeZone: string): string => {
-        const date = timeZone.split("T")[0].split("-");
-        const time = timeZone.split("T")[1].split(":");
-        return `${date[0]}년 ${date[1]}월 ${date[2]}일 ${Number(time[0]) >= 12 ? "오후" : "오전"} ${time[0]}시 ${
-            time[1]
-        }분`;
-    };
-    const onSubmitJoin = async () => {
-        try {
-            await post("/recruit/join", {
-                recruitId: id,
-                userId: userInfo.userIdx,
-            });
-            alert("참여 완료");
-        } catch (error: any) {
-            alert(error.message);
-        }
-    };
+    const { data, isLoading } = useRecruitDetailQuery(Number(id));
+    const { post } = useHttpPost<null, { recruitId: string }>();
+
+    if (isLoading) return <div>Loading...</div>;
+    if (!data) return <div>404</div>;
     const renderMap = useCallback(
         useShowMap({
             height: `${window.innerHeight - 307}px`,
-            center: { lat: middlePoint.lat, lng: middlePoint.lng },
-            runningPath: path,
+            center: getMiddlePoint(data.path),
+            runningPath: data.path,
             level: 5,
         }).renderMap,
-        [path, middlePoint],
+        [data],
     );
-    const getMiddlePoint = (path: { lat: number; lng: number }[]) => {
-        let minLat = 90;
-        let maxLat = -90;
-        let minLng = 180;
-        let maxLng = -180;
-        for (const point of path) {
-            if (minLat > point.lat) {
-                minLat = point.lat;
-            }
-            if (maxLat < point.lat) {
-                maxLat = point.lat;
-            }
-            if (minLng > point.lng) {
-                minLng = point.lng;
-            }
-            if (maxLng < point.lng) {
-                maxLng = point.lng;
-            }
-        }
-        return { lat: (minLat + maxLat) / 2, lng: (minLng + maxLng) / 2 };
+
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const handleToggleConfirmModal = () => {
+        setShowConfirmModal(!showConfirmModal);
     };
-    const getRecruitDetail = useCallback(async () => {
+
+    const onSubmitJoin = useCallback(async () => {
         try {
-            const response = await get(`/recruit/${id}`);
-            setTitle(response.title);
-            setPathLength(response.pathLength / 1000);
-            setStartPoint(response.hDong.name);
-            setPace(getPaceFormat(response.pace));
-            setStartTime(getTimeFormat(response.startTime));
-            setAuthor(response.userId);
-            setMaxPpl(response.maxPpl);
-            setCurrentPpl(response.currentPpl);
-            setPath(JSON.parse(response.path));
-            setMiddlePoint(getMiddlePoint(JSON.parse(response.path)));
+            await post("/recruit/join", { recruitId: String(id) });
         } catch {}
     }, []);
 
-    useEffect(() => {
-        if (!userInfo.accessToken) {
-            return;
-        }
-        getRecruitDetail();
-    }, [userInfo]);
     return (
         <>
             <Header text="모집 상세"></Header>
             {renderMap()}
-            <Title>{title}</Title>
+            <Title>{data.title}</Title>
             <Content>
                 <div>
                     <span>출발점</span>
-                    <p>{startPoint}</p>
+                    <p>{data.hDong.name}</p>
                 </div>
                 <div>
                     <span>총거리</span>
-                    <p>{pathLength}km</p>
+                    <p>{data.pathLength}km</p>
                 </div>
                 <div>
                     <span>페이스</span>
-                    <p>{pace}/km</p>
+                    <p>{getPaceFormat(data.pace)}/km</p>
                 </div>
                 <div>
                     <span>집합 일시</span>
-                    <p>{startTime}</p>
+                    <p>{getTimeFormat(data.startTime)}</p>
                 </div>
                 <div>
                     <span>게시자</span>
-                    <p>{author}</p>
+                    <p>{data.userId}</p>
                 </div>
                 <div>
                     <span>참가 현황</span>
                     <p>
-                        {currentPpl} / {maxPpl}
+                        {data.currentPpl} / {data.maxPpl}
                     </p>
                 </div>
-                <Button width="fit" onClick={onSubmitJoin}>
+                <Button width="fit" onClick={handleToggleConfirmModal}>
                     참여하기
                 </Button>
             </Content>
+            <ConfirmModal
+                text="참여 하시겠습니까?"
+                showModal={showConfirmModal}
+                handleToggleModal={handleToggleConfirmModal}
+                confirmOnClick={onSubmitJoin}
+            ></ConfirmModal>
         </>
     );
 };

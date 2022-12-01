@@ -1,11 +1,11 @@
 version: "3.8"
 
 services:
-    prod:
+    runwithme:
         build:
             context: .
             dockerfile: Dockerfile.prod
-        container_name: prod
+        container_name: runwithme
         ports:
             - "4000:4000"
         command: npm run start

@@ -1,0 +1,21 @@
+name: release-autopull
+on:
+  push:
+    branches: release
+
+jobs:
+  distribute:
+    name: distribute
+    runs-on: ubuntu-latest
+    steps:
+    - name: git pull and restart docker
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{secrets.REMOTE_IP}}
+        username: ${{secrets.REMOTE_SSH_ID}}
+        password: ${{secrets.REMOTE_PASSWORD}}
+        port: ${{secrets.REMOTE_SSH_PORT}}
+        script: |
+          cd /root/runwithme
+          git pull https://${{secrets.PAT}}@github.com/boostcampwm-2022/WEB26-RunWithMe.git release
+          docker-compose restart runwithme

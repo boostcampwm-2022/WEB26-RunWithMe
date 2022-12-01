@@ -1,6 +1,6 @@
 import Button from "#components/Button/Button";
 import Header from "#components/Header/Header";
-import { Menu, MenuWrapper, MyInfoContainer } from "./MyPage.styles";
+import { Menu, MenuWrapper, MyInfoWrapper, MyInfo, MyName } from "./MyPage.styles";
 const MyPage = () => {
     return (
         <div>
@@ -10,9 +10,18 @@ const MyPage = () => {
                 <Menu>코스 목록</Menu>
                 <Menu>참여 </Menu>
             </MenuWrapper>
-            <MyInfoContainer>
+            <MyInfoWrapper>
+                <MyName>catenary</MyName>
                 <Button width="fill">회원정보 변경</Button>
-            </MyInfoContainer>
+                <MyInfo>
+                    <span>지역</span>
+                    <span>경기도 용인시 수지구 동천동</span>
+                </MyInfo>
+                <MyInfo>
+                    <span>페이스</span>
+                    <span>3min/km</span>
+                </MyInfo>
+            </MyInfoWrapper>
         </div>
     );
 };

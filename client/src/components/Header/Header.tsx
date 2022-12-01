@@ -35,7 +35,7 @@ const Header = ({ text }: HeaderProps) => {
         <HeaderWrapper>
             <img src={ARROW_LEFT_ICON} onClick={() => navigate(-1)} />
             <p>{text}</p>
-            <img src={USER_CIRCLE_ICON} onClick={() => navigate(userInfo.accessToken ? "/mypage" : "/login")} />
+            <img src={USER_CIRCLE_ICON} onClick={() => navigate(userInfo.accessToken ? "/me" : "/login")} />
         </HeaderWrapper>
     );
 };

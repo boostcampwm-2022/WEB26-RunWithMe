@@ -1,6 +1,7 @@
 import Header from "#components/Header/Header";
 import styled, { css } from "styled-components";
 import { COLOR } from "styles/color";
+import { flexColumnSpaceBetween } from "styles/flex";
 import { fontLarge } from "styles/font";
 
 export const MenuWrapper = styled.div`
@@ -19,6 +20,17 @@ export const Menu = styled.div`
     ${fontLarge(COLOR.DARK_GRAY, 500)};
 `;
 
-export const MyInfoContainer = styled.div`
-    width: 90vw;
+export const MyInfoWrapper = styled.div`
+    width: 100%;
+    ${flexColumnSpaceBetween}
+    align-items: center;
+    button {
+        width: 90%;
+    }
 `;
+
+export const MyName = styled.div`
+    padding: 30px 50px;
+    ${fontLarge(COLOR.BLACK, 700)};
+`;
+export const MyInfo = styled.div``;

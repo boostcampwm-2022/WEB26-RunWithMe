@@ -13,6 +13,7 @@ import useGet from "#hooks/http/useHttpGet";
 import { LOCATION_ICON, CLOCK_ICON } from "#assets/icons";
 import RecruitCard from "#components/Card/RecruitCard/RecruitCard";
 import { Recruit } from "#types/Recruit";
+import PlusButton from "#components/PlusButton/PlusButton";
 
 const RecruitList = styled.div`
     padding: 2rem;
@@ -140,6 +141,7 @@ const Recruits = () => {
                     ))}
                 </RecruitList>
             </InfiniteScroll>
+            <PlusButton to="/courses"></PlusButton>
         </>
     );
 };

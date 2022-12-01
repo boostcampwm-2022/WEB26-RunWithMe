@@ -1,7 +1,8 @@
 import React from "react";
 import SignUp from "#pages/SignUp/SignUp";
 import Login from "#pages/Login/Login";
-import MainPage from "#pages/MainPage/MainPage";
+import MenuPage from "#pages/Menu/MenuPage";
+import MainPage from "#pages/Main/MainPage";
 import Courses from "#pages/Courses/Courses";
 import { Route, Routes } from "react-router-dom";
 import NewCourse from "#pages/NewCourse/NewCourse";
@@ -18,6 +19,7 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<MainPage />} />
+            <Route path="menu" element={<MenuPage />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login />} />
             <Route path="courses" element={<Courses />} />

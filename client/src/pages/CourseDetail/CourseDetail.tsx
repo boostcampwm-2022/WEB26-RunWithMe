@@ -78,31 +78,30 @@ const CourseDetail = () => {
     };
 
     if (isLoading) return <div>Loading...</div>;
+    if (!data) return <div>404</div>;
 
     return (
         <>
             <Header text="코스 상세"></Header>
             {renderMap()}
             <Title>{data?.title}</Title>
-            {data && (
-                <Content>
-                    <div>
-                        <span>출발점</span>
-                        <p>{data.hDong.name}</p>
-                    </div>
-                    <div>
-                        <span>총 거리</span>
-                        <p>{(data.pathLength / 3000).toFixed(2)}km</p>
-                    </div>
-                    <div>
-                        <span>게시자</span>
-                        <p>{data.userId}</p>
-                    </div>
-                    <Button width="fit" onClick={handleToggleModal}>
-                        이 코스로 모집하기
-                    </Button>
-                </Content>
-            )}
+            <Content>
+                <div>
+                    <span>출발점</span>
+                    <p>{data.hDong.name}</p>
+                </div>
+                <div>
+                    <span>총 거리</span>
+                    <p>{(data.pathLength / 3000).toFixed(2)}km</p>
+                </div>
+                <div>
+                    <span>게시자</span>
+                    <p>{data.userId}</p>
+                </div>
+                <Button width="fit" onClick={handleToggleModal}>
+                    이 코스로 모집하기
+                </Button>
+            </Content>
             <InputWrapper>
                 <Modal toggled={showModal} toggleVisible={handleToggleModal}>
                     <Input placeholder={PLACEHOLDER.TITLE} type="text" onChange={onChangeTitle}></Input>

@@ -40,7 +40,6 @@ export class RecruitController {
             return ResponseEntity.NOT_FOUND("존재하지 않는 게시글입니다");
         }
         if (await this.recruitService.isAuthorOfRecruit(recruitId, userId)) {
-            console.log("!23123123123");
             return ResponseEntity.LOCKED("자신의 게시글에 참가할 수 없습니다");
         }
 

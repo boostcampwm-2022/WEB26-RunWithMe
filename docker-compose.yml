@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+    prod:
+        build:
+            context: .
+            dockerfile: Dockerfile.prod
+        container_name: prod
+        ports:
+            - "4000:4000"
+        command: npm run start
+        networks:
+            - webnet
+        depends_on:
+            - redis
+
+    redis:
+        container_name: redis
+        image: redis:5
+        command: redis-server
+        networks:
+            - webnet
+        ports:
+            - "6379:6379"
+
+networks:
+    webnet:

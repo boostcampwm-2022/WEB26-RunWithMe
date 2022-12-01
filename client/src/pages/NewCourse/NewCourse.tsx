@@ -34,7 +34,6 @@ const NewCourse = () => {
     const checkFormValidation = () => {
         if (title && path.length) {
             handleToggleConfirmModal();
-            console.log(title);
         }
     };
 
@@ -48,7 +47,6 @@ const NewCourse = () => {
             const regions = await query({ x, y });
             // [0]: BCode, [1]: HCode
             const { code: hCode, region_3depth_name: name } = regions.documents[1];
-            console.log(title);
             const response: any = await post("/course", {
                 title,
                 path: path.map(getLatLngByXY),

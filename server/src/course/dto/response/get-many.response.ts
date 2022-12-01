@@ -7,9 +7,7 @@ export class GetManyResponseDto {
     course: CourseResponseDto;
 
     static fromEntity(course: any): GetManyResponseDto {
-        console.log(course);
         const data = instanceToPlain(course);
-        console.log(data);
         return plainToInstance(GetManyResponseDto, data, { excludeExtraneousValues: true });
         // return plainToInstance(GetManyResponseDto, course);
     }

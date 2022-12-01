@@ -58,7 +58,6 @@ export class AuthController {
     @ApiOkResponse({ description: "로그인 성공" })
     @Post("/login")
     async validateUser(@Body() loginUserDto: LoginUserReqDto, @Res() res: Response) {
-        console.log(loginUserDto);
         const data = await this.authService.validateUser(loginUserDto);
         res.cookie("refreshToken", data.refreshToken, {
             httpOnly: true,

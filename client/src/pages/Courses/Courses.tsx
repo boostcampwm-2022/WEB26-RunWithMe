@@ -66,9 +66,6 @@ const Courses = () => {
         sendCourseFetchRequest();
     }, []);
 
-    useEffect(() => {
-        console.log(cardList.length);
-    }, [cardList]);
     return (
         <>
             <Header text="코스 목록" />

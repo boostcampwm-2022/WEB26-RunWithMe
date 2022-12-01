@@ -47,9 +47,9 @@ const Recruits = () => {
 
     const recruitQueryParams = () => {
         const param: any = {};
-        if (titleFilter) param.title = "true";
-        if (authorFilter) param.author = "true";
-        if (availFilter) param.avail = "true";
+        param.title = titleFilter ? "true" : "false";
+        param.author = authorFilter ? "true" : "false";
+        param.avail = availFilter ? "true" : "false";
         if (searchContent !== "") param.query = searchContent;
         param.maxLen = (currentDistanceFilter.max * 1000).toString();
         param.minLen = (currentDistanceFilter.min * 1000).toString();

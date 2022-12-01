@@ -41,8 +41,8 @@ const Courses = () => {
 
     const courseQueryParams = () => {
         const param: any = {};
-        if (titleFilter) param.title = "true";
-        if (authorFilter) param.author = "true";
+        param.title = titleFilter ? "true" : "false";
+        param.author = authorFilter ? "true" : "false";
         if (searchContent !== "") param.query = searchContent;
         param.maxLen = (currentDistanceFilter.max * 1000).toString();
         param.minLen = (currentDistanceFilter.min * 1000).toString();

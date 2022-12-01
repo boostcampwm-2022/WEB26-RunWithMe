@@ -85,13 +85,11 @@ const MockRecruits = () => {
             pace: randomPace,
             userId: userInfo.userIdx,
         };
-        console.log(randomRecruit);
         return randomRecruit;
     };
 
     const sendAxiosRequest = async (recruit: any) => {
-        const response = await post("/recruit", await recruit);
-        console.log(response);
+        await post("/recruit", await recruit);
     };
     const handleSubmit = async () => {
         for (let i = 0; i < reps; i++) {

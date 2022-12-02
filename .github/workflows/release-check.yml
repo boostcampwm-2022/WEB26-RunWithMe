@@ -1,4 +1,4 @@
-name: build + eslint check
+name: build + eslint check on release
 
 on:
     pull_request:
@@ -6,8 +6,8 @@ on:
             - release
 
 jobs:
-    check:
-        name: check
+    release_check:
+        name: release_check
         runs-on: ubuntu-latest
         outputs:
             client: ${{steps.filter.outputs.client}}
@@ -22,9 +22,9 @@ jobs:
                       server:
                         - 'server/**'
 
-    client:
-        needs: check
-        if: ${{needs.check.outputs.client=='true'}}
+    release_client:
+        needs: release_check
+        if: ${{needs.release_check.outputs.client=='true'}}
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -50,9 +50,9 @@ jobs:
             - name: Run client build check
               run: cd client && npm run build
 
-    server:
-        needs: check
-        if: ${{needs.check.outputs.server=='true'}}
+    release_server:
+        needs: release_check
+        if: ${{needs.release_check.outputs.server=='true'}}
         runs-on: ubuntu-latest
         steps:
             - name: Checkout

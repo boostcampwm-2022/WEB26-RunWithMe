@@ -39,6 +39,8 @@ jobs:
               with:
                   path: client/node_modules
                   key: npm-packages-client-${{hashFiles('**/package-lock.json')}}
+                  restore-keys: |
+                      npm-packages-client-
 
             - name: Install client dependencies
               if: ${{steps.cache-client.outputs.cache-hit != 'true'}}
@@ -67,6 +69,8 @@ jobs:
               with:
                   path: server/node_modules
                   key: npm-packages-server-${{hashFiles('**/package-lock.json')}}
+                  restore-keys: |
+                      npm-packages-server-
 
             - name: Install server dependencies
               if: ${{steps.cache-server.outputs.cache-hit != 'true'}}

@@ -6,8 +6,8 @@ on:
             - release
 
 jobs:
-    release-check:
-        name: release-check
+    release_check:
+        name: release_check
         runs-on: ubuntu-latest
         outputs:
             client: ${{steps.filter.outputs.client}}
@@ -23,8 +23,8 @@ jobs:
                         - 'server/**'
 
     client:
-        needs: release-check
-        if: ${{needs.check.outputs.client=='true'}}
+        needs: release_check
+        if: ${{needs.release_check.outputs.client=='true'}}
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -51,8 +51,8 @@ jobs:
               run: cd client && npm run build
 
     server:
-        needs: release-check
-        if: ${{needs.check.outputs.server=='true'}}
+        needs: release_check
+        if: ${{needs.release_check.outputs.server=='true'}}
         runs-on: ubuntu-latest
         steps:
             - name: Checkout

@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Course } from "src/common/entities/course.entity";
+import { Course } from "../common/entities/course.entity";
 import { CourseRepository } from "../common/repositories/course.repository";
 import { CreateCourseDto } from "./dto/request/create-course.dto";
 import { GetCourseDto } from "./dto/request/get-course.dto";
@@ -18,7 +18,7 @@ export class CourseService {
             return [];
         }
 
-        if (!queryParams.getTitle() && !queryParams.getAuthor()) {
+        if (!queryParams.getTitle() && !queryParams.getAuthor() && queryParams.getQuery()) {
             return [];
         }
 
@@ -32,11 +32,10 @@ export class CourseService {
             queryParams.getMaxLength(),
         );
 
-        return courseList.map(({ id, title, img, path, pathLength, createdAt, user, hCode }) => {
+        return courseList.map(({ id, title, path, pathLength, createdAt, user, hCode }) => {
             return {
                 id,
                 title,
-                img,
                 path: JSON.parse(path),
                 pathLength,
                 hDong: hCode,
@@ -49,7 +48,7 @@ export class CourseService {
     async getOne(recruitId: number) {
         const data = await this.courseRepository.findCourseDetail(recruitId);
         const { title, path, pathLength } = data;
-        return { title, path, pathLength, hDong: data.hCode, userId: data.user.userId };
+        return { title, path: JSON.parse(path), pathLength, hDong: data.hCode, userId: data.user.userId };
     }
 
     async isExistingCourse(recruitId: number): Promise<boolean> {
@@ -58,5 +57,10 @@ export class CourseService {
             return true;
         }
         return false;
+    }
+
+    async getCount() {
+        const courseCount = await this.courseRepository.countAll();
+        return courseCount;
     }
 }

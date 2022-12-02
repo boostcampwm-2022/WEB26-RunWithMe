@@ -1,4 +1,4 @@
-import { CustomRepository } from "src/common/typeorm/typeorm.decorator";
+import { CustomRepository } from "../typeorm/typeorm.decorator";
 import { Repository } from "typeorm";
 import { UserRecruit } from "../entities/user_recruit.entity";
 
@@ -7,7 +7,7 @@ export class UserRecruitRepository extends Repository<UserRecruit> {
     public async isParticipating(recruitId: number, userId: number): Promise<boolean> {
         const userRecruit = await this.createQueryBuilder("user_recruit")
             .where("user_recruit.recruitId = :recruitId", { recruitId })
-            .andWhere("user_recruit.userId = :userId", { userId })
+            .andWhere("user_recruit.userId = :userId", { userId: userId || -1 })
             .getOne();
         if (userRecruit) {
             return true;

@@ -1,13 +1,15 @@
 import React from "react";
 import SignUp from "#pages/SignUp/SignUp";
 import Login from "#pages/Login/Login";
-import MainPage from "#pages/MainPage/MainPage";
+import MenuPage from "#pages/Menu/MenuPage";
+import MainPage from "#pages/Main/MainPage";
 import Courses from "#pages/Courses/Courses";
 import { Route, Routes } from "react-router-dom";
 import NewCourse from "#pages/NewCourse/NewCourse";
 import RecruitDetail from "#pages/RecruitDetail/RecruitDetail";
 import CourseDetail from "#pages/CourseDetail/CourseDetail";
-import Mock from "#pages/Mock";
+import MockCourses from "#pages/MockCourses";
+import MockRecruits from "#pages/MockRecruits";
 import Recruits from "#pages/Recruits/Recruits";
 import useRefreshQuery from "#hooks/queries/useRefreshQuery";
 import MyPage from "#pages/MyPage/MyPage";
@@ -18,6 +20,7 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<MainPage />} />
+            <Route path="menu" element={<MenuPage />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login />} />
             <Route path="courses" element={<Courses />} />
@@ -30,7 +33,8 @@ function App() {
                 <Route path=":id" element={<RecruitDetail />} />
             </Route>
             <Route path="mock">
-                <Route path="course" element={<Mock />} />
+                <Route path="courses" element={<MockCourses />} />
+                <Route path="recruits" element={<MockRecruits />} />
             </Route>
             <Route path="me" element={<MyPage />}></Route>
         </Routes>

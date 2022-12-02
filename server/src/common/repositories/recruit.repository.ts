@@ -1,7 +1,7 @@
-import { CustomRepository } from "src/common/typeorm/typeorm.decorator";
-import { Recruit } from "src/common/entities/recruit.entity";
+import { CustomRepository } from "../typeorm/typeorm.decorator";
+import { Recruit } from "../entities/recruit.entity";
 import { Repository } from "typeorm";
-import { RawRecruitData } from "src/common/types/raw-recruit-data";
+import { RawRecruitData } from "../types/raw-recruit-data";
 
 @CustomRepository(Recruit)
 export class RecruitRepository extends Repository<Recruit> {
@@ -76,7 +76,6 @@ export class RecruitRepository extends Repository<Recruit> {
                 "COUNT(user_recruit.id) AS currentPpl",
                 "course.id",
                 "course.title",
-                "course.img",
                 "course.path",
                 "course.pathLength",
                 "h_dong.name",

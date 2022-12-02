@@ -12,7 +12,6 @@ export const plainToGetRecruitDto = (plainRecruitData: RawRecruitData) => {
         pace,
         course_id,
         course_title,
-        course_img,
         course_path,
         course_pathLength,
         h_dong_name,
@@ -32,7 +31,6 @@ export const plainToGetRecruitDto = (plainRecruitData: RawRecruitData) => {
         course: {
             id: course_id,
             title: course_title,
-            img: course_img,
             path: JSON.parse(course_path),
             pathLength: course_pathLength,
             userId: course_userId,

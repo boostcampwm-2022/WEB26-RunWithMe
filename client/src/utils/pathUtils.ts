@@ -1,9 +1,11 @@
-export const getMiddlePoint = (path: { lat: number; lng: number }[]) => {
+import { LatLng } from "#types/LatLng";
+
+export const getMiddlePoint = (path: LatLng[]) => {
     const bounds = getBounds(path);
     return { lat: (bounds.minLat + bounds.maxLat) / 2, lng: (bounds.minLng + bounds.maxLng) / 2 };
 };
 
-export const getBounds = (path: { lat: number; lng: number }[]) => {
+export const getBounds = (path: LatLng[]) => {
     let minLat = 90;
     let maxLat = -90;
     let minLng = 180;

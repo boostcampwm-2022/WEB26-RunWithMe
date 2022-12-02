@@ -1,8 +1,8 @@
-import { LatLng } from "src/common/types/lat-lng";
-import { User } from "src/common/entities/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./user.entity";
 import { HDong } from "./h_dong.entity";
 import { Recruit } from "./recruit.entity";
+import { LatLng } from "../types/lat-lng";
 
 @Entity("course")
 export class Course {
@@ -11,9 +11,6 @@ export class Course {
 
     @Column({ type: "varchar", length: 512 })
     title: string;
-
-    @Column({ type: "varchar", length: 512 })
-    img: string;
 
     @Column({ type: "text" })
     path: string;
@@ -39,10 +36,9 @@ export class Course {
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user: User;
 
-    static of(title: string, img: string, path: LatLng[], pathLength: number, hCode: string, userId: number) {
+    static of(title: string, path: LatLng[], pathLength: number, hCode: string, userId: number) {
         const course = new Course();
         course.title = title;
-        course.img = img;
         course.path = JSON.stringify(path);
         course.hCode = hCode;
         course.pathLength = pathLength;

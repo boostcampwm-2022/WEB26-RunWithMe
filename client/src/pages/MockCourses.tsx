@@ -32,7 +32,7 @@ export const Input = styled.div`
 `;
 const jejuExURL =
     "https://user-images.githubusercontent.com/53655119/204238717-6b1ff83d-6d85-4ab8-9b4f-056947147706.png";
-const Mock = () => {
+const MockCourses = () => {
     const [reps, setReps] = useState(0);
     const [maxLat, setMaxLat] = useState(33.462789834085406);
     const [maxLng, setMaxLng] = useState(126.58443060603571);
@@ -156,4 +156,4 @@ const Mock = () => {
     );
 };
 
-export default Mock;
+export default MockCourses;

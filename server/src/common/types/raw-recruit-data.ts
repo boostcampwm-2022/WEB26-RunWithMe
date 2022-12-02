@@ -1,7 +1,6 @@
 export interface RawRecruitData {
     course_id: number;
     course_title: string;
-    course_img: string;
     course_path: string;
     course_pathLength: number;
     h_dong_name: string;

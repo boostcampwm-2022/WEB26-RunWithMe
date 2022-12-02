@@ -1,6 +1,6 @@
-import { CustomRepository } from "src/common/typeorm/typeorm.decorator";
+import { CustomRepository } from "../typeorm/typeorm.decorator";
 import { Repository } from "typeorm";
-import { Course } from "src/common/entities/course.entity";
+import { Course } from "../entities/course.entity";
 import { BadRequestException } from "@nestjs/common";
 
 @CustomRepository(Course)
@@ -48,7 +48,6 @@ export class CourseRepository extends Repository<Course> {
             .select([
                 "course.id",
                 "course.title",
-                "course.img",
                 "course.path",
                 "course.pathLength",
                 "h_dong.name",
@@ -65,5 +64,8 @@ export class CourseRepository extends Repository<Course> {
             throw new BadRequestException();
         }
         return data;
+    }
+    async countAll() {
+        return await this.count();
     }
 }

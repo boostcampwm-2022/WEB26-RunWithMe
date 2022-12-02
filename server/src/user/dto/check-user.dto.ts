@@ -1,4 +1,4 @@
-import { IsValidId } from "src/common/decorators";
+import { IsValidId } from "../../common/decorators";
 
 export class CheckUserDto {
     @IsValidId()

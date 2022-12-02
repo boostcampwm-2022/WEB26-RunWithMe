@@ -22,7 +22,7 @@ jobs:
                       server:
                         - 'server/**'
 
-    client:
+    release_client:
         needs: release_check
         if: ${{needs.release_check.outputs.client=='true'}}
         runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
             - name: Run client build check
               run: cd client && npm run build
 
-    server:
+    release_server:
         needs: release_check
         if: ${{needs.release_check.outputs.server=='true'}}
         runs-on: ubuntu-latest

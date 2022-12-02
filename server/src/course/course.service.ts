@@ -40,7 +40,7 @@ export class CourseService {
                 pathLength,
                 hDong: hCode,
                 createdAt,
-                user,
+                userId: user.userId,
             };
         });
     }

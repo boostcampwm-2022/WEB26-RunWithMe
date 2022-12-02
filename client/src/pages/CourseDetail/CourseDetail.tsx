@@ -97,7 +97,7 @@ const CourseDetail = () => {
                 </div>
                 <div>
                     <span>총 거리</span>
-                    <p>{(data.pathLength / 3000).toFixed(2)}km</p>
+                    <p>{(data.pathLength / 1000).toFixed(2)}km</p>
                 </div>
                 <div>
                     <span>게시자</span>

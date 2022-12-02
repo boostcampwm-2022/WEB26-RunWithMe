@@ -12,6 +12,7 @@ import MockCourses from "#pages/MockCourses";
 import MockRecruits from "#pages/MockRecruits";
 import Recruits from "#pages/Recruits/Recruits";
 import useRefreshQuery from "#hooks/queries/useRefreshQuery";
+import Mypage from "#pages/Mypage/Mypage";
 
 function App() {
     const { isLoading } = useRefreshQuery();
@@ -19,6 +20,7 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<MainPage />} />
+            <Route path="/mypage" element={<Mypage />}></Route>
             <Route path="menu" element={<MenuPage />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login />} />

@@ -43,7 +43,6 @@ const NewCourse = () => {
             const { lng: x, lat: y } = getLatLngByXY(path[0]);
             const regions = await query({ x, y });
             // [0]: BCode, [1]: HCode
-
             const { code: hCode } = regions.documents[1];
             const response: any = await post("/course", {
                 title,

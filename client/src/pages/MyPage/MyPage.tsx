@@ -12,7 +12,6 @@ const MyPage = () => {
             </MenuWrapper>
             <MyInfoWrapper>
                 <MyName>catenary</MyName>
-                <Button width="fill">회원정보 변경</Button>
                 <MyInfo>
                     <span>지역</span>
                     <span>경기도 용인시 수지구 동천동</span>
@@ -21,6 +20,7 @@ const MyPage = () => {
                     <span>페이스</span>
                     <span>3min/km</span>
                 </MyInfo>
+                <Button width="fill">회원정보 변경</Button>
             </MyInfoWrapper>
         </div>
     );

@@ -1,8 +1,7 @@
-import Header from "#components/Header/Header";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { COLOR } from "styles/color";
-import { flexColumnSpaceBetween } from "styles/flex";
-import { fontLarge } from "styles/font";
+import { flexColumnSpaceBetween, flexRowSpaceBetween } from "styles/flex";
+import { fontLarge, fontSmall } from "styles/font";
 
 export const MenuWrapper = styled.div`
     display: flex;
@@ -27,10 +26,21 @@ export const MyInfoWrapper = styled.div`
     button {
         width: 90%;
     }
+    gap: 30px;
 `;
 
 export const MyName = styled.div`
     padding: 30px 50px;
     ${fontLarge(COLOR.BLACK, 700)};
 `;
-export const MyInfo = styled.div``;
+
+export const MyInfo = styled.div`
+    width: 90%;
+    ${flexRowSpaceBetween}
+    & span:last-child {
+        ${fontSmall(COLOR.BLACK, 700)};
+    }
+    & span:first-child {
+        ${fontSmall(COLOR.LIGHT_GRAY, 500)};
+    }
+`;

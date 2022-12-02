@@ -11,7 +11,7 @@ const HeaderWrapper = styled.div`
     padding: 16px 8px;
     border-bottom: ${`1px solid ${COLOR.BABY_BLUE}`};
     p {
-        ${fontLarge(COLOR.BLACK, 400)}
+        ${fontLarge(COLOR.BLACK, 600)}
     }
     img {
         width: 24px;

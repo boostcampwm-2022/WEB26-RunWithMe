@@ -31,7 +31,6 @@ const NewCourse = () => {
     const checkFormValidation = () => {
         if (title && path.length) {
             handleToggleConfirmModal();
-            console.log(title);
         }
     };
 

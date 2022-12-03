@@ -9,20 +9,20 @@ import useZoomControl from "./useZoomControl";
 const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     const container = useRef<HTMLDivElement>(null);
     const map = useRef<kakao.maps.Map>();
-    const { current: roadviewClient } = useRef<kakao.maps.RoadviewClient>(new kakao.maps.RoadviewClient());
     const polyLineRef = useRef<kakao.maps.Polyline>();
     const [path, setPath] = useState<kakao.maps.LatLng[]>([]);
     const [isMapDraggable, setIsMapDraggable] = useState(true);
     const [pathLength, setPathLength] = useState(0);
     const { zoomIn, zoomOut } = useZoomControl(map);
 
-    const checkIsRoad = useCallback((position: kakao.maps.LatLng) => {
-        return new Promise((resolve) =>
-            roadviewClient.getNearestPanoId(position, 5, (panoId: any) => {
-                resolve(!!panoId);
-            }),
-        );
-    }, []);
+    // const { current: roadviewClient } = useRef<kakao.maps.RoadviewClient>(new kakao.maps.RoadviewClient());
+    // const checkIsRoad = useCallback((position: kakao.maps.LatLng) => {
+    //     return new Promise((resolve) =>
+    //         roadviewClient.getNearestPanoId(position, 5, (panoId: any) => {
+    //             resolve(!!panoId);
+    //         }),
+    //     );
+    // }, []);
 
     useEffect(() => {
         if (!container.current) return;
@@ -46,12 +46,9 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
         async (mouseEvent: kakao.maps.event.MouseEvent) => {
             if (!polyLineRef.current) return;
             const position = mouseEvent.latLng;
-            const isRoad = await checkIsRoad(position);
-            if (isRoad) {
-                const newPath = [...polyLineRef.current.getPath(), position];
-                setPath(newPath);
-                polyLineRef.current.setPath(newPath);
-            }
+            const newPath = [...polyLineRef.current.getPath(), position];
+            setPath(newPath);
+            polyLineRef.current.setPath(newPath);
         },
         [polyLineRef],
     );

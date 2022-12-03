@@ -19,7 +19,7 @@ const useMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
         map: map.current,
         renderMap: () => (
             <div style={{ position: "relative" }}>
-                <div ref={container} style={{ width: "100vw", height }} />
+                <div ref={container} style={{ width: "100%", height }} />
                 <ZoomControl onClickZoomIn={zoomIn} onClickZoomOut={zoomOut} />
             </div>
         ),

@@ -4,9 +4,13 @@ import { flexRowSpaceBetween } from "styles/flex";
 import { fontXLarge } from "styles/font";
 
 export const MainPageContainer = styled.div`
-    padding: 15px 0px;
-    > div:nth-child(1) {
-        margin-bottom: 40px;
+    overflow-x: hidden;
+    height: inherit;
+    > div:first-child {
+        margin-bottom: 16px;
+    }
+    > div:last-child {
+        margin-top: 48px;
     }
 `;
 

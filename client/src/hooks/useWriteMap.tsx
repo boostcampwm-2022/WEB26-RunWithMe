@@ -1,9 +1,11 @@
 import LockButton from "#components/MapControl/LockButton/LockButton";
+import MapTypeControl from "#components/MapControl/MapTypeControl/MapTypeControl";
 import PlaceSearch from "#components/MapControl/PlaceSearch/PlaceSearch";
 import UndoButton from "#components/MapControl/UndoButton/UndoButton";
 import ZoomControl from "#components/MapControl/ZoomControl/ZoomControl";
 import { MapProps } from "#types/MapProps";
 import { useCallback, useEffect, useRef, useState } from "react";
+import useMapTypeControl from "./useMapTypeControl";
 import useZoomControl from "./useZoomControl";
 
 const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
@@ -14,6 +16,7 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     const [isMapDraggable, setIsMapDraggable] = useState(true);
     const [pathLength, setPathLength] = useState(0);
     const { zoomIn, zoomOut } = useZoomControl(map);
+    const { mapType, onClickRoadMap, onClickSkyView } = useMapTypeControl(map);
 
     // const { current: roadviewClient } = useRef<kakao.maps.RoadviewClient>(new kakao.maps.RoadviewClient());
     // const checkIsRoad = useCallback((position: kakao.maps.LatLng) => {
@@ -87,13 +90,10 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
             <div style={{ position: "relative" }}>
                 <div ref={container} style={{ width: "100vw", height }} />
                 <ZoomControl onClickZoomIn={zoomIn} onClickZoomOut={zoomOut} />
-                <UndoButton onClick={onClickUndo} position={{ bottom: "14px", right: "14px" }} />
-                <LockButton
-                    isLocked={!isMapDraggable}
-                    onClick={onClickLock}
-                    position={{ top: "96px", right: "14px" }}
-                />
-                <PlaceSearch position={{ top: "14px" }} setCenter={setCenter} getCenter={getCenter} />
+                <UndoButton onClick={onClickUndo} />
+                <LockButton isLocked={!isMapDraggable} onClick={onClickLock} />
+                <PlaceSearch setCenter={setCenter} getCenter={getCenter} />
+                <MapTypeControl onClickRoadMap={onClickRoadMap} onClickSkyView={onClickSkyView} mapType={mapType} />
             </div>
         ),
     };

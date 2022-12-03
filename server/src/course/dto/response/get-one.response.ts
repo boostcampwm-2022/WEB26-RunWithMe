@@ -39,7 +39,6 @@ export class CourseResponseDto {
 
     static fromEntity(course: any) {
         const data = instanceToPlain(course);
-        console.log(data);
         return plainToInstance(CourseResponseDto, data, { excludeExtraneousValues: true });
     }
 }

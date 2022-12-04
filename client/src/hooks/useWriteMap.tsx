@@ -19,7 +19,7 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     const [pathLength, setPathLength] = useState(0);
     const { zoomIn, zoomOut } = useZoomControl(map);
     const { mapType, onClickRoadMap, onClickSkyView } = useMapTypeControl(map);
-    const { drawMarker, initMarker } = useMarker(map);
+    const { drawMarker, initMarker } = useMarker();
     //#region isRoad
     // const { current: roadviewClient } = useRef<kakao.maps.RoadviewClient>(new kakao.maps.RoadviewClient());
     // const checkIsRoad = useCallback((position: kakao.maps.LatLng) => {

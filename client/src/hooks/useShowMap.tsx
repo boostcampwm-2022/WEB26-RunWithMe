@@ -2,16 +2,16 @@ import ZoomControl from "#components/MapControl/ZoomControl/ZoomControl";
 import { LatLng } from "#types/LatLng";
 import { MapProps } from "#types/MapProps";
 import { getBounds } from "#utils/pathUtils";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import useMarker from "./useMarker";
 import useZoomControl from "./useZoomControl";
 
 const useShowMap = ({ height = "50vh", center, level = 1, runningPath }: MapProps) => {
     const container = useRef<HTMLDivElement>(null);
     const map = useRef<kakao.maps.Map>();
     const polyLineRef = useRef<kakao.maps.Polyline>();
-    const [path] = useState<kakao.maps.LatLng[]>([]);
     const { zoomIn, zoomOut } = useZoomControl(map);
-
+    const { initMarker, drawMarker } = useMarker();
     useEffect(() => {
         if (!container.current) return;
         map.current = new kakao.maps.Map(container.current, {
@@ -21,7 +21,7 @@ const useShowMap = ({ height = "50vh", center, level = 1, runningPath }: MapProp
         if (!runningPath) return;
         polyLineRef.current = new kakao.maps.Polyline({
             map: map.current,
-            path,
+            path: runningPath.map(getLaMaByLatLng),
         });
         DrawPath(runningPath);
         const pathBounds = getBounds(runningPath);
@@ -29,6 +29,8 @@ const useShowMap = ({ height = "50vh", center, level = 1, runningPath }: MapProp
         const ne = new kakao.maps.LatLng(pathBounds.maxLat, pathBounds.maxLng);
         const mapBounds = new kakao.maps.LatLngBounds(sw, ne);
         map.current.setBounds(mapBounds);
+        initMarker(map.current);
+        drawMarker(runningPath.map(getLaMaByLatLng));
     }, [runningPath, map]);
 
     const getLaMaByLatLng = (point: LatLng): kakao.maps.LatLng => {
@@ -48,7 +50,7 @@ const useShowMap = ({ height = "50vh", center, level = 1, runningPath }: MapProp
 
     return {
         map: map.current,
-        path,
+        path: runningPath?.map(getLaMaByLatLng),
         renderMap: () => (
             <div style={{ position: "relative" }}>
                 <div ref={container} style={{ width: "100vw", height }} />

@@ -1,14 +1,14 @@
 import { LatLng } from "#types/LatLng";
 import { MapProps } from "#types/MapProps";
 import { getBounds, getMiddlePoint } from "#utils/pathUtils";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import useMarker from "./useMarker";
 
 const useCardMap = ({ runningPath }: Pick<MapProps, "runningPath">) => {
     const container = useRef<HTMLDivElement>(null);
     const map = useRef<kakao.maps.Map>();
     const polyLineRef = useRef<kakao.maps.Polyline>();
-    const [path] = useState<kakao.maps.LatLng[]>([]);
-
+    const { initMarker, drawMarker } = useMarker(36);
     useEffect(() => {
         if (!container.current || !runningPath) return;
         const { lat, lng } = getMiddlePoint(runningPath);
@@ -18,7 +18,7 @@ const useCardMap = ({ runningPath }: Pick<MapProps, "runningPath">) => {
 
         polyLineRef.current = new kakao.maps.Polyline({
             map: map.current,
-            path,
+            path: runningPath.map(getLaMaByLatLng),
         });
         map.current.setZoomable(false);
         map.current.setDraggable(false);
@@ -28,6 +28,8 @@ const useCardMap = ({ runningPath }: Pick<MapProps, "runningPath">) => {
         const ne = new kakao.maps.LatLng(pathBounds.maxLat, pathBounds.maxLng);
         const mapBounds = new kakao.maps.LatLngBounds(sw, ne);
         map.current.setBounds(mapBounds);
+        initMarker(map.current);
+        drawMarker(runningPath.map(getLaMaByLatLng));
     }, [runningPath, map]);
 
     const getLaMaByLatLng = (point: LatLng): kakao.maps.LatLng => {
@@ -47,7 +49,7 @@ const useCardMap = ({ runningPath }: Pick<MapProps, "runningPath">) => {
 
     return {
         map: map.current,
-        path,
+        path: runningPath?.map(getLaMaByLatLng),
         renderMap: () => (
             <div style={{ position: "relative" }}>
                 <div ref={container} style={{ width: "100%", aspectRatio: `16 / 9` }} />

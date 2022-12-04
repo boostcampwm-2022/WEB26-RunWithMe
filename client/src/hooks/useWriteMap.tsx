@@ -7,8 +7,8 @@ import ZoomControl from "#components/MapControl/ZoomControl/ZoomControl";
 import { JEJU } from "#constants/location";
 import { MapProps } from "#types/MapProps";
 import { getCurrentLatLng } from "#utils/locationUtils";
-import { throttle } from "#utils/timerUtils";
 import { useCallback, useEffect, useRef, useState } from "react";
+import useDrawCurve from "./useDrawCurve";
 import useMapTypeControl from "./useMapTypeControl";
 import useMarker from "./useMarker";
 import useZoomControl from "./useZoomControl";
@@ -23,6 +23,7 @@ const useWriteMap = ({ height = "100vh", level = 1 }: MapProps) => {
     const { zoomIn, zoomOut } = useZoomControl(map);
     const { mapType, onClickRoadMap, onClickSkyView } = useMapTypeControl(map);
     const { drawMarker, initMarker } = useMarker();
+    const { setDrawCurveEnabled } = useDrawCurve({ container, map, setPath });
     //#region isRoad
     // const { current: roadviewClient } = useRef<kakao.maps.RoadviewClient>(new kakao.maps.RoadviewClient());
     // const checkIsRoad = useCallback((position: kakao.maps.LatLng) => {
@@ -56,49 +57,6 @@ const useWriteMap = ({ height = "100vh", level = 1 }: MapProps) => {
         }, []);
     }, [path]);
 
-    const coordsFromContainerPoint = useCallback(
-        ({ map, x, y }: { map: kakao.maps.Map; x: number; y: number }) => {
-            const point = new kakao.maps.Point(x, y - 57);
-            return map.getProjection().coordsFromContainerPoint(point);
-        },
-        [map],
-    );
-
-    const cursorMoveHandler = useCallback(
-        throttle((e: MouseEvent | TouchEvent) => {
-            if (!map.current) return;
-            const { clientX: x, clientY: y } = e instanceof MouseEvent ? e : e.touches[0];
-            const _map = map.current;
-            setPath((prev) => {
-                const line = prev.at(-1) as kakao.maps.LatLng[];
-                return [...prev.slice(0, -1), [...line, coordsFromContainerPoint({ map: _map, x, y })]];
-            });
-        }, 10),
-        [map],
-    );
-
-    const touchEndEventHandler = useCallback(() => {
-        container.current?.removeEventListener("touchmove", cursorMoveHandler);
-        container.current?.removeEventListener("touchend", touchEndEventHandler);
-    }, [container]);
-
-    const mouseUpEventHandler = useCallback(() => {
-        container.current?.removeEventListener("mousemove", cursorMoveHandler);
-        container.current?.removeEventListener("mouseup", mouseUpEventHandler);
-    }, [container]);
-
-    const touchMoveEventHandler = useCallback(() => {
-        setPath((prev) => [...prev, []]);
-        container.current?.addEventListener("touchmove", cursorMoveHandler);
-        container.current?.addEventListener("touchend", touchEndEventHandler);
-    }, [container]);
-
-    const mouseMoveEventHandler = useCallback(() => {
-        setPath((prev) => [...prev, []]);
-        container.current?.addEventListener("mousemove", cursorMoveHandler);
-        container.current?.addEventListener("mouseup", mouseUpEventHandler);
-    }, [container]);
-
     useEffect(() => {
         if (!polyLineRef.current) return;
         setPathLength(polyLineRef.current?.getLength());
@@ -107,14 +65,7 @@ const useWriteMap = ({ height = "100vh", level = 1 }: MapProps) => {
     useEffect(() => {
         if (!map.current) return;
         if (!container.current) return;
-
-        if (isMapDraggable) {
-            container.current?.removeEventListener("touchstart", touchMoveEventHandler);
-            container.current?.removeEventListener("mousedown", mouseMoveEventHandler);
-        } else {
-            container.current?.addEventListener("touchstart", touchMoveEventHandler);
-            container.current?.addEventListener("mousedown", mouseMoveEventHandler);
-        }
+        setDrawCurveEnabled(isMapDraggable);
     }, [isMapDraggable]);
 
     const onClickMap = useCallback(

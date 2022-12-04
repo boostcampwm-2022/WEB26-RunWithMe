@@ -1,16 +1,19 @@
 import LockButton from "#components/MapControl/LockButton/LockButton";
 import MapTypeControl from "#components/MapControl/MapTypeControl/MapTypeControl";
+import MyPositionButton from "#components/MapControl/MyPositionButton/MyPositionButton";
 import PlaceSearch from "#components/MapControl/PlaceSearch/PlaceSearch";
 import UndoButton from "#components/MapControl/UndoButton/UndoButton";
 import ZoomControl from "#components/MapControl/ZoomControl/ZoomControl";
+import { JEJU } from "#constants/location";
 import { MapProps } from "#types/MapProps";
+import { getCurrentLatLng } from "#utils/locationUtils";
 import { throttle } from "#utils/timerUtils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useMapTypeControl from "./useMapTypeControl";
 import useMarker from "./useMarker";
 import useZoomControl from "./useZoomControl";
 
-const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
+const useWriteMap = ({ height = "100vh", level = 1 }: MapProps) => {
     const container = useRef<HTMLDivElement>(null);
     const map = useRef<kakao.maps.Map>();
     const polyLineRef = useRef<kakao.maps.Polyline>();
@@ -31,17 +34,19 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     // }, []);
     //#endregion
     useEffect(() => {
-        if (!container.current) return;
-        map.current = new kakao.maps.Map(container.current, {
-            center: new kakao.maps.LatLng(center.lat, center.lng),
-            level,
+        getCurrentLatLng().then((center) => {
+            if (!container.current) return;
+            map.current = new kakao.maps.Map(container.current, {
+                center: new kakao.maps.LatLng(center.lat, center.lng),
+                level,
+            });
+            polyLineRef.current = new kakao.maps.Polyline({
+                map: map.current,
+                path: [],
+            });
+            kakao.maps.event.addListener(map.current, "click", onClickMap);
+            initMarker(map.current);
         });
-        polyLineRef.current = new kakao.maps.Polyline({
-            map: map.current,
-            path: [],
-        });
-        kakao.maps.event.addListener(map.current, "click", onClickMap);
-        initMarker(map.current);
     }, []);
 
     const getExpandedPath = useCallback(() => {
@@ -149,9 +154,16 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     );
 
     const getCenter = useCallback(() => {
-        if (!map.current) return new kakao.maps.LatLng(center.lng, center.lat);
+        if (!map.current) return new kakao.maps.LatLng(JEJU.lat, JEJU.lng);
         return map.current.getCenter();
     }, []);
+
+    const onClickMyPositionButton = useCallback(() => {
+        getCurrentLatLng().then((center) => {
+            if (!map.current) return;
+            map.current.setCenter(new kakao.maps.LatLng(center.lat, center.lng));
+        });
+    }, [map]);
 
     return {
         map: map.current,
@@ -165,6 +177,7 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
                 <LockButton isLocked={!isMapDraggable} onClick={onClickLock} />
                 <PlaceSearch setCenter={setCenter} getCenter={getCenter} />
                 <MapTypeControl onClickRoadMap={onClickRoadMap} onClickSkyView={onClickSkyView} mapType={mapType} />
+                <MyPositionButton onClick={onClickMyPositionButton} />
             </div>
         ),
     };

@@ -7,6 +7,7 @@ import { MapProps } from "#types/MapProps";
 import { throttle } from "#utils/timerUtils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useMapTypeControl from "./useMapTypeControl";
+import useMarker from "./useMarker";
 import useZoomControl from "./useZoomControl";
 
 const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
@@ -18,7 +19,7 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     const [pathLength, setPathLength] = useState(0);
     const { zoomIn, zoomOut } = useZoomControl(map);
     const { mapType, onClickRoadMap, onClickSkyView } = useMapTypeControl(map);
-
+    const { drawMarker, initMarker } = useMarker(map);
     //#region isRoad
     // const { current: roadviewClient } = useRef<kakao.maps.RoadviewClient>(new kakao.maps.RoadviewClient());
     // const checkIsRoad = useCallback((position: kakao.maps.LatLng) => {
@@ -40,6 +41,7 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
             path: [],
         });
         kakao.maps.event.addListener(map.current, "click", onClickMap);
+        initMarker(map.current);
     }, []);
 
     const getExpandedPath = useCallback(() => {
@@ -50,8 +52,7 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     }, [path]);
 
     const coordsFromContainerPoint = useCallback(
-        ({ map, position }: { map: kakao.maps.Map; position: { x: number; y: number } }) => {
-            const { x, y } = position;
+        ({ map, x, y }: { map: kakao.maps.Map; x: number; y: number }) => {
             const point = new kakao.maps.Point(x, y - 57);
             return map.getProjection().coordsFromContainerPoint(point);
         },
@@ -61,20 +62,13 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     const cursorMoveHandler = useCallback(
         throttle((e: MouseEvent | TouchEvent) => {
             if (!map.current) return;
-            const position: { x: number; y: number } = { x: 0, y: 0 };
-            if (e instanceof MouseEvent) {
-                position.x = e.clientX;
-                position.y = e.clientY;
-            } else {
-                position.x = e.touches[0].clientX;
-                position.y = e.touches[0].clientY;
-            }
+            const { clientX: x, clientY: y } = e instanceof MouseEvent ? e : e.touches[0];
             const _map = map.current;
             setPath((prev) => {
                 const line = prev.at(-1) as kakao.maps.LatLng[];
-                return [...prev.slice(0, -1), [...line, coordsFromContainerPoint({ map: _map, position })]];
+                return [...prev.slice(0, -1), [...line, coordsFromContainerPoint({ map: _map, x, y })]];
             });
-        }, 50),
+        }, 10),
         [map],
     );
 
@@ -128,7 +122,9 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
 
     useEffect(() => {
         if (!polyLineRef.current) return;
-        polyLineRef.current.setPath(getExpandedPath());
+        const _path = getExpandedPath();
+        polyLineRef.current.setPath(_path);
+        drawMarker(_path);
     }, [path]);
 
     const onClickUndo = useCallback(() => {

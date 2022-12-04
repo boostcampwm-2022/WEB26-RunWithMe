@@ -4,6 +4,7 @@ import PlaceSearch from "#components/MapControl/PlaceSearch/PlaceSearch";
 import UndoButton from "#components/MapControl/UndoButton/UndoButton";
 import ZoomControl from "#components/MapControl/ZoomControl/ZoomControl";
 import { MapProps } from "#types/MapProps";
+import { throttle } from "#utils/timerUtils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useMapTypeControl from "./useMapTypeControl";
 import useZoomControl from "./useZoomControl";
@@ -12,12 +13,13 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     const container = useRef<HTMLDivElement>(null);
     const map = useRef<kakao.maps.Map>();
     const polyLineRef = useRef<kakao.maps.Polyline>();
-    const [path, setPath] = useState<kakao.maps.LatLng[]>([]);
+    const [path, setPath] = useState<(kakao.maps.LatLng | kakao.maps.LatLng[])[]>([]);
     const [isMapDraggable, setIsMapDraggable] = useState(true);
     const [pathLength, setPathLength] = useState(0);
     const { zoomIn, zoomOut } = useZoomControl(map);
     const { mapType, onClickRoadMap, onClickSkyView } = useMapTypeControl(map);
 
+    //#region isRoad
     // const { current: roadviewClient } = useRef<kakao.maps.RoadviewClient>(new kakao.maps.RoadviewClient());
     // const checkIsRoad = useCallback((position: kakao.maps.LatLng) => {
     //     return new Promise((resolve) =>
@@ -26,7 +28,7 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
     //         }),
     //     );
     // }, []);
-
+    //#endregion
     useEffect(() => {
         if (!container.current) return;
         map.current = new kakao.maps.Map(container.current, {
@@ -35,33 +37,106 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
         });
         polyLineRef.current = new kakao.maps.Polyline({
             map: map.current,
-            path,
+            path: [],
         });
         kakao.maps.event.addListener(map.current, "click", onClickMap);
     }, []);
+
+    const getExpandedPath = useCallback(() => {
+        return path.reduce<kakao.maps.LatLng[]>((acc, cur) => {
+            if (Array.isArray(cur)) return [...acc, ...cur];
+            return [...acc, cur];
+        }, []);
+    }, [path]);
+
+    const coordsFromContainerPoint = useCallback(
+        ({ map, position }: { map: kakao.maps.Map; position: { x: number; y: number } }) => {
+            const { x, y } = position;
+            const point = new kakao.maps.Point(x, y - 57);
+            return map.getProjection().coordsFromContainerPoint(point);
+        },
+        [map],
+    );
+
+    const cursorMoveHandler = useCallback(
+        throttle((e: MouseEvent | TouchEvent) => {
+            if (!map.current) return;
+            const position: { x: number; y: number } = { x: 0, y: 0 };
+            if (e instanceof MouseEvent) {
+                position.x = e.clientX;
+                position.y = e.clientY;
+            } else {
+                position.x = e.touches[0].clientX;
+                position.y = e.touches[0].clientY;
+            }
+            const _map = map.current;
+            setPath((prev) => {
+                const line = prev.at(-1) as kakao.maps.LatLng[];
+                return [...prev.slice(0, -1), [...line, coordsFromContainerPoint({ map: _map, position })]];
+            });
+        }, 50),
+        [map],
+    );
+
+    const touchEndEventHandler = useCallback(() => {
+        container.current?.removeEventListener("touchmove", cursorMoveHandler);
+        container.current?.removeEventListener("touchend", touchEndEventHandler);
+    }, [container]);
+
+    const mouseUpEventHandler = useCallback(() => {
+        container.current?.removeEventListener("mousemove", cursorMoveHandler);
+        container.current?.removeEventListener("mouseup", mouseUpEventHandler);
+    }, [container]);
+
+    const touchMoveEventHandler = useCallback(() => {
+        setPath((prev) => [...prev, []]);
+        container.current?.addEventListener("touchmove", cursorMoveHandler);
+        container.current?.addEventListener("touchend", touchEndEventHandler);
+    }, [container]);
+
+    const mouseMoveEventHandler = useCallback(() => {
+        setPath((prev) => [...prev, []]);
+        container.current?.addEventListener("mousemove", cursorMoveHandler);
+        container.current?.addEventListener("mouseup", mouseUpEventHandler);
+    }, [container]);
 
     useEffect(() => {
         if (!polyLineRef.current) return;
         setPathLength(polyLineRef.current?.getLength());
     }, [path]);
 
+    useEffect(() => {
+        if (!map.current) return;
+        if (!container.current) return;
+
+        if (isMapDraggable) {
+            container.current?.removeEventListener("touchstart", touchMoveEventHandler);
+            container.current?.removeEventListener("mousedown", mouseMoveEventHandler);
+        } else {
+            container.current?.addEventListener("touchstart", touchMoveEventHandler);
+            container.current?.addEventListener("mousedown", mouseMoveEventHandler);
+        }
+    }, [isMapDraggable]);
+
     const onClickMap = useCallback(
-        async (mouseEvent: kakao.maps.event.MouseEvent) => {
+        (mouseEvent: kakao.maps.event.MouseEvent) => {
             if (!polyLineRef.current) return;
-            const position = mouseEvent.latLng;
-            const newPath = [...polyLineRef.current.getPath(), position];
-            setPath(newPath);
-            polyLineRef.current.setPath(newPath);
+            setPath((prev) => [...prev, mouseEvent.latLng]);
         },
         [polyLineRef],
     );
 
+    useEffect(() => {
+        if (!polyLineRef.current) return;
+        polyLineRef.current.setPath(getExpandedPath());
+    }, [path]);
+
     const onClickUndo = useCallback(() => {
         if (!polyLineRef.current) return;
-        const _path = polyLineRef.current.getPath().slice(0, -1);
+        const _path = [...path];
+        _path.pop();
         setPath(_path);
-        polyLineRef.current.setPath(_path);
-    }, []);
+    }, [path]);
 
     const onClickLock = useCallback(() => {
         if (!map.current) return;
@@ -84,7 +159,7 @@ const useWriteMap = ({ height = "100vh", center, level = 1 }: MapProps) => {
 
     return {
         map: map.current,
-        path,
+        getPath: getExpandedPath,
         pathLength,
         renderMap: () => (
             <div style={{ position: "relative" }}>

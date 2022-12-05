@@ -11,7 +11,7 @@ const HeaderWrapper = styled.div`
     padding: 16px 8px;
     border-bottom: ${`1px solid ${COLOR.BABY_BLUE}`};
     p {
-        ${fontLarge(COLOR.BLACK, 400)}
+        ${fontLarge(COLOR.BLACK, 600)}
     }
     img {
         width: 24px;
@@ -36,7 +36,7 @@ const Header = ({ text, isMain = false }: HeaderProps) => {
             {isMain ? <div /> : <img src={ARROW_LEFT_ICON} onClick={() => navigate(-1)} />}
 
             <p>{text}</p>
-            <img src={USER_CIRCLE_ICON} onClick={() => navigate(userInfo.accessToken ? "/mypage" : "/login")} />
+            <img src={USER_CIRCLE_ICON} onClick={() => navigate(userInfo.accessToken ? "/me" : "/login")} />
         </HeaderWrapper>
     );
 };

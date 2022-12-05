@@ -1,4 +1,3 @@
-import React from "react";
 import SignUp from "#pages/SignUp/SignUp";
 import Login from "#pages/Login/Login";
 import MenuPage from "#pages/Menu/MenuPage";
@@ -13,7 +12,7 @@ import MockRecruits from "#pages/MockRecruits";
 import Recruits from "#pages/Recruits/Recruits";
 import useRefreshQuery from "#hooks/queries/useRefreshQuery";
 import Layout from "#components/Layout/Layout";
-import Mypage from "#pages/Mypage/Mypage";
+import MyPage from "#pages/MyPage/MyPage";
 
 function App() {
     const { isLoading } = useRefreshQuery();
@@ -22,7 +21,7 @@ function App() {
         <Layout>
             <Routes>
                 <Route path="/" element={<MainPage />} />
-                <Route path="/mypage" element={<Mypage />} />
+                <Route path="me" element={<MyPage />} />
                 <Route path="menu" element={<MenuPage />} />
                 <Route path="signup" element={<SignUp />} />
                 <Route path="login" element={<Login />} />

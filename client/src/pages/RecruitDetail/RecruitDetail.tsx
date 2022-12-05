@@ -16,9 +16,6 @@ const RecruitDetail = () => {
     const { data: recruit, isLoading } = useRecruitDetailQuery(Number(id));
     const { post } = useHttpPost<null, { recruitId: string }>();
 
-    if (isLoading) return <div>Loading...</div>;
-    if (!recruit) return <div>404</div>;
-
     const renderMap = useCallback(
         useShowMap({
             height: `${window.innerHeight - 343 - 57}px`,

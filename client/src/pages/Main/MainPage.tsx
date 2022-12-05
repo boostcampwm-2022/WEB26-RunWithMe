@@ -24,37 +24,35 @@ const MainPage = () => {
     if (!course || !recruit) return <div>404</div>;
 
     return (
-        <>
+        <MainPageContainer>
             <Header isMain={true} text="RunWithMe" />
-            <MainPageContainer>
-                <div>
-                    <TitleWrapper>
-                        <ListTitle>코스 목록</ListTitle>
-                        <MoreButton to="/courses" />
-                    </TitleWrapper>
-                    <CarouselWrapper>
-                        <Slider {...settings}>
-                            {course.data.map((c: Course, idx: number) => (
-                                <CourseCard data={c} key={idx} />
-                            ))}
-                        </Slider>
-                    </CarouselWrapper>
-                </div>
-                <div>
-                    <TitleWrapper>
-                        <ListTitle>모집 목록</ListTitle>
-                        <MoreButton to="recruits" />
-                    </TitleWrapper>
-                    <CarouselWrapper>
-                        <Slider {...settings}>
-                            {recruit.data.map((r: Recruit, idx: number) => (
-                                <RecruitTextCard data={r} key={idx} />
-                            ))}
-                        </Slider>
-                    </CarouselWrapper>
-                </div>
-            </MainPageContainer>
-        </>
+            <div>
+                <TitleWrapper>
+                    <ListTitle>코스 목록</ListTitle>
+                    <MoreButton to="/courses" />
+                </TitleWrapper>
+                <CarouselWrapper>
+                    <Slider {...settings}>
+                        {course.data.map((c: Course, idx: number) => (
+                            <CourseCard data={c} key={idx} />
+                        ))}
+                    </Slider>
+                </CarouselWrapper>
+            </div>
+            <div>
+                <TitleWrapper>
+                    <ListTitle>모집 목록</ListTitle>
+                    <MoreButton to="recruits" />
+                </TitleWrapper>
+                <CarouselWrapper>
+                    <Slider {...settings}>
+                        {recruit.data.map((r: Recruit, idx: number) => (
+                            <RecruitTextCard data={r} key={idx} />
+                        ))}
+                    </Slider>
+                </CarouselWrapper>
+            </div>
+        </MainPageContainer>
     );
 };
 

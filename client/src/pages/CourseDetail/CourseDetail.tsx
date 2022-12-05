@@ -40,7 +40,7 @@ const CourseDetail = () => {
 
     const renderMap = useCallback(
         useShowMap({
-            height: `70vh`,
+            height: `${window.innerHeight - 273 - 57}px`,
             center: getMiddlePoint(data?.path || []),
             runningPath: data?.path || [],
         }).renderMap,

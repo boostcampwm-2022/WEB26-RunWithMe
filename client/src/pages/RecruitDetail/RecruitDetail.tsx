@@ -18,7 +18,7 @@ const RecruitDetail = () => {
 
     const renderMap = useCallback(
         useShowMap({
-            height: `70vh`,
+            height: `${window.innerHeight - 343 - 57}px`,
             center: getMiddlePoint(recruit?.path || []),
             runningPath: recruit?.path || [],
         }).renderMap,

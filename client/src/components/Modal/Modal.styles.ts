@@ -4,7 +4,7 @@ import { flexRowCenter } from "styles/flex";
 
 export const Dimmed = styled.div`
     ${flexRowCenter}
-    z-index: 1;
+    z-index: 2;
     width: 100vw;
     height: 100vh;
     position: fixed;

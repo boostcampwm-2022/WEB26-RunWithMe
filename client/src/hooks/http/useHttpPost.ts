@@ -3,11 +3,14 @@ import useAxios from "./useAxios";
 const useHttpPost = <Res = any, Req = any>() => {
     const { axios } = useAxios();
 
-    const post = (url: string, data: Req): Promise<AxiosResponse<Res>> => {
-        return axios
+    const post = async (url: string, data: Req): Promise<AxiosResponse<Res>> => {
+        return await axios
             .post(url, data)
             .then((res) => {
-                return res.data;
+                if (res.data.statusCode >= 400) {
+                    throw new Error(res.data.message);
+                }
+                if (res) return res.data;
             })
             .catch((error) => {
                 throw error;

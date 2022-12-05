@@ -4,7 +4,6 @@ import { LatLng } from "./LatLng";
 export interface Course {
     id: number;
     title: string;
-    img: string;
     path: LatLng[];
     pathLength: number;
     hDong: hDong;

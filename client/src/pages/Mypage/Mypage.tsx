@@ -1,9 +1,9 @@
 import Header from "#components/Header/Header";
 import { useState } from "react";
 import CourseCard from "#components/Card/CourseCard/CourseCard";
-import { MYPAGE } from "#constants/myPageOptions";
-import MyPageProfile from "./MyPageProfile";
 import { Menu, MenuWrapper } from "./MyPage.styles";
+import MyPageProfile from "./MyPageProfile";
+import { MYPAGE } from "#constants/myPageOptions";
 
 const data = {
     id: 3,
@@ -36,6 +36,7 @@ const MyPage = () => {
                 </Menu>
             </MenuWrapper>
             <MyPageProfile MyPageOption={myPageOption}></MyPageProfile>
+            <CourseCard data={data}></CourseCard>
         </div>
     );
 };

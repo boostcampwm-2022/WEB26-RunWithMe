@@ -70,9 +70,4 @@ export class AuthController {
             },
         });
     }
-
-    @Get("/test")
-    test() {
-        return "hello";
-    }
 }

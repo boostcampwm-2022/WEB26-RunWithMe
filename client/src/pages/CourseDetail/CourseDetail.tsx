@@ -23,8 +23,6 @@ import useShowMap from "#hooks/useShowMap";
 import { getMiddlePoint } from "#utils/pathUtils";
 import useCourseDetailQuery from "#hooks/queries/useCourseDetailQuery";
 import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
-import { useRecoilValue } from "recoil";
-import { userState } from "#atoms/userState";
 
 const Buttons = styled.div`
     ${flexRowSpaceAround}

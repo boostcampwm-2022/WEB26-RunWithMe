@@ -53,7 +53,7 @@ const useShowMap = ({ height = "50vh", center, level = 1, runningPath }: MapProp
         path: runningPath?.map(getLaMaByLatLng),
         renderMap: () => (
             <div style={{ position: "relative" }}>
-                <div ref={container} style={{ width: "100vw", height }} />
+                <div ref={container} style={{ width: "100%", height }} />
                 <ZoomControl onClickZoomIn={zoomIn} onClickZoomOut={zoomOut} />
             </div>
         ),

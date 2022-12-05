@@ -122,7 +122,7 @@ const useWriteMap = ({ height = "100vh", level = 1 }: MapProps) => {
         pathLength,
         renderMap: () => (
             <div style={{ position: "relative" }}>
-                <div ref={container} style={{ width: "100vw", height }} />
+                <div ref={container} style={{ width: "100%", height }} />
                 <ZoomControl onClickZoomIn={zoomIn} onClickZoomOut={zoomOut} />
                 <UndoButton onClick={onClickUndo} />
                 <LockButton isLocked={!isMapDraggable} onClick={onClickLock} />

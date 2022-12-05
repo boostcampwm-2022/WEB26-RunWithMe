@@ -14,7 +14,6 @@ export const Logo = styled.div`
 export const InputWrapper = styled.div`
     width: 100%;
     padding: 0 40px;
-    margin-bottom: 40px;
     div {
         input {
             font-size: 1.4rem;
@@ -33,6 +32,7 @@ export const InputWrapper = styled.div`
 `;
 
 export const OptionsWrapper = styled.div`
+    margin-top: 40px;
     color: ${COLOR.DARK_GRAY};
     display: flex;
     justify-content: center;

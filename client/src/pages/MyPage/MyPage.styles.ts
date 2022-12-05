@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { COLOR } from "styles/color";
-import { flexColumnSpaceBetween, flexRowCenter, flexRowSpaceBetween } from "styles/flex";
-import { fontLarge, fontSmall } from "styles/font";
+import { flexRowCenter } from "styles/flex";
+import { fontLarge } from "styles/font";
 import { MenuProps } from "./MyPageTypes";
 
 export const MenuWrapper = styled.div`
@@ -34,6 +34,6 @@ export const Menu = styled.div<MenuProps>`
 export const MyPageMenuInfo = styled.div`
     width: 100%;
     text-align: center;
-    padding-top: 32px;
+    padding: 32px 0 10px 0;
     ${fontLarge(COLOR.BLACK, 700)};
 `;

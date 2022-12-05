@@ -1,27 +1,42 @@
-import Button from "#components/Button/Button";
 import Header from "#components/Header/Header";
-import { Menu, MenuWrapper, MyInfoWrapper, MyInfo, MyName } from "./MyPage.styles";
+import { useState } from "react";
+import CourseCard from "#components/Card/CourseCard/CourseCard";
+import { Menu, MenuWrapper } from "./MyPage.styles";
+import MyPageProfile from "./MyPageProfile";
+import { MYPAGE } from "#constants/myPageOptions";
+
+const data = {
+    id: 3,
+    title: "title",
+    path: [],
+    pathLength: 0,
+    useId: "catenary",
+    hDong: {
+        name: "잠실동",
+        code: "1111111111",
+    },
+    createdAt: "createdAt",
+};
+
 const MyPage = () => {
+    const [myPageOption, setMyPageOption] = useState(MYPAGE.PROFILE);
+
     return (
         <div>
             <Header text="마이페이지"></Header>
             <MenuWrapper>
-                <Menu>내 정보</Menu>
-                <Menu>코스 목록</Menu>
-                <Menu>참여 </Menu>
+                <Menu enabled={myPageOption == MYPAGE.PROFILE} onClick={() => setMyPageOption(MYPAGE.PROFILE)}>
+                    내 정보
+                </Menu>
+                <Menu enabled={myPageOption == MYPAGE.COURSES} onClick={() => setMyPageOption(MYPAGE.COURSES)}>
+                    코스 목록
+                </Menu>
+                <Menu enabled={myPageOption == MYPAGE.RECRUITS} onClick={() => setMyPageOption(MYPAGE.RECRUITS)}>
+                    참여
+                </Menu>
             </MenuWrapper>
-            <MyInfoWrapper>
-                <MyName>catenary</MyName>
-                <MyInfo>
-                    <span>지역</span>
-                    <span>경기도 용인시 수지구 동천동</span>
-                </MyInfo>
-                <MyInfo>
-                    <span>페이스</span>
-                    <span>3min/km</span>
-                </MyInfo>
-                <Button width="fill">회원정보 변경</Button>
-            </MyInfoWrapper>
+            <MyPageProfile MyPageOption={myPageOption}></MyPageProfile>
+            <CourseCard data={data}></CourseCard>
         </div>
     );
 };

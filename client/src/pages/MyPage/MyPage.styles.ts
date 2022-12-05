@@ -1,7 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { COLOR } from "styles/color";
-import { flexColumnSpaceBetween, flexRowSpaceBetween } from "styles/flex";
+import { flexColumnSpaceBetween, flexRowCenter, flexRowSpaceBetween } from "styles/flex";
 import { fontLarge, fontSmall } from "styles/font";
+import { MenuProps } from "./MyPageTypes";
 
 export const MenuWrapper = styled.div`
     display: flex;
@@ -10,37 +11,22 @@ export const MenuWrapper = styled.div`
     border-bottom: 1px solid gray;
     margin-top: -5px;
     background: white;
+    padding: 0 30px;
 `;
 
-export const Menu = styled.div`
-    padding: 8px 16px;
+export const Menu = styled.div<MenuProps>`
+    ${flexRowCenter}
+    margin: 0 16px -2px 16px;
+    height: 30px;
     width: 30vw;
     text-align: center;
     ${fontLarge(COLOR.DARK_GRAY, 500)};
-`;
 
-export const MyInfoWrapper = styled.div`
-    width: 100%;
-    ${flexColumnSpaceBetween}
-    align-items: center;
-    button {
-        width: 90%;
-    }
-    gap: 30px;
-`;
-
-export const MyName = styled.div`
-    padding: 30px 50px;
-    ${fontLarge(COLOR.BLACK, 700)};
-`;
-
-export const MyInfo = styled.div`
-    width: 90%;
-    ${flexRowSpaceBetween}
-    & span:last-child {
-        ${fontSmall(COLOR.BLACK, 700)};
-    }
-    & span:first-child {
-        ${fontSmall(COLOR.LIGHT_GRAY, 500)};
-    }
+    ${(props) =>
+        props.enabled &&
+        css`
+            font-weight: 700;
+            color: ${COLOR.PRIMARY};
+            border-bottom: 3px solid black;
+        `};
 `;

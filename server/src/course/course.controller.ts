@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { ResponseEntity } from "src/common/response/response.entity";
+import { ResponseEntity } from "../common/response/response.entity";
 import { CourseService } from "./course.service";
 import { CreateCourseDto } from "./dto/request/create-course.dto";
 import { GetCourseDto } from "./dto/request/get-course.dto";

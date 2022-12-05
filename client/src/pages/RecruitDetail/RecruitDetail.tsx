@@ -19,6 +19,7 @@ const RecruitDetail = () => {
 
     if (isLoading) return <div>Loading...</div>;
     if (!data) return <div>404</div>;
+
     const renderMap = useCallback(
         useShowMap({
             height: `${window.innerHeight - 307}px`,

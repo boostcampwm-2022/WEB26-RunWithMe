@@ -23,6 +23,7 @@ import { HttpRequestBodyModule } from "./common/interceptors/http-request/http-r
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
+            envFilePath: process.env.NODE_ENV === "test" ? ".test.env" : ".env",
         }),
         TypeOrmModule.forRoot({
             type: "mysql",
@@ -32,7 +33,8 @@ import { HttpRequestBodyModule } from "./common/interceptors/http-request/http-r
             password: process.env.DB_PASSWORD,
             database: process.env.DB_NAME,
             synchronize: true,
-            logging: true,
+            dropSchema: process.env.NODE_ENV === "test" ? true : false,
+            logging: process.env.NODE_ENV === "test" ? false : true,
             entities: [User, Course, Recruit, UserRecruit, HDong],
             poolSize: 10,
         }),
@@ -56,8 +58,9 @@ import { HttpRequestBodyModule } from "./common/interceptors/http-request/http-r
     providers: [
         {
             provide: APP_INTERCEPTOR,
-            useClass: HttpRequestBodyInterceptor,
+            useExisting: HttpRequestBodyInterceptor,
         },
+        HttpRequestBodyInterceptor,
     ],
 })
 export class AppModule {}

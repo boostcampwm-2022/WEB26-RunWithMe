@@ -3,8 +3,8 @@ import { useState } from "react";
 import { MYPAGE } from "#constants/myPageOptions";
 import MyPageProfile from "./MyPageProfile";
 import { Menu, MenuWrapper } from "./MyPage.styles";
-import MyPageCourses from "./MyPageCourses";
 import MyPageRecruits from "./MyPageRecruits";
+import MyPageCourses from "./MyPageCourses";
 
 const MyPage = () => {
     const [myPageOption, setMyPageOption] = useState(MYPAGE.PROFILE);

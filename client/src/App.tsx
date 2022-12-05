@@ -1,4 +1,3 @@
-import React from "react";
 import SignUp from "#pages/SignUp/SignUp";
 import Login from "#pages/Login/Login";
 import MenuPage from "#pages/Menu/MenuPage";
@@ -13,7 +12,7 @@ import MockRecruits from "#pages/MockRecruits";
 import Recruits from "#pages/Recruits/Recruits";
 import useRefreshQuery from "#hooks/queries/useRefreshQuery";
 import Layout from "#components/Layout/Layout";
-import MyPage from "#pages/Mypage/Mypage";
+import MyPage from "#pages/Mypage/MyPage";
 function App() {
     const { isLoading } = useRefreshQuery();
     if (isLoading) return <div>Loading...</div>;

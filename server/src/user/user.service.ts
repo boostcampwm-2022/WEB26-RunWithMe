@@ -22,13 +22,13 @@ export class UserService {
     async checkId(checkUserDto: CheckUserDto) {
         if (await this.userRepository.findOneByUserId(checkUserDto.getUserId())) {
             return {
-                statusCode: "200",
-                existsCode: true,
+                statusCode: 200,
+                exists: true,
             };
         }
         return {
-            statusCode: "200",
-            existsCode: false,
+            statusCode: 200,
+            exists: false,
         };
     }
 }

@@ -4,7 +4,7 @@ import { PLACEHOLDER } from "#constants/placeholder";
 import useLocalAPI from "#hooks/useLocalAPI";
 import { Address, AddressSearchResponse } from "#types/Address";
 import { LOCAL_API_PATH } from "#types/LocalAPIType";
-import { isEupMyeonDong } from "#utils/addressUtils";
+import { isEupMyeonDong } from "#utils/locationUtils";
 import { debounce } from "#utils/timerUtils";
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useRef, useState } from "react";
 import Input from "../Input";

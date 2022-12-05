@@ -23,13 +23,13 @@ const NewCourse = () => {
     const navigate = useNavigate();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-    const { renderMap, pathLength, path } = useWriteMap({
+    const { renderMap, pathLength, getPath } = useWriteMap({
         height: `${window.innerHeight - 307}px`,
         center: { lat: 33.450701, lng: 126.570667 },
     });
 
     const checkFormValidation = () => {
-        if (title && path.length) {
+        if (title && getPath().length) {
             handleToggleConfirmModal();
         }
     };
@@ -40,6 +40,7 @@ const NewCourse = () => {
 
     const onClickInsertButton = useCallback(async () => {
         try {
+            const path = getPath();
             const { lng: x, lat: y } = getLatLngByXY(path[0]);
             const regions = await query({ x, y });
             // [0]: BCode, [1]: HCode
@@ -54,7 +55,7 @@ const NewCourse = () => {
         } catch (error: any) {
             alert(error.message);
         }
-    }, [path, title, pathLength]);
+    }, [title, pathLength]);
 
     return (
         <div style={{ height: "100vh", maxHeight: "100vh" }}>

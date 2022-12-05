@@ -9,6 +9,7 @@ export class UserRecruitRepository extends Repository<UserRecruit> {
             .where("user_recruit.recruitId = :recruitId", { recruitId })
             .andWhere("user_recruit.userId = :userId", { userId: userId || -1 })
             .getOne();
+
         if (userRecruit) {
             return true;
         }

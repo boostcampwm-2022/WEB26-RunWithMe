@@ -10,6 +10,7 @@ const Button = styled.img`
     position: fixed;
     right: 12px;
     bottom: 12px;
+    z-index: 2;
 `;
 
 interface PlusButtonProps {

@@ -1,10 +1,10 @@
 import Button from "#components/Button/Button";
-import { flexColumnSpaceBetween, flexRowSpaceBetween } from "styles/flex";
+import { flexColumn, flexColumnSpaceBetween, flexRowSpaceBetween } from "styles/flex";
 import styled from "styled-components";
 import { fontLarge, fontSmall } from "styles/font";
 import { COLOR } from "styles/color";
 import { MYPAGE } from "#constants/myPageOptions";
-import { MyPageProfileProps } from "./MyPageTypes";
+import { MyPageProps } from "./MyPageTypes";
 import { useResetRecoilState } from "recoil";
 import useHttpGet from "#hooks/http/useHttpGet";
 import { useNavigate } from "react-router-dom";
@@ -36,7 +36,14 @@ const MyInfo = styled.div`
     }
 `;
 
-const MyPageProfile = ({ MyPageOption }: MyPageProfileProps) => {
+const MyProfileButtonsWrapper = styled.div`
+    width: 100%;
+    ${flexColumn}
+    align-items: center;
+    gap: 10px;
+`;
+
+const MyPageProfile = ({ MyPageOption }: MyPageProps) => {
     const { get } = useHttpGet();
     const userStateReset = useResetRecoilState(userState);
     const navigate = useNavigate();
@@ -47,24 +54,30 @@ const MyPageProfile = ({ MyPageOption }: MyPageProfileProps) => {
             navigate("/");
         } catch {}
     };
-    return MyPageOption == MYPAGE.PROFILE ? (
-        <MyInfoWrapper>
-            <MyName>catenary</MyName>
+    return (
+        <>
+            {MyPageOption == MYPAGE.PROFILE && (
+                <MyInfoWrapper>
+                    <MyName>catenary</MyName>
 
-            <MyInfo>
-                <span>지역</span>
-                <span>경기도 용인시 수지구 동천동</span>
-            </MyInfo>
-            <MyInfo>
-                <span>페이스</span>
-                <span>3min/km</span>
-            </MyInfo>
-            <Button width="fill">회원정보 변경</Button>
-            <Button width="fill" onClick={logoutOnClick}>
-                로그아웃
-            </Button>
-        </MyInfoWrapper>
-    ) : null;
+                    <MyInfo>
+                        <span>지역</span>
+                        <span>경기도 용인시 수지구 동천동</span>
+                    </MyInfo>
+                    <MyInfo>
+                        <span>페이스</span>
+                        <span>3min/km</span>
+                    </MyInfo>
+                    <MyProfileButtonsWrapper>
+                        <Button width="fill">회원정보 변경</Button>
+                        <Button width="fill" onClick={logoutOnClick}>
+                            로그아웃
+                        </Button>
+                    </MyProfileButtonsWrapper>
+                </MyInfoWrapper>
+            )}
+        </>
+    );
 };
 
 export default MyPageProfile;

@@ -30,3 +30,10 @@ export const Menu = styled.div<MenuProps>`
             border-bottom: 3px solid black;
         `};
 `;
+
+export const MyPageMenuInfo = styled.div`
+    width: 100%;
+    text-align: center;
+    padding-top: 32px;
+    ${fontLarge(COLOR.BLACK, 700)};
+`;

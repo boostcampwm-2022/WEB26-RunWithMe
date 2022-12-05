@@ -1,22 +1,10 @@
 import Header from "#components/Header/Header";
 import { useState } from "react";
-import CourseCard from "#components/Card/CourseCard/CourseCard";
 import { MYPAGE } from "#constants/myPageOptions";
 import MyPageProfile from "./MyPageProfile";
 import { Menu, MenuWrapper } from "./MyPage.styles";
-
-const data = {
-    id: 3,
-    title: "title",
-    path: [],
-    pathLength: 0,
-    useId: "catenary",
-    hDong: {
-        name: "잠실동",
-        code: "1111111111",
-    },
-    createdAt: "createdAt",
-};
+import MyPageCourses from "./MyPageCourses";
+import MyPageRecruits from "./MyPageRecruits";
 
 const MyPage = () => {
     const [myPageOption, setMyPageOption] = useState(MYPAGE.PROFILE);
@@ -36,7 +24,8 @@ const MyPage = () => {
                 </Menu>
             </MenuWrapper>
             <MyPageProfile MyPageOption={myPageOption}></MyPageProfile>
-            <CourseCard data={data}></CourseCard>
+            <MyPageCourses MyPageOption={myPageOption}></MyPageCourses>
+            <MyPageRecruits MyPageOption={myPageOption}></MyPageRecruits>
         </div>
     );
 };

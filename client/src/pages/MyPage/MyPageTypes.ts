@@ -1,4 +1,4 @@
-export type MyPageProfileProps = {
+export type MyPageProps = {
     MyPageOption: string;
 };
 

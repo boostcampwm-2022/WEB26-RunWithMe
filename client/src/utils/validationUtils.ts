@@ -18,9 +18,9 @@ export const hNameValidator = (hCode: string) => {
 };
 
 export const courseTitleValidator = (title: string) => {
-    return !title.trim() ? "제목을 입력하세요" : "";
+    return title.trim() ? "" : "제목을 입력하세요";
 };
 
 export const recruitTitleValidator = (title: string) => {
-    return !title.trim() ? "제목을 입력하세요" : "";
+    return title.trim() ? "" : "제목을 입력하세요";
 };

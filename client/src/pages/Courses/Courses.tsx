@@ -13,6 +13,7 @@ import useGet from "#hooks/http/useHttpGet";
 import { LOCATION_ICON } from "#assets/icons";
 import CourseCard from "#components/Card/CourseCard/CourseCard";
 import { Course } from "#types/Course";
+import PlusButton from "#components/PlusButton/PlusButton";
 
 const CourseList = styled.div`
     padding: 2rem;
@@ -40,8 +41,8 @@ const Courses = () => {
 
     const courseQueryParams = () => {
         const param: any = {};
-        if (titleFilter) param.title = "true";
-        if (authorFilter) param.author = "true";
+        param.title = titleFilter ? "true" : "false";
+        param.author = authorFilter ? "true" : "false";
         if (searchContent !== "") param.query = searchContent;
         param.maxLen = (currentDistanceFilter.max * 1000).toString();
         param.minLen = (currentDistanceFilter.min * 1000).toString();
@@ -66,9 +67,6 @@ const Courses = () => {
         sendCourseFetchRequest();
     }, []);
 
-    useEffect(() => {
-        console.log(cardList.length);
-    }, [cardList]);
     return (
         <>
             <Header text="코스 목록" />
@@ -119,6 +117,7 @@ const Courses = () => {
                     ))}
                 </CourseList>
             </InfiniteScroll>
+            <PlusButton to="/course/new"></PlusButton>
         </>
     );
 };

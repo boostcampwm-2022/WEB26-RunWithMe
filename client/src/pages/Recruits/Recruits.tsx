@@ -13,6 +13,7 @@ import useGet from "#hooks/http/useHttpGet";
 import { LOCATION_ICON, CLOCK_ICON } from "#assets/icons";
 import RecruitCard from "#components/Card/RecruitCard/RecruitCard";
 import { Recruit } from "#types/Recruit";
+import PlusButton from "#components/PlusButton/PlusButton";
 
 const RecruitList = styled.div`
     padding: 2rem;
@@ -46,9 +47,9 @@ const Recruits = () => {
 
     const recruitQueryParams = () => {
         const param: any = {};
-        if (titleFilter) param.title = "true";
-        if (authorFilter) param.author = "true";
-        if (availFilter) param.avail = "true";
+        param.title = titleFilter ? "true" : "false";
+        param.author = authorFilter ? "true" : "false";
+        param.avail = availFilter ? "true" : "false";
         if (searchContent !== "") param.query = searchContent;
         param.maxLen = (currentDistanceFilter.max * 1000).toString();
         param.minLen = (currentDistanceFilter.min * 1000).toString();
@@ -140,6 +141,7 @@ const Recruits = () => {
                     ))}
                 </RecruitList>
             </InfiniteScroll>
+            <PlusButton to="/courses"></PlusButton>
         </>
     );
 };

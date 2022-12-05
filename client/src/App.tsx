@@ -12,7 +12,8 @@ import MockRecruits from "#pages/MockRecruits";
 import Recruits from "#pages/Recruits/Recruits";
 import useRefreshQuery from "#hooks/queries/useRefreshQuery";
 import Layout from "#components/Layout/Layout";
-import MyPage from "#pages/Mypage/MyPage";
+import MyPage from "#pages/MyPage/MyPage";
+
 function App() {
     const { isLoading } = useRefreshQuery();
     if (isLoading) return <div>Loading...</div>;

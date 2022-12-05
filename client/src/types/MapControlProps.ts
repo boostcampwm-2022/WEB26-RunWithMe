@@ -1,5 +1,5 @@
 export interface MapControlProps {
-    position: MapControlPosition;
+    position?: MapControlPosition;
 }
 
 export interface MapControlPosition {

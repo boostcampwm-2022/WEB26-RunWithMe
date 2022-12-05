@@ -5,6 +5,10 @@ import { fontLarge, fontSmall } from "styles/font";
 import { COLOR } from "styles/color";
 import { MYPAGE } from "#constants/myPageOptions";
 import { MyPageProfileProps } from "./MyPageTypes";
+import { useResetRecoilState } from "recoil";
+import useHttpGet from "#hooks/http/useHttpGet";
+import { useNavigate } from "react-router-dom";
+import { userState } from "#atoms/userState";
 
 const MyInfoWrapper = styled.div`
     width: 100%;
@@ -33,6 +37,16 @@ const MyInfo = styled.div`
 `;
 
 const MyPageProfile = ({ MyPageOption }: MyPageProfileProps) => {
+    const { get } = useHttpGet();
+    const userStateReset = useResetRecoilState(userState);
+    const navigate = useNavigate();
+    const logoutOnClick = async () => {
+        try {
+            userStateReset();
+            await get("/auth/logout");
+            navigate("/");
+        } catch {}
+    };
     return MyPageOption == MYPAGE.PROFILE ? (
         <MyInfoWrapper>
             <MyName>catenary</MyName>
@@ -46,6 +60,9 @@ const MyPageProfile = ({ MyPageOption }: MyPageProfileProps) => {
                 <span>3min/km</span>
             </MyInfo>
             <Button width="fill">회원정보 변경</Button>
+            <Button width="fill" onClick={logoutOnClick}>
+                로그아웃
+            </Button>
         </MyInfoWrapper>
     ) : null;
 };

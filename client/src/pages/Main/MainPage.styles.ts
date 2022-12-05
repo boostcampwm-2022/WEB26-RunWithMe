@@ -5,7 +5,8 @@ import { fontXLarge } from "styles/font";
 
 export const MainPageContainer = styled.div`
     overflow-x: hidden;
-    height: inherit;
+    overflow-y: hidden;
+    height: 100vh;
     > div:first-child {
         margin-bottom: 16px;
     }

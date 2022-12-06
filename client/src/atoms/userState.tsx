@@ -9,3 +9,8 @@ export const userState = atom<UserInfo>({
         userIdx: 0,
     },
 });
+
+export const loggedInState = atom<boolean | null>({
+    key: "loggedInState",
+    default: null,
+});

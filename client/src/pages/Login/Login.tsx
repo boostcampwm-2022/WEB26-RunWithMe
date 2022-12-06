@@ -6,18 +6,16 @@ import Button from "#components/Button/Button";
 import useInput from "#hooks/useInput";
 import { PLACEHOLDER } from "#constants/placeholder";
 import { idValidator, passwordValidator } from "#utils/validationUtils";
-
-import { useSetRecoilState } from "recoil";
-import { userState } from "#atoms/userState";
 import { LogoWrapper } from "./Login.styles";
 import useHttpPost from "#hooks/http/useHttpPost";
 import { InputWrapper, OptionsWrapper } from "#pages/SignUp/SignUp.styles";
+import useLogin from "#hooks/useLogin";
 
 const Login = () => {
     const [userId, onChangeUserId, userIdError] = useInput(idValidator);
     const [password, onChangePassword, passwordError] = useInput(passwordValidator);
     const { post } = useHttpPost();
-    const setUserInfo = useSetRecoilState(userState);
+    const login = useLogin();
     const navigate = useNavigate();
 
     const checkFormValidation = () => {
@@ -28,7 +26,7 @@ const Login = () => {
         if (!checkFormValidation()) return;
         try {
             const response: any = await post("/auth/login", { userId, password });
-            setUserInfo(response.data);
+            login(response.data);
             navigate("/");
         } catch (error: any) {
             alert(error.message);

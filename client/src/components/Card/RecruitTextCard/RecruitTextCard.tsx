@@ -1,6 +1,6 @@
 import DetailLabel from "#components/DetailLabel/DetailLabel";
 import { Recruit } from "#types/Recruit";
-import { getDisplayPaceString } from "#utils/stringUtils";
+import { getDisplayPaceString, getTimeFormat } from "#utils/stringUtils";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -34,7 +34,7 @@ const RecruitTextCard = ({ data }: RecruitTextCardProps) => {
             <DetailLabel title="총거리" value={`${(data.course.pathLength / 1000).toFixed(1)}km`} />
             <DetailLabel title="페이스" value={getDisplayPaceString(data.pace)} />
             <DetailLabel title="참가 현황" value={`${data.currentPpl}/${data.maxPpl}`} />
-            <DetailLabel title="집합 일시" value={data.startTime.toLocaleString()} />
+            <DetailLabel title="집합 일시" value={getTimeFormat(data.startTime.toLocaleString())} />
         </Card>
     );
 };

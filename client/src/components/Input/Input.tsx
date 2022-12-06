@@ -1,19 +1,21 @@
-import { ChangeEventHandler, ReactNode } from "react";
+import { ChangeEventHandler, FocusEventHandler, ReactNode } from "react";
 import { InputWrapper } from "./Input.style";
 
 interface InputProps {
-    type?: "text" | "password" | "number";
+    type?: "text" | "password" | "number" | "checkbox";
     width?: string;
     child?: ReactNode;
     placeholder?: string;
     onChange?: ChangeEventHandler<HTMLInputElement>;
+    onBlur?: FocusEventHandler<HTMLInputElement>;
     attr?: object;
 }
 
-const Input = ({ width, type = "text", placeholder, child, onChange, attr }: InputProps) => {
+const Input = ({ width, type = "text", placeholder, child, onChange, onBlur, attr }: InputProps) => {
     return (
         <InputWrapper width={width ?? "100%"}>
             <input
+                onBlur={onBlur}
                 onChange={onChange}
                 placeholder={placeholder}
                 type={type}

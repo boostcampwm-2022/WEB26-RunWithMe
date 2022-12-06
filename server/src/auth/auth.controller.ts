@@ -65,4 +65,20 @@ export class AuthController {
 
         return ResponseEntity.OK_WITH_DATA(loginUserResponseDto);
     }
+
+    @ApiOperation({ summary: "로그인 여부 확인", description: "사용자의 로그인 여부를 반환한다." })
+    @ApiOkResponse({ description: "로그인 여부" })
+    @Get("/check")
+    async checkUserLoggedIn(@Req() req: Request) {
+        const refreshToken = req["cookies"]["refreshToken"];
+        if (!refreshToken) {
+            return ResponseEntity.OK_WITH_DATA({ isLoggedIn: false });
+        }
+        try {
+            this.authService.verifyRefreshToken(refreshToken);
+            return ResponseEntity.OK_WITH_DATA({ isLoggedIn: true });
+        } catch (err) {
+            return ResponseEntity.OK_WITH_DATA({ isLoggedIn: false });
+        }
+    }
 }

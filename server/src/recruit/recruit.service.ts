@@ -1,33 +1,43 @@
 import { Injectable } from "@nestjs/common";
-import { RecruitRepository } from "./recruit.repository";
-import { CreateRecruitDto } from "./dto/create-recruit.dto";
-import { GetRecruitDto } from "./dto/get-recruit.dto";
-import { Recruit } from "src/entities/recruit.entity";
-import { UserRecruitRepository } from "src/user_recruit.repository";
-import { HDongRepository } from "src/common/repository/h_dong.repository";
-import { plainToGetRecruitDto } from "src/common/utils/plainToGetRecruitDto";
+import { RecruitRepository } from "../common/repositories/recruit.repository";
+import { CreateRecruitReqDto } from "./dto/request/create.request";
+import { GetRecruitDto } from "./dto/request/get-many.request";
+import { UserRecruitRepository } from "../common/repositories/user_recruit.repository";
+import { plainToGetRecruitDto } from "../common/utils/plainToGetRecruitDto";
+import { DataSource } from "typeorm";
+import { plainToInstance } from "class-transformer";
+import { JoinRecruitDto } from "./dto/request/join-recruit.request";
+import { Recruit } from "../common/entities/recruit.entity";
 @Injectable()
 export class RecruitService {
     constructor(
         private recruitRepository: RecruitRepository,
-        private hDongRepository: HDongRepository,
         private userRecruitRepository: UserRecruitRepository,
+        private dataSource: DataSource,
     ) {}
 
-    async create(createRecruitDto: CreateRecruitDto): Promise<Recruit> {
-        const code = createRecruitDto.getHCode();
-        const { name } = await this.hDongRepository.findOneBy({ code });
-        createRecruitDto.setHCodeToName(name);
-        const recruitEntity = createRecruitDto.toEntity();
-        return this.recruitRepository.createOne(recruitEntity);
+    async create(createRecruitDto: CreateRecruitReqDto) {
+        const queryRunner = this.dataSource.createQueryRunner();
+        let recruitEntity: Recruit;
+
+        await queryRunner.connect();
+        await queryRunner.manager.transaction(async (manager) => {
+            recruitEntity = await manager.save(createRecruitDto.toEntity());
+            const userRecruitDto = plainToInstance(JoinRecruitDto, {
+                userId: recruitEntity.userId,
+                recruitId: recruitEntity.id,
+            });
+            await manager.save(userRecruitDto.toEntity());
+        });
+        return recruitEntity;
     }
 
-    async getRecruitList(queryParams: GetRecruitDto) {
+    async getMany(queryParams: GetRecruitDto) {
         if (queryParams.getQuery() === "") {
             return [];
         }
 
-        if (!queryParams.getTitle() && !queryParams.getAuthor()) {
+        if (!queryParams.getTitle() && !queryParams.getAuthor() && queryParams.getQuery()) {
             return [];
         }
 
@@ -55,16 +65,31 @@ export class RecruitService {
             .map(plainToGetRecruitDto);
     }
 
-    async getRecruitDetail(recruitId: number) {
-        return await this.recruitRepository.findRecruitDetail(recruitId);
+    async getOne(_userId: number, recruitId: number) {
+        const data = await this.recruitRepository.findRecruitDetail(recruitId);
+        const { title, maxPpl, pace, userId, currentPpl, path, pathLength, startTime } = data;
+
+        return {
+            title,
+            maxPpl,
+            pace,
+            userId,
+            currentPpl,
+            path: JSON.parse(path),
+            pathLength,
+            startTime,
+            hDong: { name: data.h_dong_name },
+            isAuthor: data.authorId === _userId,
+            isParticipating: await this.isParticipating(recruitId, _userId),
+        };
     }
 
-    async isExistRecruit(recruitId: number): Promise<number | null> {
+    async isExistingRecruit(recruitId: number): Promise<boolean> {
         const recruitEntity = await this.recruitRepository.findOneById(recruitId);
         if (recruitEntity) {
-            return recruitEntity.userId;
+            return true;
         }
-        return null;
+        return false;
     }
 
     async isParticipating(recruitId: number, userId: number): Promise<boolean> {
@@ -89,7 +114,7 @@ export class RecruitService {
         return recruitEntity.userId === userId;
     }
 
-    join(userId: number, recruitId: number) {
-        this.userRecruitRepository.createUserRecruit(userId, recruitId);
+    join(createUserRecruitDto: JoinRecruitDto) {
+        this.userRecruitRepository.createUserRecruit(createUserRecruitDto.toEntity());
     }
 }

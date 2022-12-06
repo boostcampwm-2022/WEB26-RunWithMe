@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import * as bcrypt from "bcryptjs";
-import { UserRepository } from "./user.repository";
+import { UserRepository } from "../common/repositories/user.repository";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { CheckUserDto } from "./dto/check-user.dto";
 
@@ -22,17 +22,13 @@ export class UserService {
     async checkId(checkUserDto: CheckUserDto) {
         if (await this.userRepository.findOneByUserId(checkUserDto.getUserId())) {
             return {
-                statusCode: "200",
-                existsCode: true,
+                statusCode: 200,
+                exists: true,
             };
         }
         return {
-            statusCode: "200",
-            existsCode: false,
+            statusCode: 200,
+            exists: false,
         };
-    }
-
-    async getUserIdxByUserId(userId: string) {
-        return await this.userRepository.findUserIdxByUserId(userId);
     }
 }

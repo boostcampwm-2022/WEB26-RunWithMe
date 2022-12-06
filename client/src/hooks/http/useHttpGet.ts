@@ -1,21 +1,21 @@
 import useAxios from "./useAxios";
-const useGet = () => {
-    const { isLoading, setIsLoading, error, setError, axios } = useAxios();
+const useHttpGet = <Res = any>() => {
+    const { axios } = useAxios();
 
-    const get = (url: string, query?: { [key: string]: any }) => {
-        setError(null);
-        setIsLoading(true);
-        return axios
-            .get(url, {
+    const get = async (url: string, query?: { [key: string]: any }): Promise<Res> => {
+        try {
+            const res = await axios.get(url, {
                 params: query,
-            })
-            .then((res) => {
-                setIsLoading(false);
-                return res.data;
-            })
-            .catch(setError);
+            });
+            if (res.data.statusCode >= 400) {
+                throw new Error(res.data.message);
+            }
+            return res.data;
+        } catch (error) {
+            throw error;
+        }
     };
-    return { isLoading, error, get };
+    return { get };
 };
 
-export default useGet;
+export default useHttpGet;

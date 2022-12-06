@@ -4,6 +4,8 @@ import { ARROW_LEFT_ICON, USER_CIRCLE_ICON } from "#assets/icons";
 import { useNavigate } from "react-router-dom";
 import { COLOR } from "styles/color";
 import { fontLarge } from "styles/font";
+import { useRecoilValue } from "recoil";
+import { userState } from "#atoms/userState";
 const HeaderWrapper = styled.div`
     ${flexRowSpaceBetween};
     padding: 16px 8px;
@@ -14,7 +16,6 @@ const HeaderWrapper = styled.div`
     img {
         width: 24px;
         height: 24px;
-        cursor: pointer;
     }
     div {
         width: 24px;
@@ -23,17 +24,19 @@ const HeaderWrapper = styled.div`
 `;
 
 interface HeaderProps {
-    loggedIn?: boolean;
     text: string;
+    isMain?: boolean;
 }
 
-const Header = ({ loggedIn, text }: HeaderProps) => {
+const Header = ({ text, isMain = false }: HeaderProps) => {
     const navigate = useNavigate();
+    const userInfo = useRecoilValue(userState);
     return (
         <HeaderWrapper>
-            <img src={ARROW_LEFT_ICON} onClick={() => navigate(-1)} />
+            {isMain ? <div /> : <img src={ARROW_LEFT_ICON} onClick={() => navigate(-1)} />}
+
             <p>{text}</p>
-            {loggedIn ? <img src={USER_CIRCLE_ICON} onClick={() => navigate("/mypage")} /> : <div />}
+            <img src={USER_CIRCLE_ICON} onClick={() => navigate(userInfo.accessToken ? "/mypage" : "/login")} />
         </HeaderWrapper>
     );
 };

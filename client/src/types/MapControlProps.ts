@@ -1,8 +1,8 @@
 export interface MapControlProps {
-    position: MapControlPotition;
+    position?: MapControlPosition;
 }
 
-export interface MapControlPotition {
+export interface MapControlPosition {
     top?: string;
     left?: string;
     bottom?: string;

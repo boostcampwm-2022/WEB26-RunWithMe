@@ -1,19 +1,12 @@
 import useAxios from "./useAxios";
-const usePatch = () => {
-    const { isLoading, setIsLoading, error, setError, axios } = useAxios();
+const useHttpPatch = () => {
+    const { axios } = useAxios();
 
-    const patch = (url: string, data: { [key: string]: any }) => {
-        setError(null);
-        setIsLoading(true);
-        return axios
-            .patch(url, data)
-            .then((res) => {
-                setIsLoading(false);
-                return res.data;
-            })
-            .catch(setError);
+    const patch = async (url: string, data: { [key: string]: any }) => {
+        const res = await axios.patch(url, data);
+        return res.data;
     };
-    return { isLoading, error, patch };
+    return { patch };
 };
 
-export default usePatch;
+export default useHttpPatch;

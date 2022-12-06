@@ -6,4 +6,6 @@ export enum PLACEHOLDER {
     PACE = "페이스를 입력하세요",
     SEARCH = "검색",
     COURSE_NAME = "코스명을 작성하세요",
+    TITLE = "제목을 입력하세요",
+    REGION = "읍면동 정보를 입력하세요",
 }

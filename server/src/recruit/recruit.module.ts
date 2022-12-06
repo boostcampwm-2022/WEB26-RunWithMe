@@ -1,25 +1,18 @@
 import { Module } from "@nestjs/common";
 import { RecruitService } from "./recruit.service";
 import { RecruitController } from "./recruit.controller";
-import { TypeOrmCustomModule } from "src/common/typeorm/typeorm.module";
-import { AuthService } from "src/auth/auth.service";
-import { JwtService } from "@nestjs/jwt";
-import { AuthRepository } from "src/auth/auth.repository";
-import { UserRepository } from "src/user/user.repository";
-import { UserRecruitRepository } from "src/user_recruit.repository";
-import { RecruitRepository } from "./recruit.repository";
-import { HDongRepository } from "src/common/repository/h_dong.repository";
+import { TypeOrmCustomModule } from "../common/typeorm/typeorm.module";
+import { UserRepository } from "../common/repositories/user.repository";
+import { UserRecruitRepository } from "../common/repositories/user_recruit.repository";
+import { RecruitRepository } from "../common/repositories/recruit.repository";
+import { CustomJwtModule } from "../common/modules/custom-jwt/custom-jwt.module";
 
 @Module({
     imports: [
-        TypeOrmCustomModule.forCustomRepository([
-            RecruitRepository,
-            UserRepository,
-            UserRecruitRepository,
-            HDongRepository,
-        ]),
+        TypeOrmCustomModule.forCustomRepository([RecruitRepository, UserRepository, UserRecruitRepository]),
+        CustomJwtModule,
     ],
+    providers: [RecruitService],
     controllers: [RecruitController],
-    providers: [RecruitService, AuthService, JwtService, AuthRepository],
 })
 export class RecruitModule {}

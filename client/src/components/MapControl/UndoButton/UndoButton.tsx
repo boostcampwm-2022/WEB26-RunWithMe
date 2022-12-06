@@ -4,7 +4,7 @@ import { MapButton } from "../MapControl.styles";
 interface UndoButtonProps extends MapControlProps {
     onClick: () => void;
 }
-const UndoButton = ({ onClick, position }: UndoButtonProps) => {
+const UndoButton = ({ onClick, position = { bottom: "14px", right: "14px" } }: UndoButtonProps) => {
     return (
         <MapButton onClick={onClick} position={position}>
             <img src={UNDO_ICON} />

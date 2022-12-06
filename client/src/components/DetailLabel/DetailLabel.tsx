@@ -10,7 +10,7 @@ const TextWrapper = styled.div`
         ${fontSmall(COLOR.LIGHT_GRAY, 400)};
     }
     p:nth-child(2) {
-        ${fontSmall(COLOR.BLACK, 500)}
+        ${fontSmall(COLOR.BLACK, 500)};
     }
 `;
 

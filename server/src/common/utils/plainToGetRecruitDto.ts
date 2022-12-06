@@ -1,4 +1,4 @@
-import { RawRecruitData } from "../type/raw-recruit-data";
+import { RawRecruitData } from "../types/raw-recruit-data";
 
 export const plainToGetRecruitDto = (plainRecruitData: RawRecruitData) => {
     const {
@@ -12,10 +12,9 @@ export const plainToGetRecruitDto = (plainRecruitData: RawRecruitData) => {
         pace,
         course_id,
         course_title,
-        course_img,
         course_path,
         course_pathLength,
-        course_name,
+        h_dong_name,
         course_createdAt,
         course_userId,
     } = plainRecruitData;
@@ -32,12 +31,11 @@ export const plainToGetRecruitDto = (plainRecruitData: RawRecruitData) => {
         course: {
             id: course_id,
             title: course_title,
-            img: course_img,
-            path: course_path,
+            path: JSON.parse(course_path),
             pathLength: course_pathLength,
             userId: course_userId,
             hDong: {
-                name: course_name,
+                name: h_dong_name,
             },
             createdAt: course_createdAt,
         },

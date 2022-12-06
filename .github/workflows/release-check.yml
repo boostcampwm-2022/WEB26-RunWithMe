@@ -1,0 +1,83 @@
+name: build + eslint check on release
+
+on:
+    pull_request:
+        branches:
+            - release
+
+jobs:
+    release_check:
+        name: release_check
+        runs-on: ubuntu-latest
+        outputs:
+            client: ${{steps.filter.outputs.client}}
+            server: ${{steps.filter.outputs.server}}
+        steps:
+            - uses: dorny/paths-filter@v2
+              id: filter
+              with:
+                  filters: |
+                      client:
+                        - 'client/**'
+                      server:
+                        - 'server/**'
+
+    release_client:
+        needs: release_check
+        if: ${{needs.release_check.outputs.client=='true'}}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Nodejs Setup
+              uses: actions/setup-node@v2
+
+            - name: Cache client node modules
+              id: cache-client
+              uses: actions/cache@v3
+              with:
+                  path: client/node_modules
+                  key: npm-packages-client-${{hashFiles('**/package-lock.json')}}
+                  restore-keys: |
+                      npm-packages-client-
+
+            - name: Install client dependencies
+              if: ${{steps.cache-client.outputs.cache-hit != 'true'}}
+              run: cd client && npm install
+
+            - name: Client eslint check
+              run: ./client/node_modules/.bin/eslint client/src --ext .ts,.tsx
+
+            - name: Run client build check
+              run: cd client && npm run build
+
+    release_server:
+        needs: release_check
+        if: ${{needs.release_check.outputs.server=='true'}}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Nodejs Setup
+              uses: actions/setup-node@v2
+
+            - name: Cache server node modules
+              id: cache-server
+              uses: actions/cache@v3
+              with:
+                  path: server/node_modules
+                  key: npm-packages-server-${{hashFiles('**/package-lock.json')}}
+                  restore-keys: |
+                      npm-packages-server-
+
+            - name: Install server dependencies
+              if: ${{steps.cache-server.outputs.cache-hit != 'true'}}
+              run: cd server && npm install
+
+            - name: server eslint check
+              run: ./server/node_modules/.bin/eslint server/src --ext .ts,.tsx
+
+            - name: Run server build check
+              run: cd server && npm run build

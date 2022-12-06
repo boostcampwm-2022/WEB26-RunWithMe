@@ -9,6 +9,8 @@ export class GetCoursesUserDto {
     static fromEntity(course: any): GetCoursesUserDto {
         const data = instanceToPlain(course);
         // OK
-        return plainToInstance(GetCoursesUserDto, data, { excludeExtraneousValues: true });
+        const dto = plainToInstance(GetCoursesUserDto, data, { excludeExtraneousValues: false });
+        console.log(dto);
+        return dto;
     }
 }

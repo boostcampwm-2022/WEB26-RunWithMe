@@ -1,5 +1,5 @@
 import { instanceToPlain, Expose, plainToInstance, Type } from "class-transformer";
-import { CourseResponseDto } from "src/course/dto/response/get-one.response";
+import { CourseResponseDto } from "../../../course/dto/response/get-one.response";
 
 export class GetManyResponseDto {
     @Expose()
@@ -8,7 +8,10 @@ export class GetManyResponseDto {
 
     static fromEntity(course: any): GetManyResponseDto {
         const data = instanceToPlain(course);
-        return plainToInstance(GetManyResponseDto, data, { excludeExtraneousValues: true });
+        console.log(data);
+        const dto = plainToInstance(GetManyResponseDto, data, { excludeExtraneousValues: true });
+        console.log("DTO: ", dto);
+        return dto;
         // return plainToInstance(GetManyResponseDto, course);
     }
 }

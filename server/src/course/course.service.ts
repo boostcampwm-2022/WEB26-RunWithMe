@@ -31,7 +31,7 @@ export class CourseService {
             queryParams.getMinLength(),
             queryParams.getMaxLength(),
         );
-        const a = courseList.map(({ id, title, path, pathLength, createdAt, user, hCode }) => {
+        return courseList.map(({ id, title, path, pathLength, createdAt, user, hCode }) => {
             return {
                 id,
                 title,
@@ -42,9 +42,6 @@ export class CourseService {
                 userId: user.userId,
             };
         });
-        console.log(a[0]);
-
-        return a;
     }
 
     async getOne(recruitId: number) {

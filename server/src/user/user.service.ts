@@ -35,19 +35,16 @@ export class UserService {
 
     async getCoursesByUserId(_userId: number) {
         const coursesByUser = await this.courseRepository.findManyByUser(_userId);
-        const a = coursesByUser.map(({ id, title, path, pathLength, createdAt, user, hCode }) => {
+        return coursesByUser.map(({ id, title, path, pathLength, createdAt, user, hCode }) => {
             return {
                 id,
                 title,
                 path: JSON.parse(path),
                 pathLength,
-                hDong: { name: hCode["name"] },
+                hDong: hCode,
                 createdAt,
                 userId: user.userId,
             };
         });
-        console.log(a[0]);
-
-        return a;
     }
 }

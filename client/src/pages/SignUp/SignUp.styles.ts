@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { COLOR } from "styles/color";
+import { flexRow, flexRowCenter } from "styles/flex";
+import { fontMedium } from "styles/font";
 
 export const Logo = styled.div`
     color: ${COLOR.BLACK};
@@ -22,12 +24,22 @@ export const InputWrapper = styled.div`
 
     span {
         color: red;
-        float: left;
         font-size: 1rem;
     }
 
     button {
         margin-top: 25px;
+    }
+`;
+
+export const CheckboxWrapper = styled.div`
+    ${flexRow};
+    align-items: center;
+
+    margin: 1rem 0 0 1rem;
+    label {
+        margin-left: 1rem;
+        ${fontMedium(COLOR.BLACK, 500)}
     }
 `;
 

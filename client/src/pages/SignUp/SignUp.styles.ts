@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { COLOR } from "styles/color";
-import { flexRow, flexRowCenter } from "styles/flex";
+import { flexRow } from "styles/flex";
 import { fontMedium } from "styles/font";
 
 export const Logo = styled.div`

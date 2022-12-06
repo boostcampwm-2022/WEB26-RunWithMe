@@ -3,10 +3,11 @@ import * as bcrypt from "bcryptjs";
 import { UserRepository } from "../common/repositories/user.repository";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { CheckUserDto } from "./dto/check-user.dto";
+import { CourseRepository } from "src/common/repositories/course.repository";
 
 @Injectable()
 export class UserService {
-    constructor(private userRepository: UserRepository) {}
+    constructor(private userRepository: UserRepository, private courseRepository: CourseRepository) {}
 
     async create(createUserDto: CreateUserDto) {
         const isPresent = await this.userRepository.findOneByUserId(createUserDto.getUserId());
@@ -30,5 +31,23 @@ export class UserService {
             statusCode: 200,
             exists: false,
         };
+    }
+
+    async getCoursesByUserId(_userId: number) {
+        const coursesByUser = await this.courseRepository.findManyByUser(_userId);
+        const a = coursesByUser.map(({ id, title, path, pathLength, createdAt, user, hCode }) => {
+            return {
+                id,
+                title,
+                path: JSON.parse(path),
+                pathLength,
+                hDong: { name: hCode["name"] },
+                createdAt,
+                userId: user.userId,
+            };
+        });
+        console.log(a[0]);
+
+        return a;
     }
 }

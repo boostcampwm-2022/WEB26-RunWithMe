@@ -5,9 +5,13 @@ import { UserController } from "./user.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { TypeOrmCustomModule } from "../common/typeorm/typeorm.module";
 import { User } from "../common/entities/user.entity";
+import { CourseRepository } from "src/common/repositories/course.repository";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User]), TypeOrmCustomModule.forCustomRepository([UserRepository])],
+    imports: [
+        TypeOrmModule.forFeature([User]),
+        TypeOrmCustomModule.forCustomRepository([UserRepository, CourseRepository]),
+    ],
     providers: [UserService],
     controllers: [UserController],
 })

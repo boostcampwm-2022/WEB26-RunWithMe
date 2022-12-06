@@ -1,7 +1,8 @@
 import { CustomRepository } from "../typeorm/typeorm.decorator";
-import { Repository } from "typeorm";
+import { Equal, Repository } from "typeorm";
 import { Course } from "../entities/course.entity";
 import { BadRequestException } from "@nestjs/common";
+import { CourseData } from "../types/course-data";
 
 @CustomRepository(Course)
 export class CourseRepository extends Repository<Course> {
@@ -67,5 +68,35 @@ export class CourseRepository extends Repository<Course> {
     }
     async countAll() {
         return await this.count();
+    }
+
+    async findManyByUser(userId: number): Promise<Course[]> {
+        console.log(userId);
+        return await this.find({
+            relations: {
+                user: true,
+                hCode: true,
+            },
+            where: {
+                user: {
+                    id: userId,
+                },
+            },
+            // join: [
+            //     {
+            //         alias: "c",
+            //         leftJoinAndSelect: {
+            //             hCode: "c.hCode",
+            //         },
+            //     },{
+            //     alias: "c",
+            //     leftJoinAndSelect: {
+            //         userId: "c.userId",
+            //     },
+            // },
+            // where: {
+            //     userId: userId,
+            // },
+        });
     }
 }

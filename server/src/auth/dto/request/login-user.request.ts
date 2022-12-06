@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsValidId, IsValidPassword } from "../../../common/decorators";
 
-export class LoginUserReqDto {
+export class LoginUserRequestDto {
     @IsValidId()
     @ApiProperty({ type: String, description: "사용자 id" })
     private userId: string;

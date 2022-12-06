@@ -1,7 +1,7 @@
 import { Transform, Type } from "class-transformer";
 import { IsBoolean, IsNumber, IsString, IsOptional } from "class-validator";
 
-export class GetCourseDto {
+export class GetCoursesRequestDto {
     @IsOptional()
     @IsString()
     private query?: string;

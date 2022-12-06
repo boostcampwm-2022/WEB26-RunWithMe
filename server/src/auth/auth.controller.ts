@@ -5,6 +5,7 @@ import { LoginUserReqDto } from "./dto/request/login-user.request";
 import { AccessGuard } from "../common/guards/access.guard";
 import { RefreshGuard } from "../common/guards/refresh.guard";
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ResponseEntity } from "src/common/response/response.entity";
 
 @Controller("auth")
 @ApiTags("인증/인가 관리")
@@ -69,5 +70,21 @@ export class AuthController {
                 userId: loginUserDto.getUserId(),
             },
         });
+    }
+
+    @ApiOperation({ summary: "로그인 여부 확인", description: "사용자의 로그인 여부를 반환한다." })
+    @ApiOkResponse({ description: "로그인 여부" })
+    @Get("/check")
+    async checkUserLoggedIn(@Req() req: Request) {
+        const refreshToken = req["cookies"]["refreshToken"];
+        if (!refreshToken) {
+            return ResponseEntity.OK_WITH_DATA({ isLoggedIn: false });
+        }
+        try {
+            this.authService.verifyRefreshToken(refreshToken);
+            return ResponseEntity.OK_WITH_DATA({ isLoggedIn: true });
+        } catch (err) {
+            return ResponseEntity.OK_WITH_DATA({ isLoggedIn: false });
+        }
     }
 }

@@ -13,7 +13,7 @@ class HDong {
     name: string;
 }
 
-export class CourseResponseDto {
+export class GetCourseResponseDto {
     @Expose()
     id: number;
 
@@ -39,6 +39,6 @@ export class CourseResponseDto {
 
     static fromEntity(course: any) {
         const data = instanceToPlain(course);
-        return plainToInstance(CourseResponseDto, data, { excludeExtraneousValues: true });
+        return plainToInstance(GetCourseResponseDto, data, { excludeExtraneousValues: true });
     }
 }

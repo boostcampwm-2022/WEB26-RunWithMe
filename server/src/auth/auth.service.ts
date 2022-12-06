@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { LoginUserReqDto } from "./dto/request/login-user.request";
+import { LoginUserRequestDto } from "./dto/request/login-user.request";
 import * as bcrypt from "bcryptjs";
 import { UserRepository } from "../common/repositories/user.repository";
 import { AuthRepository } from "../common/repositories/auth.repository";
@@ -13,7 +13,7 @@ export class AuthService {
         private authRepository: AuthRepository,
     ) {}
 
-    async validateUser(loginUserDto: LoginUserReqDto) {
+    async validateUser(loginUserDto: LoginUserRequestDto) {
         const userEntity = await this.userRepository.findOneByUserId(loginUserDto.getUserId());
         if (!userEntity || !bcrypt.compareSync(loginUserDto.getPassword(), userEntity.password)) {
             throw new UnauthorizedException();
@@ -27,7 +27,7 @@ export class AuthService {
         };
     }
 
-    async logoutUser(userId: string) {
+    async logoutUser(userId: number) {
         this.authRepository.deleteToken(userId);
     }
 
@@ -40,7 +40,7 @@ export class AuthService {
     async getRefreshToken(userId: string) {
         const userIdx = await this.userRepository.findUserIdxByUserId(userId);
         const token = await this.jwtService.createRefreshToken(userId, userIdx);
-        this.authRepository.saveToken(token, userId);
+        this.authRepository.saveToken(token, String(userIdx));
         return token;
     }
 

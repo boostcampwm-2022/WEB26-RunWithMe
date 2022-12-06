@@ -3,7 +3,7 @@ import { isValidPath } from "../../../common/decorators/path.validator";
 import { LatLng } from "../../../common/types/lat-lng";
 import { Course } from "../../../common/entities/course.entity";
 
-export class CreateCourseDto {
+export class CreateCourseRequestDto {
     @IsString()
     private title: string;
 

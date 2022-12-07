@@ -5,7 +5,7 @@ type RequestParams = { [key: string]: any };
 const axios = Axios.create({
     baseURL: "https://dapi.kakao.com/v2/local",
     headers: {
-        Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_REST_KEY}`,
+        Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_REST_KEY}`,
     },
 });
 

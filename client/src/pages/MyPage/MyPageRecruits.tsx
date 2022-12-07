@@ -23,7 +23,7 @@ const MyPageRecruits = ({ MyPageOption }: MyPageProps) => {
         <>
             {MyPageOption == MYPAGE.RECRUITS && (
                 <>
-                    <MyPageMenuInfo>내가 등록한 모집</MyPageMenuInfo>
+                    <MyPageMenuInfo>내가 신청한 모집</MyPageMenuInfo>
                     <RecruitsWrapper>
                         {recruit.data.map((r: Recruit, idx: number) => (
                             <RecruitCard data={r} key={idx} />

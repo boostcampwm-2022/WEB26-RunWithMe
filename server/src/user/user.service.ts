@@ -37,8 +37,8 @@ export class UserService {
         };
     }
 
-    async getCoursesByUserId(_userId: number) {
-        const coursesByUser = await this.courseRepository.findManyByUser(_userId);
+    async getCoursesByUserIdx(_userIdx: number) {
+        const coursesByUser = await this.courseRepository.findManyByUser(_userIdx);
         return coursesByUser.map(({ id, title, path, pathLength, createdAt, user, hCode }) => {
             return {
                 id,
@@ -52,8 +52,15 @@ export class UserService {
         });
     }
 
-    async getRecruitsByUserId(_userId: number) {
-        const recruitsByUser = await this.recruitRepository.findManyByUser(_userId);
+    async getRecruitsByUserIdx(_userIdx: number) {
+        const recruitsByUser = await this.recruitRepository.findManyByUser(_userIdx);
         return recruitsByUser.map(plainToGetRecruitDto);
+    }
+
+    async getProfileByUserIdx(_userIdx: number) {
+        const userProfile = await this.userRepository.findOneProfileByUserIdx(_userIdx);
+        const { userId, pace, h_dong_name } = userProfile;
+
+        return { userId, hDong: { name: h_dong_name }, pace };
     }
 }

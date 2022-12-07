@@ -1,9 +1,12 @@
 import useAxios from "./useAxios";
-const useHttpPatch = () => {
+const useHttpDelete = <Res = any>() => {
     const { axios } = useAxios();
-    const patch = async (url: string, data: { [key: string]: any }) => {
+
+    const _delete = async (url: string, query?: { [key: string]: any }): Promise<Res> => {
         try {
-            const res = await axios.patch(url, data);
+            const res = await axios.delete(url, {
+                params: query,
+            });
             if (res.data.statusCode >= 400) {
                 throw new Error(res.data.message);
             }
@@ -12,7 +15,6 @@ const useHttpPatch = () => {
             throw error;
         }
     };
-    return { patch };
+    return { _delete };
 };
-
-export default useHttpPatch;
+export default useHttpDelete;

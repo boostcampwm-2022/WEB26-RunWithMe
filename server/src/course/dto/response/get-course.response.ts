@@ -8,7 +8,7 @@ export class LatLng {
     lng: number;
 }
 
-class HDong {
+export class HDong {
     @Expose()
     name: string;
 }

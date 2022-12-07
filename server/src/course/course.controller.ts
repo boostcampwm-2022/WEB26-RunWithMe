@@ -7,6 +7,7 @@ import { GetCourseRequestDto } from "./dto/request/get-course.request";
 import { GetCoursesRequestDto } from "./dto/request/get-courses.request";
 import { CreateCourseResponseDto } from "./dto/response/create-course.response";
 import { GetCourseResponseDto } from "./dto/response/get-course.response";
+import { GetCoursesResponseDto } from "./dto/response/get-courses.response";
 
 @Controller("course")
 @ApiTags("코스 관리")
@@ -17,14 +18,14 @@ export class CourseController {
     @Get()
     async getMany(@Query() queryParams: GetCoursesRequestDto) {
         const courseList = await this.courseService.getMany(queryParams);
-        const getCoursesResponseDto = GetCourseResponseDto.fromEntity(courseList);
+        const getCoursesResponseDto = GetCoursesResponseDto.fromEntity(courseList);
         return ResponseEntity.OK_WITH_DATA(getCoursesResponseDto);
     }
 
     @ApiOperation({ summary: "코스 등록", description: "코스를 등록한다" })
     @Post()
-    async create(@Body() createCourseDto: CreateCourseRequestDto) {
-        const courseEntity = await this.courseService.create(createCourseDto);
+    async create(@Body() createCourseRequestDto: CreateCourseRequestDto) {
+        const courseEntity = await this.courseService.create(createCourseRequestDto);
         const createCourseResponseDto = CreateCourseResponseDto.fromEntity(courseEntity);
         return ResponseEntity.CREATED_WITH_DATA(createCourseResponseDto);
     }

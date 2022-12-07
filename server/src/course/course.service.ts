@@ -8,8 +8,8 @@ import { GetCoursesRequestDto } from "./dto/request/get-courses.request";
 export class CourseService {
     constructor(private courseRepository: CourseRepository) {}
 
-    async create(createRecruitDto: CreateCourseRequestDto): Promise<Course> {
-        const courseEntity = createRecruitDto.toEntity();
+    async create(createCourseRequestDto: CreateCourseRequestDto): Promise<Course> {
+        const courseEntity = createCourseRequestDto.toEntity();
         return this.courseRepository.createOne(courseEntity);
     }
 

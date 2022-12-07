@@ -3,7 +3,7 @@ import { IsNumber, IsNumberString } from "class-validator";
 import { IsValidId, IsValidPassword } from "../../../common/decorators";
 import { User } from "../../../common/entities/user.entity";
 
-export class CreateUserDto {
+export class CreateUserRequestDto {
     @IsValidId()
     private userId: string;
 

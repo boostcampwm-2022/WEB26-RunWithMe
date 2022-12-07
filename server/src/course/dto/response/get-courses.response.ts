@@ -1,5 +1,5 @@
 import { instanceToPlain, Expose, plainToInstance, Type } from "class-transformer";
-import { GetCourseResponseDto } from "src/course/dto/response/get-course.response";
+import { GetCourseResponseDto } from "./get-course.response";
 
 export class GetCoursesResponseDto {
     @Expose()

@@ -24,3 +24,9 @@ export const courseTitleValidator = (title: string) => {
 export const recruitTitleValidator = (title: string) => {
     return title.trim() ? "" : "제목을 입력하세요";
 };
+
+export const emailValidator = (email: string) => {
+    return /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i.test(email)
+        ? ""
+        : "메일 주소를 입력하세요";
+};

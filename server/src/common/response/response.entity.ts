@@ -23,7 +23,6 @@ export class ResponseEntity {
     }
 
     static OK_WITH_DATA(data: any): ResponseEntity {
-        console.log(data);
         return new ResponseEntity(ResponseStatus.OK, data);
     }
 

@@ -13,7 +13,7 @@ class HDong {
     name: string;
 }
 
-export class GetOneResponseDto {
+export class GetRecruitResponseDto {
     @Expose()
     title: string;
 
@@ -49,8 +49,8 @@ export class GetOneResponseDto {
     @Expose()
     isAuthor: boolean;
 
-    static fromEntity(recruit: any): GetOneResponseDto {
+    static fromEntity(recruit: any): GetRecruitResponseDto {
         const data = instanceToPlain(recruit);
-        return plainToInstance(GetOneResponseDto, data, { excludeExtraneousValues: true });
+        return plainToInstance(GetRecruitResponseDto, data, { excludeExtraneousValues: true });
     }
 }

@@ -1,6 +1,6 @@
 import { Expose, plainToInstance } from "class-transformer";
 
-export class LoginUserResponseDto {
+export class RefreshResponseDto {
     @Expose()
     private accessToken: string;
 
@@ -8,6 +8,6 @@ export class LoginUserResponseDto {
     private userId: string;
 
     static from(data: { accessToken: string; userId: string }) {
-        return plainToInstance(LoginUserResponseDto, data, { excludeExtraneousValues: true });
+        return plainToInstance(RefreshResponseDto, data, { excludeExtraneousValues: true });
     }
 }

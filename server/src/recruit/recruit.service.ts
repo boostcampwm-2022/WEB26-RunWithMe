@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { RecruitRepository } from "../common/repositories/recruit.repository";
-import { CreateRecruitReqDto } from "./dto/request/create.request";
-import { GetRecruitDto } from "./dto/request/get-many.request";
+import { CreateRecruitRequestDto } from "./dto/request/create-recruit.request";
+import { GetRecruitsRequestDto } from "./dto/request/get-recruits.request";
 import { UserRecruitRepository } from "../common/repositories/user_recruit.repository";
 import { plainToGetRecruitDto } from "../common/utils/plainToGetRecruitDto";
 import { DataSource } from "typeorm";
 import { plainToInstance } from "class-transformer";
-import { JoinRecruitDto } from "./dto/request/join-recruit.request";
+import { JoinRecruitRequestDto } from "./dto/request/join-recruit.request";
 import { Recruit } from "../common/entities/recruit.entity";
 @Injectable()
 export class RecruitService {
@@ -16,14 +16,14 @@ export class RecruitService {
         private dataSource: DataSource,
     ) {}
 
-    async create(createRecruitDto: CreateRecruitReqDto) {
+    async create(createRecruitDto: CreateRecruitRequestDto) {
         const queryRunner = this.dataSource.createQueryRunner();
         let recruitEntity: Recruit;
 
         await queryRunner.connect();
         await queryRunner.manager.transaction(async (manager) => {
             recruitEntity = await manager.save(createRecruitDto.toEntity());
-            const userRecruitDto = plainToInstance(JoinRecruitDto, {
+            const userRecruitDto = plainToInstance(JoinRecruitRequestDto, {
                 userId: recruitEntity.userId,
                 recruitId: recruitEntity.id,
             });
@@ -32,7 +32,7 @@ export class RecruitService {
         return recruitEntity;
     }
 
-    async getMany(queryParams: GetRecruitDto) {
+    async getMany(queryParams: GetRecruitsRequestDto) {
         if (queryParams.getQuery() === "") {
             return [];
         }
@@ -114,7 +114,7 @@ export class RecruitService {
         return recruitEntity.userId === userId;
     }
 
-    join(createUserRecruitDto: JoinRecruitDto) {
+    join(createUserRecruitDto: JoinRecruitRequestDto) {
         this.userRecruitRepository.createUserRecruit(createUserRecruitDto.toEntity());
     }
 }

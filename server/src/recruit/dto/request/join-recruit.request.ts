@@ -2,7 +2,7 @@ import { Type } from "class-transformer";
 import { IsNumber } from "class-validator";
 import { UserRecruit } from "../../../common/entities/user_recruit.entity";
 
-export class JoinRecruitDto {
+export class JoinRecruitRequestDto {
     @Type(() => Number)
     @IsNumber()
     private recruitId: number;

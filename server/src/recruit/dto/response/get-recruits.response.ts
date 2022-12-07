@@ -1,7 +1,7 @@
 import { instanceToPlain, Expose, plainToInstance, Type } from "class-transformer";
-import { CourseResponseDto } from "../../../course/dto/response/get-one.response";
+import { GetCourseResponseDto } from "../../../course/dto/response/get-course.response";
 
-export class GetManyResponseDto {
+export class GetRecruitsResponseDto {
     @Expose()
     id: number;
 
@@ -27,11 +27,11 @@ export class GetManyResponseDto {
     pace: number;
 
     @Expose()
-    @Type(() => CourseResponseDto)
-    course: CourseResponseDto;
+    @Type(() => GetCourseResponseDto)
+    course: GetCourseResponseDto;
 
-    static fromEntity(recruit: any): GetManyResponseDto {
+    static fromEntity(recruit: any): GetRecruitsResponseDto {
         const data = instanceToPlain(recruit);
-        return plainToInstance(GetManyResponseDto, data, { excludeExtraneousValues: true });
+        return plainToInstance(GetRecruitsResponseDto, data, { excludeExtraneousValues: true });
     }
 }

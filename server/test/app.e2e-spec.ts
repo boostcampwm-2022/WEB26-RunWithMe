@@ -79,7 +79,7 @@ describe("AppController (e2e)", () => {
                     .expect(200)
                     .then((res) => {
                         expect(res.body.statusCode).toEqual(200);
-                        expect(res.body.exists).toEqual(true);
+                        expect(res.body.data.isExisting).toEqual(true);
                     });
             });
         });
@@ -162,7 +162,7 @@ describe("AppController (e2e)", () => {
                     { lat: 2, lng: 3 },
                 ]);
                 expect(response.body.data.pathLength).toEqual(300);
-                expect(response.body.data[0].userId).toEqual("June1010");
+                expect(response.body.data.userId).toEqual("June1010");
                 expect(response.body.data.hDong).toEqual({ name: "서울특별시" });
             });
         });
@@ -401,7 +401,7 @@ describe("AppController (e2e)", () => {
 
                 expect(mock).toBeCalledTimes(2);
                 expect(mock).toBeCalledWith("June1010", 1);
-                expect(response.body.statusCode).toEqual(200);
+                expect(response.body.statusCode).toEqual(201);
                 mock.mockRestore();
             });
         });

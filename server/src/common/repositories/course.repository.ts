@@ -71,7 +71,6 @@ export class CourseRepository extends Repository<Course> {
     }
 
     async findManyByUser(userId: number): Promise<Course[]> {
-        console.log(userId);
         return await this.find({
             relations: {
                 user: true,
@@ -82,21 +81,6 @@ export class CourseRepository extends Repository<Course> {
                     id: userId,
                 },
             },
-            // join: [
-            //     {
-            //         alias: "c",
-            //         leftJoinAndSelect: {
-            //             hCode: "c.hCode",
-            //         },
-            //     },{
-            //     alias: "c",
-            //     leftJoinAndSelect: {
-            //         userId: "c.userId",
-            //     },
-            // },
-            // where: {
-            //     userId: userId,
-            // },
         });
     }
 }

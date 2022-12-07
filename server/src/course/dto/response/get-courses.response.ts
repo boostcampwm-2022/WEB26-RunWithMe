@@ -1,10 +1,29 @@
 import { instanceToPlain, Expose, plainToInstance, Type } from "class-transformer";
-import { GetCourseResponseDto } from "src/course/dto/response/get-course.response";
+import { HDong, LatLng } from "./get-course.response";
 
 export class GetCoursesResponseDto {
     @Expose()
-    @Type(() => GetCourseResponseDto)
-    course: GetCourseResponseDto;
+    id: number;
+
+    @Expose()
+    title: string;
+
+    @Expose()
+    @Type(() => LatLng)
+    path: LatLng[];
+
+    @Expose()
+    pathLength: number;
+
+    @Expose()
+    userId: string;
+
+    @Expose()
+    @Type(() => HDong)
+    hDong: HDong;
+
+    @Expose()
+    createdAt: Date;
 
     static fromEntity(course: any): GetCoursesResponseDto {
         const data = instanceToPlain(course);

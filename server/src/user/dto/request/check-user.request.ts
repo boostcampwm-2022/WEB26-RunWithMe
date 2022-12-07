@@ -1,6 +1,6 @@
 import { IsValidId } from "../../../common/decorators";
 
-export class CheckUserDto {
+export class CheckUserRequestDto {
     @IsValidId()
     private id: string;
 

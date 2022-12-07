@@ -36,10 +36,12 @@ lerna-debug.log*
 
 # .env
 .env
-
+.test.env
+/test/config/env.ts
 # docker
 /mysqldata
 /db
 
 # dump
 dump.*
+

@@ -8,8 +8,8 @@ import { GetCoursesRequestDto } from "./dto/request/get-courses.request";
 export class CourseService {
     constructor(private courseRepository: CourseRepository) {}
 
-    async create(createRecruitDto: CreateCourseRequestDto): Promise<Course> {
-        const courseEntity = createRecruitDto.toEntity();
+    async create(createCourseRequestDto: CreateCourseRequestDto): Promise<Course> {
+        const courseEntity = createCourseRequestDto.toEntity();
         return this.courseRepository.createOne(courseEntity);
     }
 
@@ -31,7 +31,6 @@ export class CourseService {
             queryParams.getMinLength(),
             queryParams.getMaxLength(),
         );
-
         return courseList.map(({ id, title, path, pathLength, createdAt, user, hCode }) => {
             return {
                 id,
@@ -47,8 +46,8 @@ export class CourseService {
 
     async getOne(recruitId: number) {
         const data = await this.courseRepository.findCourseDetail(recruitId);
-        const { title, path, pathLength } = data;
-        return { title, path: JSON.parse(path), pathLength, hDong: data.hCode, userId: data.user.userId };
+        const { id, title, path, pathLength } = data;
+        return { id, title, path: JSON.parse(path), pathLength, hDong: data.hCode, userId: data.user.userId };
     }
 
     async isExistingCourse(recruitId: number): Promise<boolean> {

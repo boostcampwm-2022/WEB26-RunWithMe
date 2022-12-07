@@ -5,7 +5,7 @@ import { LoginUserRequestDto } from "./dto/request/login-user.request";
 import { AccessGuard } from "../common/guards/access.guard";
 import { RefreshGuard } from "../common/guards/refresh.guard";
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
-import { ResponseEntity } from "src/common/response/response.entity";
+import { ResponseEntity } from "../common/response/response.entity";
 import { LoginUserResponseDto } from "./dto/response/login-user.response";
 import { RefreshResponseDto } from "./dto/response/refresh.response";
 

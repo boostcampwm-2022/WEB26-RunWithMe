@@ -1,6 +1,6 @@
 import { instanceToPlain, plainToInstance, Expose, Type } from "class-transformer";
 
-class LatLng {
+export class LatLng {
     @Expose()
     lat: number;
 
@@ -8,7 +8,7 @@ class LatLng {
     lng: number;
 }
 
-class HDong {
+export class HDong {
     @Expose()
     name: string;
 }

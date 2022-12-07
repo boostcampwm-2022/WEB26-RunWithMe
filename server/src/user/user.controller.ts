@@ -5,6 +5,7 @@ import { CheckUserDto } from "./dto/check-user.dto";
 import { ResponseEntity } from "../common/response/response.entity";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { GetCoursesUserDto } from "./dto/response/get-courses-user";
+import { GetManyResponseDto } from "src/course/dto/response/get-many.response";
 
 @Controller("user")
 @ApiTags("사용자 관리")
@@ -31,5 +32,13 @@ export class UserController {
         // console.log(coursesEntity);
         const coursesByUserResDto = GetCoursesUserDto.fromEntity(coursesEntity);
         return ResponseEntity.OK_WITH_DATA(coursesByUserResDto);
+    }
+
+    @ApiOperation({ summary: "유저 참여중 모집", description: "유저가 참여중인 모집들을 가져온다" })
+    @Get("me/recruit")
+    async getRecruitByUserId(@Param("userId") userId: number) {
+        const recruitsEntity = await this.userService.getRecruitsByUserId(userId);
+        const recruitsByUserResDto = GetManyResponseDto.fromEntity(recruitsEntity);
+        return ResponseEntity.OK_WITH_DATA(recruitsByUserResDto);
     }
 }

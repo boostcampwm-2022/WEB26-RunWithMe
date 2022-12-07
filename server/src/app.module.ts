@@ -36,7 +36,7 @@ import { HttpRequestBodyModule } from "./common/interceptors/http-request/http-r
             dropSchema: process.env.NODE_ENV === "test" ? true : false,
             logging: process.env.NODE_ENV === "test" ? false : true,
             entities: [User, Course, Recruit, UserRecruit, HDong],
-            poolSize: 10,
+            poolSize: 100,
         }),
         CacheModule.register<ClientOpts>({
             isGlobal: true,

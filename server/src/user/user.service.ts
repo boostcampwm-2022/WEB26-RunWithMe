@@ -4,10 +4,16 @@ import { UserRepository } from "../common/repositories/user.repository";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { CheckUserDto } from "./dto/check-user.dto";
 import { CourseRepository } from "src/common/repositories/course.repository";
+import { RecruitRepository } from "src/common/repositories/recruit.repository";
+import { plainToGetRecruitDto } from "src/common/utils/plainToGetRecruitDto";
 
 @Injectable()
 export class UserService {
-    constructor(private userRepository: UserRepository, private courseRepository: CourseRepository) {}
+    constructor(
+        private userRepository: UserRepository,
+        private courseRepository: CourseRepository,
+        private recruitRepository: RecruitRepository,
+    ) {}
 
     async create(createUserDto: CreateUserDto) {
         const isPresent = await this.userRepository.findOneByUserId(createUserDto.getUserId());
@@ -49,5 +55,10 @@ export class UserService {
         console.log(a[0]);
 
         return a;
+    }
+
+    async getRecruitsByUserId(_userId: number) {
+        const recruitsByUser = await this.recruitRepository.findManyByUser(_userId);
+        return recruitsByUser.map(plainToGetRecruitDto);
     }
 }

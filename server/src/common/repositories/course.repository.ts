@@ -1,8 +1,7 @@
 import { CustomRepository } from "../typeorm/typeorm.decorator";
-import { Equal, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { Course } from "../entities/course.entity";
 import { BadRequestException } from "@nestjs/common";
-import { CourseData } from "../types/course-data";
 
 @CustomRepository(Course)
 export class CourseRepository extends Repository<Course> {

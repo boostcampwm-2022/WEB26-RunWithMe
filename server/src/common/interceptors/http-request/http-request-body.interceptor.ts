@@ -14,7 +14,7 @@ export class HttpRequestBodyInterceptor implements NestInterceptor {
             try {
                 accessToken = accessToken.split("Bearer")[1].trim();
                 const { userIdx } = this.jwtService.verifyAccessToken(accessToken);
-                if (request.method === "GET") {
+                if (request.method === "GET" || request.method === "DELETE") {
                     request.params.userId = userIdx;
                 }
                 if (request.method === "POST") {

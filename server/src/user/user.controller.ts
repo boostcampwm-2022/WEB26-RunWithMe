@@ -6,7 +6,7 @@ import { CreateUserRequestDto } from "./dto/request/create-user.request";
 import { CheckUserRequestDto } from "./dto/request/check-user.request";
 import { CheckUserResponseDto } from "./dto/response/check-user.response";
 import { GetCoursesResponseDto } from "../course/dto/response/get-courses.response";
-import { GetRecruitsResponseDto } from "src/recruit/dto/response/get-recruits.response";
+import { GetRecruitsResponseDto } from "../recruit/dto/response/get-recruits.response";
 
 @Controller("user")
 @ApiTags("사용자 관리")

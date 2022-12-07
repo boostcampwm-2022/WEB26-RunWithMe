@@ -5,10 +5,9 @@ import { fontLarge, fontSmall } from "styles/font";
 import { COLOR } from "styles/color";
 import { MYPAGE } from "#constants/myPageOptions";
 import { MyPageProps } from "./MyPageTypes";
-import { useResetRecoilState } from "recoil";
 import useHttpGet from "#hooks/http/useHttpGet";
 import { useNavigate } from "react-router-dom";
-import { userState } from "#atoms/userState";
+import useLogout from "#hooks/useLogout";
 
 const MyInfoWrapper = styled.div`
     width: 100%;
@@ -45,12 +44,12 @@ const MyProfileButtonsWrapper = styled.div`
 
 const MyPageProfile = ({ MyPageOption }: MyPageProps) => {
     const { get } = useHttpGet();
-    const userStateReset = useResetRecoilState(userState);
+    const logout = useLogout();
     const navigate = useNavigate();
     const logoutOnClick = async () => {
         try {
-            userStateReset();
             await get("/auth/logout");
+            logout();
             navigate("/");
         } catch {}
     };

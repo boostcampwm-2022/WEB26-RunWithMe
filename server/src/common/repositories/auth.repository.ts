@@ -9,7 +9,7 @@ export class AuthRepository {
         await this.cacheManager.set(userId, token);
     }
 
-    async deleteToken(userId: string) {
+    async deleteToken(userId: number) {
         await this.cacheManager.store.del(userId);
     }
 }

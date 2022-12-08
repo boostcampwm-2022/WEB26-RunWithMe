@@ -32,20 +32,14 @@ export class RecruitController {
     @Post()
     async create(@Body() createRecruitDto: CreateRecruitRequestDto) {
         const recruitEntity = await this.recruitService.create(createRecruitDto);
-        const author = await this.recruitService.getAuthorByRecruitId(recruitEntity.id);
-        const recruitDetail = await this.recruitService.getOne(createRecruitDto.getUserId(), recruitEntity.id);
+        const recruitDetail = await this.recruitService.notiGetOne(createRecruitDto.getUserId(), recruitEntity.id);
 
-        if (author) {
-            const { title, hDong, startTime, pathLength } = recruitDetail;
+        if (recruitDetail.author) {
             await firstValueFrom(
                 this.httpService
                     .post(`${process.env.NOTI_SERVER_API_URL}/job/recruit`, {
                         recruitId: recruitEntity.id,
-                        author,
-                        title,
-                        hDong,
-                        startTime,
-                        pathLength,
+                        ...recruitDetail,
                     })
                     .pipe(
                         catchError((error: AxiosError) => {
@@ -54,6 +48,7 @@ export class RecruitController {
                     ),
             );
         }
+
         const createRecruitResponseDto = CreateRecruitResponseDto.fromEntity(recruitEntity);
         return ResponseEntity.CREATED_WITH_DATA(createRecruitResponseDto);
     }
@@ -72,33 +67,31 @@ export class RecruitController {
         ) {
             return ResponseEntity.LOCKED("자신의 게시글만 삭제할 수 있습니다");
         }
+
         this.recruitService.delete(deleteRecruitRequestDto);
 
-        const author = await this.recruitService.getAuthorByRecruitId(deleteRecruitRequestDto.getRecruitId());
-        const recruitDetail = await this.recruitService.getOne(
+        const recruitDetail = await this.recruitService.notiGetOne(
             deleteRecruitRequestDto.getUserId(),
             deleteRecruitRequestDto.getRecruitId(),
         );
         const users = await this.recruitService.getUsersByRecruitId(deleteRecruitRequestDto.getRecruitId());
-        const { title, hDong, startTime, pathLength } = recruitDetail;
 
-        await firstValueFrom(
-            this.httpService
-                .post(`${process.env.NOTI_SERVER_API_URL}/job/recruit/delete`, {
-                    recruitId: deleteRecruitRequestDto.getRecruitId(),
-                    users,
-                    author,
-                    title,
-                    hDong,
-                    startTime,
-                    pathLength,
-                })
-                .pipe(
-                    catchError((error: AxiosError) => {
-                        throw error;
-                    }),
-                ),
-        );
+        if (users.length) {
+            await firstValueFrom(
+                this.httpService
+                    .post(`${process.env.NOTI_SERVER_API_URL}/job/recruit/delete`, {
+                        recruitId: deleteRecruitRequestDto.getRecruitId(),
+                        users,
+                        ...recruitDetail,
+                    })
+                    .pipe(
+                        catchError((error: AxiosError) => {
+                            throw error;
+                        }),
+                    ),
+            );
+        }
+
         return ResponseEntity.OK();
     }
 
@@ -129,25 +122,20 @@ export class RecruitController {
         }
         this.recruitService.join(joinRecruitRequestDto);
 
-        const author = await this.recruitService.getAuthorByRecruitId(joinRecruitRequestDto.getRecruitId());
-        const recruitDetail = await this.recruitService.getOne(
+        const recruitDetail = await this.recruitService.notiGetOne(
             joinRecruitRequestDto.getUserId(),
             joinRecruitRequestDto.getRecruitId(),
         );
         const user = await this.recruitService.getUserByIdx(joinRecruitRequestDto.getUserId());
         const { email, userId } = user;
-        const { title, hDong, startTime, pathLength } = recruitDetail;
+
         if (user) {
             await firstValueFrom(
                 this.httpService
                     .post(`${process.env.NOTI_SERVER_API_URL}/job/join`, {
                         recruitId: joinRecruitRequestDto.getRecruitId(),
                         user: { email, id: userId },
-                        author,
-                        title,
-                        hDong,
-                        startTime,
-                        pathLength,
+                        ...recruitDetail,
                     })
                     .pipe(
                         catchError((error: AxiosError) => {
@@ -165,14 +153,12 @@ export class RecruitController {
     async unregister(@Param() unjoinRecruitRequestDto: UnjoinRecruitRequestDto) {
         this.recruitService.unjoin(unjoinRecruitRequestDto);
 
-        const recruitDetail = await this.recruitService.getOne(
+        const recruitDetail = await this.recruitService.notiGetOne(
             unjoinRecruitRequestDto.getUserId(),
             unjoinRecruitRequestDto.getRecruitId(),
         );
         const user = await this.recruitService.getUserByIdx(unjoinRecruitRequestDto.getUserId());
         const { email, userId } = user;
-        const { title, hDong, startTime, pathLength } = recruitDetail;
-        const author = await this.recruitService.getAuthorByRecruitId(unjoinRecruitRequestDto.getRecruitId());
 
         if (user) {
             await firstValueFrom(
@@ -180,11 +166,7 @@ export class RecruitController {
                     .post(`${process.env.NOTI_SERVER_API_URL}/job/join/delete`, {
                         recruitId: unjoinRecruitRequestDto.getRecruitId(),
                         user: { email, id: userId },
-                        author,
-                        title,
-                        hDong,
-                        startTime,
-                        pathLength,
+                        ...recruitDetail,
                     })
                     .pipe(
                         catchError((error: AxiosError) => {

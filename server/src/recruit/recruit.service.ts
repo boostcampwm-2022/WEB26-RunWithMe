@@ -4,7 +4,7 @@ import { CreateRecruitRequestDto } from "./dto/request/create-recruit.request";
 import { GetRecruitsRequestDto } from "./dto/request/get-recruits.request";
 import { UserRecruitRepository } from "../common/repositories/user_recruit.repository";
 import { plainToGetRecruitDto } from "../common/utils/plainToGetRecruitDto";
-import { DataSource } from "typeorm";
+import { DataSource, getConnection } from "typeorm";
 import { plainToInstance } from "class-transformer";
 import { JoinRecruitRequestDto } from "./dto/request/join-recruit.request";
 import { Recruit } from "../common/entities/recruit.entity";
@@ -81,6 +81,13 @@ export class RecruitService {
             .map(plainToGetRecruitDto);
     }
 
+    async notiGetOne(userId: number, recruitId: number) {
+        const data = await this.getOne(userId, recruitId);
+        const { title, hDong, startTime, pathLength } = data;
+        const author = await this.recruitRepository.getAuthorByRecruitId(recruitId);
+        return { author, title, hDong, startTime, pathLength };
+    }
+
     async getOne(_userId: number, recruitId: number) {
         const data = await this.recruitRepository.findRecruitDetail(recruitId);
         const { title, maxPpl, pace, userId, currentPpl, path, pathLength, startTime } = data;
@@ -136,10 +143,6 @@ export class RecruitService {
 
     unjoin(unjoinRecruitRequestDto: UnjoinRecruitRequestDto) {
         this.userRecruitRepository.deleteUserRecruit(unjoinRecruitRequestDto.toEntity());
-    }
-
-    async getAuthorByRecruitId(recruitId: number) {
-        return this.recruitRepository.getAuthorByRecruitId(recruitId);
     }
 
     async getUsersByRecruitId(recruitId: number) {

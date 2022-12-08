@@ -11,11 +11,14 @@ import { Recruit } from "../common/entities/recruit.entity";
 import { DeleteRecruitRequestDto } from "./dto/request/delete-recruit.request";
 import { UserRecruit } from "src/common/entities/user_recruit.entity";
 import { UnjoinRecruitRequestDto } from "./dto/request/unjoin-recruit.request";
+import { UserRepository } from "src/common/repositories/user.repository";
+
 @Injectable()
 export class RecruitService {
     constructor(
         private recruitRepository: RecruitRepository,
         private userRecruitRepository: UserRecruitRepository,
+        private userRepository: UserRepository,
         private dataSource: DataSource,
     ) {}
 
@@ -41,8 +44,8 @@ export class RecruitService {
         await queryRunner.connect();
         await queryRunner.manager.transaction(async (manager) => {
             const recruitEntity = await this.recruitRepository.findOneById(deleteRecruitRequestDto.getRecruitId());
-            await manager.remove(recruitEntity);
             await manager.delete(UserRecruit, { recruitId: deleteRecruitRequestDto.getRecruitId() });
+            await manager.remove(recruitEntity);
         });
     }
     async getMany(queryParams: GetRecruitsRequestDto) {
@@ -133,5 +136,17 @@ export class RecruitService {
 
     unjoin(unjoinRecruitRequestDto: UnjoinRecruitRequestDto) {
         this.userRecruitRepository.deleteUserRecruit(unjoinRecruitRequestDto.toEntity());
+    }
+
+    async getAuthorByRecruitId(recruitId: number) {
+        return this.recruitRepository.getAuthorByRecruitId(recruitId);
+    }
+
+    async getUsersByRecruitId(recruitId: number) {
+        return this.userRecruitRepository.getUsersByRecruitId(recruitId);
+    }
+
+    async getUserByIdx(userId: number) {
+        return this.userRepository.findOneByUserIdx(userId);
     }
 }

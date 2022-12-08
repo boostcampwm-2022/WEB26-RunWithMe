@@ -21,17 +21,25 @@ export class UserController {
     @Post()
     async create(@Body() createUserRequestDto: CreateUserRequestDto) {
         await this.userService.create(createUserRequestDto);
-        await firstValueFrom(
-            this.httpService
-                .post(`${process.env.NOTI_SERVER_API_URL}/job/signup`, { userId: createUserRequestDto.getUserId() })
-                .pipe(
-                    catchError((error: AxiosError) => {
-                        throw error;
-                    }),
-                ),
-        );
+
+        if (createUserRequestDto.getReceiveMail()) {
+            await firstValueFrom(
+                this.httpService
+                    .post(`${process.env.NOTI_SERVER_API_URL}/job/signup`, {
+                        id: createUserRequestDto.getUserId(),
+                        email: createUserRequestDto.getEmail(),
+                    })
+                    .pipe(
+                        catchError((error: AxiosError) => {
+                            throw error;
+                        }),
+                    ),
+            );
+        }
+
         return ResponseEntity.OK();
     }
+
     @ApiOperation({ summary: "내 정보", description: "내 정보를 가져온다" })
     @Get("me")
     async getMyProfile(@Param("userId") userIdx: number) {

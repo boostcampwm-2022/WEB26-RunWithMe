@@ -11,11 +11,14 @@ import { GetRecruitResponseDto } from "./dto/response/get-recruit.response";
 import { GetRecruitRequestDto } from "./dto/request/get-recruit.request";
 import { DeleteRecruitRequestDto } from "./dto/request/delete-recruit.request";
 import { UnjoinRecruitRequestDto } from "./dto/request/unjoin-recruit.request";
+import { HttpService } from "@nestjs/axios";
+import { AxiosError } from "axios";
+import { catchError, firstValueFrom } from "rxjs";
 
 @Controller("recruit")
 @ApiTags("모집글 관리")
 export class RecruitController {
-    constructor(private readonly recruitService: RecruitService) {}
+    constructor(private readonly recruitService: RecruitService, private httpService: HttpService) {}
 
     @ApiOperation({ summary: "모집글 조회/검색/필터", description: "등록된 모집글들을 조회/검색/필터링한다" })
     @Get()
@@ -29,6 +32,28 @@ export class RecruitController {
     @Post()
     async create(@Body() createRecruitDto: CreateRecruitRequestDto) {
         const recruitEntity = await this.recruitService.create(createRecruitDto);
+        const author = await this.recruitService.getAuthorByRecruitId(recruitEntity.id);
+        const recruitDetail = await this.recruitService.getOne(createRecruitDto.getUserId(), recruitEntity.id);
+
+        if (author) {
+            const { title, hDong, startTime, pathLength } = recruitDetail;
+            await firstValueFrom(
+                this.httpService
+                    .post(`${process.env.NOTI_SERVER_API_URL}/job/recruit`, {
+                        recruitId: recruitEntity.id,
+                        author,
+                        title,
+                        hDong,
+                        startTime,
+                        pathLength,
+                    })
+                    .pipe(
+                        catchError((error: AxiosError) => {
+                            throw error;
+                        }),
+                    ),
+            );
+        }
         const createRecruitResponseDto = CreateRecruitResponseDto.fromEntity(recruitEntity);
         return ResponseEntity.CREATED_WITH_DATA(createRecruitResponseDto);
     }
@@ -48,10 +73,36 @@ export class RecruitController {
             return ResponseEntity.LOCKED("자신의 게시글만 삭제할 수 있습니다");
         }
         this.recruitService.delete(deleteRecruitRequestDto);
+
+        const author = await this.recruitService.getAuthorByRecruitId(deleteRecruitRequestDto.getRecruitId());
+        const recruitDetail = await this.recruitService.getOne(
+            deleteRecruitRequestDto.getUserId(),
+            deleteRecruitRequestDto.getRecruitId(),
+        );
+        const users = await this.recruitService.getUsersByRecruitId(deleteRecruitRequestDto.getRecruitId());
+        const { title, hDong, startTime, pathLength } = recruitDetail;
+
+        await firstValueFrom(
+            this.httpService
+                .post(`${process.env.NOTI_SERVER_API_URL}/job/recruit/delete`, {
+                    recruitId: deleteRecruitRequestDto.getRecruitId(),
+                    users,
+                    author,
+                    title,
+                    hDong,
+                    startTime,
+                    pathLength,
+                })
+                .pipe(
+                    catchError((error: AxiosError) => {
+                        throw error;
+                    }),
+                ),
+        );
         return ResponseEntity.OK();
     }
 
-    @ApiOperation({ summary: "모집 참가", description: "모집글에 참여한다" })
+    @ApiOperation({ summary: "모집 참여", description: "모집글에 참여한다" })
     @Post("join")
     async register(@Body() joinRecruitRequestDto: JoinRecruitRequestDto) {
         if (!(await this.recruitService.isExistingRecruit(joinRecruitRequestDto.getRecruitId()))) {
@@ -77,6 +128,35 @@ export class RecruitController {
             return ResponseEntity.LOCKED("모집 상한에 도달했습니다");
         }
         this.recruitService.join(joinRecruitRequestDto);
+
+        const author = await this.recruitService.getAuthorByRecruitId(joinRecruitRequestDto.getRecruitId());
+        const recruitDetail = await this.recruitService.getOne(
+            joinRecruitRequestDto.getUserId(),
+            joinRecruitRequestDto.getRecruitId(),
+        );
+        const user = await this.recruitService.getUserByIdx(joinRecruitRequestDto.getUserId());
+        const { email, userId } = user;
+        const { title, hDong, startTime, pathLength } = recruitDetail;
+        if (user) {
+            await firstValueFrom(
+                this.httpService
+                    .post(`${process.env.NOTI_SERVER_API_URL}/job/join`, {
+                        recruitId: joinRecruitRequestDto.getRecruitId(),
+                        user: { email, id: userId },
+                        author,
+                        title,
+                        hDong,
+                        startTime,
+                        pathLength,
+                    })
+                    .pipe(
+                        catchError((error: AxiosError) => {
+                            throw error;
+                        }),
+                    ),
+            );
+        }
+
         return ResponseEntity.CREATED();
     }
 
@@ -84,6 +164,35 @@ export class RecruitController {
     @Delete(":id/join")
     async unregister(@Param() unjoinRecruitRequestDto: UnjoinRecruitRequestDto) {
         this.recruitService.unjoin(unjoinRecruitRequestDto);
+
+        const recruitDetail = await this.recruitService.getOne(
+            unjoinRecruitRequestDto.getUserId(),
+            unjoinRecruitRequestDto.getRecruitId(),
+        );
+        const user = await this.recruitService.getUserByIdx(unjoinRecruitRequestDto.getUserId());
+        const { email, userId } = user;
+        const { title, hDong, startTime, pathLength } = recruitDetail;
+        const author = await this.recruitService.getAuthorByRecruitId(unjoinRecruitRequestDto.getRecruitId());
+
+        if (user) {
+            await firstValueFrom(
+                this.httpService
+                    .post(`${process.env.NOTI_SERVER_API_URL}/job/join/delete`, {
+                        recruitId: unjoinRecruitRequestDto.getRecruitId(),
+                        user: { email, id: userId },
+                        author,
+                        title,
+                        hDong,
+                        startTime,
+                        pathLength,
+                    })
+                    .pipe(
+                        catchError((error: AxiosError) => {
+                            throw error;
+                        }),
+                    ),
+            );
+        }
         return ResponseEntity.OK();
     }
 

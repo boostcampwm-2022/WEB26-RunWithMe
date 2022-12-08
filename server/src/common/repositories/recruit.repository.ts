@@ -9,6 +9,15 @@ export class RecruitRepository extends Repository<Recruit> {
         return this.save(recruitEntity);
     }
 
+    async getAuthorByRecruitId(recruitId: number) {
+        return this.createQueryBuilder("recruit")
+            .innerJoinAndSelect("recruit.user", "user")
+            .select(["user.email AS email", "user.userId AS id"])
+            .where("recruit.id = :recruitId", { recruitId })
+            .andWhere("user.receiveMail = true")
+            .getRawOne();
+    }
+
     async findRecruitDetail(recruitId: number) {
         return this.createQueryBuilder("recruit")
             .innerJoinAndSelect("recruit.course", "course")

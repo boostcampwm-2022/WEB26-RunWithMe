@@ -10,7 +10,7 @@ export class CustomJwtService {
             { userId, userIdx },
             {
                 secret: process.env.ACCESS_SECRET,
-                expiresIn: "15m",
+                expiresIn: "30d",
             },
         );
         return token;

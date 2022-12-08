@@ -16,9 +16,12 @@ export class UserRecruitRepository extends Repository<UserRecruit> {
         return false;
     }
     public async countCurrentPpl(recruitId: number) {
-        return await this.countBy({ recruitId });
+        return this.countBy({ recruitId });
     }
     public createUserRecruit(userRecruitEntity: UserRecruit) {
         this.save(userRecruitEntity);
+    }
+    public deleteUserRecruit(userRecruitEntity: UserRecruit) {
+        this.delete(userRecruitEntity);
     }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Param } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, Param, Delete } from "@nestjs/common";
 import { CreateRecruitRequestDto } from "./dto/request/create-recruit.request";
 import { GetRecruitsRequestDto } from "./dto/request/get-recruits.request";
 import { JoinRecruitRequestDto } from "./dto/request/join-recruit.request";
@@ -9,6 +9,8 @@ import { ResponseEntity } from "../common/response/response.entity";
 import { GetRecruitsResponseDto } from "./dto/response/get-recruits.response";
 import { GetRecruitResponseDto } from "./dto/response/get-recruit.response";
 import { GetRecruitRequestDto } from "./dto/request/get-recruit.request";
+import { DeleteRecruitRequestDto } from "./dto/request/delete-recruit.request";
+import { UnjoinRecruitRequestDto } from "./dto/request/unjoin-recruit.request";
 
 @Controller("recruit")
 @ApiTags("모집글 관리")
@@ -31,26 +33,58 @@ export class RecruitController {
         return ResponseEntity.CREATED_WITH_DATA(createRecruitResponseDto);
     }
 
-    @ApiOperation({ summary: "모집 참가", description: "모집글에 참여한다" })
-    @Post("join")
-    async register(@Body() joinRecruitDto: JoinRecruitRequestDto) {
-        const recruitId = joinRecruitDto.getRecruitId();
-        const userId = joinRecruitDto.getUserId();
-
-        if (!(await this.recruitService.isExistingRecruit(recruitId))) {
+    @ApiOperation({ summary: "모집 취소", description: "모집을 취소한다" })
+    @Delete(":id")
+    async delete(@Param() deleteRecruitRequestDto: DeleteRecruitRequestDto) {
+        if (!(await this.recruitService.isExistingRecruit(deleteRecruitRequestDto.getRecruitId()))) {
             return ResponseEntity.NOT_FOUND("존재하지 않는 게시글입니다");
         }
-        if (await this.recruitService.isAuthorOfRecruit(recruitId, userId)) {
+        if (
+            !(await this.recruitService.isAuthorOfRecruit(
+                deleteRecruitRequestDto.getRecruitId(),
+                deleteRecruitRequestDto.getUserId(),
+            ))
+        ) {
+            return ResponseEntity.LOCKED("자신의 게시글만 삭제할 수 있습니다");
+        }
+        this.recruitService.delete(deleteRecruitRequestDto);
+        return ResponseEntity.OK();
+    }
+
+    @ApiOperation({ summary: "모집 참가", description: "모집글에 참여한다" })
+    @Post("join")
+    async register(@Body() joinRecruitRequestDto: JoinRecruitRequestDto) {
+        if (!(await this.recruitService.isExistingRecruit(joinRecruitRequestDto.getRecruitId()))) {
+            return ResponseEntity.NOT_FOUND("존재하지 않는 게시글입니다");
+        }
+        if (
+            await this.recruitService.isAuthorOfRecruit(
+                joinRecruitRequestDto.getRecruitId(),
+                joinRecruitRequestDto.getUserId(),
+            )
+        ) {
             return ResponseEntity.LOCKED("자신의 게시글에 참가할 수 없습니다");
         }
-        if (await this.recruitService.isParticipating(recruitId, userId)) {
+        if (
+            await this.recruitService.isParticipating(
+                joinRecruitRequestDto.getRecruitId(),
+                joinRecruitRequestDto.getUserId(),
+            )
+        ) {
             return ResponseEntity.LOCKED("이미 참여중인 게시글입니다");
         }
-        if (!(await this.recruitService.isVacancy(recruitId))) {
+        if (!(await this.recruitService.isVacancy(joinRecruitRequestDto.getRecruitId()))) {
             return ResponseEntity.LOCKED("모집 상한에 도달했습니다");
         }
-        this.recruitService.join(joinRecruitDto);
+        this.recruitService.join(joinRecruitRequestDto);
         return ResponseEntity.CREATED();
+    }
+
+    @ApiOperation({ summary: "모집 참여 취소", description: "모집 참여를 취소한다" })
+    @Delete(":id/join")
+    async unregister(@Param() unjoinRecruitRequestDto: UnjoinRecruitRequestDto) {
+        this.recruitService.unjoin(unjoinRecruitRequestDto);
+        return ResponseEntity.OK();
     }
 
     @ApiOperation({ summary: "모집 상세", description: "모집 상세내용을 가져온다" })

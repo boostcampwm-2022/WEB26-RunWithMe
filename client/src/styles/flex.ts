@@ -1,3 +1,4 @@
+import { ALIGN_ITEMS, FlexOptions, JUSTIFY_CONTENT } from "#types/flexOptions";
 import { css } from "styled-components";
 
 export const flexRowSpaceBetween = css`
@@ -22,12 +23,22 @@ export const flexColumnSpaceBetween = css`
     justify-content: space-between;
 `;
 
-export const flexColumn = css`
+export const flexColumn = ({
+    alignItems = ALIGN_ITEMS.FLEX_START,
+    justifyContent = JUSTIFY_CONTENT.FLEX_START,
+}: FlexOptions) => css`
     display: flex;
     flex-direction: column;
+    align-items: ${alignItems};
+    justify-content: ${justifyContent};
 `;
 
-export const flexRow = css`
+export const flexRow = ({
+    alignItems = ALIGN_ITEMS.FLEX_START,
+    justifyContent = JUSTIFY_CONTENT.FLEX_START,
+}: FlexOptions) => css`
     display: flex;
     flex-direction: row;
+    align-items: ${alignItems};
+    justify-content: ${justifyContent};
 `;

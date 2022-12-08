@@ -8,5 +8,5 @@ export interface Course {
     pathLength: number;
     hDong: hDong;
     createdAt: string;
-    userId?: string;
+    userId: string;
 }

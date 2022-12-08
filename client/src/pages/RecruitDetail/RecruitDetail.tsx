@@ -46,7 +46,7 @@ const RecruitDetail = () => {
 
     const onSubmitJoin = useCallback(async () => {
         try {
-            await post(`/recruit/${id}/join`, { recruitId: String(id) });
+            await post(`/recruit/join`, { recruitId: String(id) });
         } catch (error: any) {
             alert(error.message);
         } finally {

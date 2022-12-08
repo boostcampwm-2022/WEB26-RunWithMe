@@ -34,7 +34,7 @@ export const SummaryBody = styled.div`
             width: 10px;
             margin-right: 4px;
         }
-        span {
+        span: not(: last-child) {
             margin-right: 8px;
         }
     }
@@ -59,4 +59,10 @@ export const PeopleWrapper = styled.div`
 
 export const SummaryHead = styled.div`
     ${flexRowSpaceBetween};
+`;
+
+export const TimeWrapper = styled.div`
+    span {
+        ${fontSmall(COLOR.BLACK, 400)};
+    }
 `;

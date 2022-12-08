@@ -1,8 +1,9 @@
 import { Recruit } from "#types/Recruit";
 import { getDisplayPaceString } from "#utils/stringUtils";
 import Card from "../Card";
-import { LOCATION_ICON, RULER_ICON, RUNNING_ICON, USER_ICON } from "#assets/icons";
-import { CardTitle, PeopleWrapper, SummaryBody, SummaryHead, UserIdLabel } from "../Card.styles";
+import { CLOCK_ICON, LOCATION_ICON, RULER_ICON, RUNNING_ICON, USER_ICON } from "#assets/icons";
+import { CardTitle, PeopleWrapper, SummaryBody, SummaryHead, TimeWrapper, UserIdLabel } from "../Card.styles";
+import { timeDifference } from "#utils/cardUtils";
 
 interface RecruitCardProps {
     data: Recruit;
@@ -26,6 +27,8 @@ const RecruitCard = ({ data }: RecruitCardProps) => {
                     <span>{`${(data.course.pathLength / 1000).toFixed(1)}km`}</span>
                     <img src={RUNNING_ICON} />
                     <span>{getDisplayPaceString(data.pace)}</span>
+                    <img src={CLOCK_ICON} />
+                    <span>{timeDifference(data.startTime)}</span>
                 </div>
                 <UserIdLabel>{data.userId}</UserIdLabel>
             </SummaryBody>

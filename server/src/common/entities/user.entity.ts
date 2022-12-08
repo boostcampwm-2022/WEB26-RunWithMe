@@ -29,12 +29,14 @@ export class User {
     @OneToMany(() => UserRecruit, (userRecruit) => userRecruit.user)
     userRecruits: Recruit[];
 
-    static of(userId: string, password: string, pace: number, hCode: string) {
+    static of(userId: string, password: string, pace: number, hCode: string, email: string, receiveMail: boolean) {
         const user = new User();
         user.userId = userId;
         user.password = password;
         user.pace = pace;
         user.hCode = hCode;
+        user.email = email;
+        user.receiveMail = receiveMail;
         return user;
     }
 }

@@ -8,16 +8,28 @@ import { CheckUserResponseDto } from "./dto/response/check-user.response";
 import { GetCoursesResponseDto } from "../course/dto/response/get-courses.response";
 import { GetRecruitsResponseDto } from "../recruit/dto/response/get-recruits.response";
 import { GetProfileResponseDto } from "./dto/response/get-profile.response";
+import { HttpService } from "@nestjs/axios";
+import { AxiosError } from "axios";
+import { catchError, firstValueFrom } from "rxjs";
 
 @Controller("user")
 @ApiTags("사용자 관리")
 export class UserController {
-    constructor(private userService: UserService) {}
+    constructor(private userService: UserService, private httpService: HttpService) {}
 
     @ApiOperation({ summary: "유저 회원가입", description: "회원가입한다" })
     @Post()
     async create(@Body() createUserRequestDto: CreateUserRequestDto) {
         await this.userService.create(createUserRequestDto);
+        await firstValueFrom(
+            this.httpService
+                .post(`${process.env.NOTI_SERVER_API_URL}/job/signup`, { userId: createUserRequestDto.getUserId() })
+                .pipe(
+                    catchError((error: AxiosError) => {
+                        throw error;
+                    }),
+                ),
+        );
         return ResponseEntity.OK();
     }
     @ApiOperation({ summary: "내 정보", description: "내 정보를 가져온다" })

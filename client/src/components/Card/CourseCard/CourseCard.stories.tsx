@@ -33,5 +33,6 @@ _CourseCard.args = {
             name: "",
         },
         createdAt: "2022-11-21T08:55:33.162Z",
+        userId: "asdsad",
     },
 };

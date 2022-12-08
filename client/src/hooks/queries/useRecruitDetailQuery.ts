@@ -5,8 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 
 const useRecruitDetailQuery = (id: number) => {
     const { get } = useHttpGet<HttpResponse<RecruitDetail>>();
-    return useQuery<RecruitDetail>(["recruit", id], async () => get(`/recruit/${id}`).then((res) => res.data), {
-        suspense: true,
-    });
+    return useQuery<RecruitDetail>(["recruit", id], async () => get(`/recruit/${id}`).then((res) => res.data));
 };
 export default useRecruitDetailQuery;

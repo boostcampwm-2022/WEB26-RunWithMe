@@ -4,7 +4,7 @@ import { COLOR } from "styles/color";
 import { flexRow } from "styles/flex";
 import { fontSmall } from "styles/font";
 const Wrapper = styled.div<{ position: MapControlPosition }>`
-    ${flexRow};
+    ${flexRow({})};
     z-index: 1;
     background-color: ${COLOR.WHITE};
     opacity: 0.9;

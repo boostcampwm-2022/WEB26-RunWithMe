@@ -41,6 +41,7 @@ _RecruitCard.args = {
                 name: "잠실동",
             },
             createdAt: "2022-11-21T08:55:33.162Z",
+            userId: "asdasd",
         },
     },
 };

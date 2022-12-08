@@ -25,6 +25,18 @@ export class CreateRecruitRequestDto {
     @IsNumber()
     private courseId: number;
 
+    getUserId() {
+        return this.userId;
+    }
+
+    getStartTime() {
+        return this.startTime;
+    }
+
+    getTitle() {
+        return this.title;
+    }
+
     toEntity(): Recruit {
         return Recruit.of(this.title, this.startTime, this.maxPpl, this.pace, this.userId, this.courseId);
     }

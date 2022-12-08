@@ -13,6 +13,10 @@ export class UserRepository extends Repository<User> {
         return this.findOneBy({ userId });
     }
 
+    public findOneByUserIdx(userIdx: number) {
+        return this.findOneBy({ id: userIdx });
+    }
+
     public async findUserIdxByUserId(userId: string) {
         return (await this.findOneByUserId(userId)).id;
     }

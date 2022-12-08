@@ -24,4 +24,12 @@ export class UserRecruitRepository extends Repository<UserRecruit> {
     public deleteUserRecruit(userRecruitEntity: UserRecruit) {
         this.delete(userRecruitEntity);
     }
+    public async getUsersByRecruitId(recruitId: number) {
+        return this.createQueryBuilder("user_recruit")
+            .innerJoinAndSelect("user_recruit.user", "user")
+            .select(["user.email AS email", "user.userId AS id"])
+            .where("user_recruit.recruitId = :recruitId", { recruitId })
+            .andWhere("user.receiveMail = true")
+            .getRawMany();
+    }
 }

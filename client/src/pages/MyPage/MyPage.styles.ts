@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { COLOR } from "styles/color";
-import { flexRowCenter } from "styles/flex";
+import { flexRowCenter, flexRowSpaceBetween } from "styles/flex";
 import { fontLarge } from "styles/font";
 import { MenuProps } from "./MyPageTypes";
 
@@ -36,4 +36,14 @@ export const MyPageMenuInfo = styled.div`
     text-align: center;
     padding: 32px 0 10px 0;
     ${fontLarge(COLOR.BLACK, 700)};
+`;
+
+export const MyPageOptionsWrapper = styled.div`
+    width: 100%;
+    ${flexRowCenter}
+`;
+
+export const MyPageOptions = styled.div`
+    width: 100%;
+    ${flexRowSpaceBetween}
 `;

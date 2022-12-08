@@ -1,6 +1,6 @@
 import CourseCard from "#components/Card/CourseCard/CourseCard";
 import { MYPAGE } from "#constants/myPageOptions";
-import useCoursesQuery from "#hooks/queries/useCoursesQuery";
+import useMyCoursesQuery from "#hooks/queries/useMyCoursesQuery";
 import { Course } from "#types/Course";
 import styled from "styled-components";
 import { flexColumn } from "styles/flex";
@@ -14,7 +14,7 @@ const CoursesWrapper = styled.div`
 `;
 
 const MyPageCourses = ({ MyPageOption }: MyPageProps) => {
-    const { data: course, isLoading: coursesLoading } = useCoursesQuery();
+    const { data: course, isLoading: coursesLoading } = useMyCoursesQuery();
     if (coursesLoading) return <div>Loading...</div>;
     if (!course) return <div>404</div>;
 

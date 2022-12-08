@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { flexRowCenter } from "styles/flex";
 import { faker } from "@faker-js/faker";
@@ -43,6 +43,15 @@ const MockRecruits = () => {
     const [maxTime, setMaxTime] = useState(10);
     const [minPace, setMinPace] = useState(0);
     const [maxPace, setMaxPace] = useState(600);
+    const [coursesCount, setCoursesCount] = useState(0);
+
+    useEffect(() => {
+        async function fetchData() {
+            const cc = await get("course/count");
+            setCoursesCount(cc.data);
+        }
+        fetchData();
+    }, []);
     const { get } = useGet();
     const { post } = usePost();
 
@@ -67,15 +76,15 @@ const MockRecruits = () => {
     };
 
     const generateRandomRecruit = async () => {
-        let coursesCount = await get("course/count");
-        coursesCount = coursesCount.data;
         const randomTitle = faker.lorem.sentences(faker.datatype.number({ max: 3, min: 1 }));
         const randomMaxppl = faker.datatype.number({ min: minppl, max: maxppl });
         const randomPace = faker.datatype.number({ min: minPace, max: maxPace });
-        const currentDate = new Date();
+        let currentDate = new Date();
+        const offset = currentDate.getTimezoneOffset() * 60000;
+        currentDate = new Date(currentDate.getTime() - offset);
         currentDate.setHours(currentDate.getHours() + faker.datatype.number({ min: 0, max: maxTime }));
         const randomStartTime = currentDate.toISOString().substring(0, 16);
-        const randomCourseIdx = faker.datatype.number({ min: 0, max: coursesCount - 1 });
+        const randomCourseIdx = faker.datatype.number({ min: 1, max: coursesCount - 1 });
 
         const randomRecruit = {
             title: randomTitle,
@@ -93,6 +102,7 @@ const MockRecruits = () => {
     };
     const handleSubmit = async () => {
         for (let i = 0; i < reps; i++) {
+            console.log("send");
             sendAxiosRequest(generateRandomRecruit());
         }
     };

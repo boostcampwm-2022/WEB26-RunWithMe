@@ -8,6 +8,7 @@ import { MyPageProps } from "./MyPageTypes";
 import useHttpGet from "#hooks/http/useHttpGet";
 import { useNavigate } from "react-router-dom";
 import useLogout from "#hooks/useLogout";
+import useMyProfileQuery from "#hooks/queries/useMyProfileQuery";
 
 const MyInfoWrapper = styled.div`
     width: 100%;
@@ -44,6 +45,7 @@ const MyProfileButtonsWrapper = styled.div`
 
 const MyPageProfile = ({ MyPageOption }: MyPageProps) => {
     const { get } = useHttpGet();
+    const { data: profile, isLoading: profileLoading } = useMyProfileQuery();
     const logout = useLogout();
     const navigate = useNavigate();
     const logoutOnClick = async () => {
@@ -53,19 +55,27 @@ const MyPageProfile = ({ MyPageOption }: MyPageProps) => {
             navigate("/");
         } catch {}
     };
+
+    if (profileLoading) return <div>Loading...</div>;
+    if (!profile) return <div>404</div>;
+
     return (
         <>
             {MyPageOption == MYPAGE.PROFILE && (
                 <MyInfoWrapper>
-                    <MyName>catenary</MyName>
+                    <MyName>{profile.data.userId}</MyName>
 
                     <MyInfo>
                         <span>지역</span>
-                        <span>경기도 용인시 수지구 동천동</span>
+                        <span>{profile.data.hDong.name}</span>
                     </MyInfo>
                     <MyInfo>
                         <span>페이스</span>
-                        <span>3min/km</span>
+                        {profile.data.pace && (
+                            <span>
+                                {Math.floor(profile.data.pace / 60)}'{profile.data.pace % 60}"/KM
+                            </span>
+                        )}
                     </MyInfo>
                     <MyProfileButtonsWrapper>
                         <Button width="fill">회원정보 변경</Button>

@@ -1,13 +1,13 @@
 import { Expose, Type } from "class-transformer";
-import { IsNumber, IsOptional } from "class-validator";
+import { IsNumber } from "class-validator";
+import { UserRecruit } from "../../../common/entities/user_recruit.entity";
 
-export class GetRecruitRequestDto {
+export class UnjoinRecruitRequestDto {
     @Type(() => Number)
     @IsNumber()
     @Expose({ name: "id" })
     private recruitId: number;
 
-    @IsOptional()
     @Type(() => Number)
     @IsNumber()
     private userId: number;
@@ -18,5 +18,9 @@ export class GetRecruitRequestDto {
 
     getUserId() {
         return this.userId;
+    }
+
+    toEntity() {
+        return UserRecruit.of(this.userId, this.recruitId);
     }
 }

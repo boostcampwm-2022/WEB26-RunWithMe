@@ -1,13 +1,12 @@
 import { Expose, Type } from "class-transformer";
-import { IsNumber, IsOptional } from "class-validator";
+import { IsNumber } from "class-validator";
 
-export class GetRecruitRequestDto {
+export class DeleteRecruitRequestDto {
     @Type(() => Number)
     @IsNumber()
     @Expose({ name: "id" })
     private recruitId: number;
 
-    @IsOptional()
     @Type(() => Number)
     @IsNumber()
     private userId: number;

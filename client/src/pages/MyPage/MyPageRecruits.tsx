@@ -6,12 +6,12 @@ import styled from "styled-components";
 import { flexColumn } from "styles/flex";
 import { MyPageMenuInfo, MyPageOptionsWrapper } from "./MyPage.styles";
 import { MyPageProps } from "./MyPageTypes";
-import Switch from "@mui/material/switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "#atoms/userState";
+import Switch from "@mui/material/Switch";
 
 const RecruitsWrapper = styled.div`
     ${flexColumn}

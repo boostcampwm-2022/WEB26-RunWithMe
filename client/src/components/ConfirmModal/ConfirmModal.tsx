@@ -4,9 +4,8 @@ import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexRowSpaceAround } from "styles/flex";
 
-interface ConfirmModalProps {
+export interface ConfirmModalProps {
     text: string;
-    showModal: boolean;
     handleToggleModal: () => void;
     confirmOnClick: () => void;
 }
@@ -17,9 +16,9 @@ const Buttons = styled.div`
     gap: 3rem;
 `;
 
-const ConfirmModal = ({ text, confirmOnClick, showModal, handleToggleModal }: ConfirmModalProps) => {
+const ConfirmModal = ({ text, confirmOnClick, handleToggleModal }: ConfirmModalProps) => {
     return (
-        <Modal toggled={showModal} toggleVisible={handleToggleModal}>
+        <Modal toggleVisible={handleToggleModal}>
             <div>{text}</div>
             <Buttons>
                 <Button backgroundColor={COLOR.DARK_GRAY} onClick={handleToggleModal}>

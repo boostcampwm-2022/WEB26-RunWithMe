@@ -1,4 +1,4 @@
 export interface hDong {
-    name?: string;
+    name: string;
     code?: string;
 }

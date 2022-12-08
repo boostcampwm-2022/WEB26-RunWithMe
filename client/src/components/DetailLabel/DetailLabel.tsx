@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexRowSpaceBetween } from "styles/flex";
-import { fontSmall } from "styles/font";
+import { fontLarge } from "styles/font";
 
 const TextWrapper = styled.div`
     ${flexRowSpaceBetween};
     width: 100%;
     p:nth-child(1) {
-        ${fontSmall(COLOR.LIGHT_GRAY, 400)};
+        ${fontLarge(COLOR.LIGHT_GRAY, 400)};
     }
     p:nth-child(2) {
-        ${fontSmall(COLOR.BLACK, 500)};
+        ${fontLarge(COLOR.BLACK, 500)};
     }
 `;
 

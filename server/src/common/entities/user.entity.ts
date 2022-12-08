@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Course } from "./course.entity";
 import { Recruit } from "./recruit.entity";
 import { UserRecruit } from "./user_recruit.entity";
+import { HDong } from "./h_dong.entity";
 
 @Entity("user")
 export class User {
@@ -17,6 +18,11 @@ export class User {
     @Column()
     pace: number;
 
+    @Column()
+    email: string;
+
+    @ManyToOne(() => HDong, (hCode) => hCode.users, { nullable: true })
+    @JoinColumn({ name: "hCode", referencedColumnName: "code" })
     @Column({ type: "varchar", length: 10 })
     hCode: string;
 

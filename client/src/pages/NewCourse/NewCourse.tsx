@@ -14,7 +14,6 @@ import { RegionResponse } from "#types/Region";
 import { CourseForm } from "./NewCourse.styles";
 import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
 import { LOCAL_API_PATH } from "#types/LocalAPIType";
-//#endregion
 
 const NewCourse = () => {
     const [title, onChangeTitle] = useInput(courseTitleValidator);
@@ -76,7 +75,6 @@ const NewCourse = () => {
             </CourseForm>
             <ConfirmModal
                 text="등록 하시겠습니까?"
-                showModal={showConfirmModal}
                 handleToggleModal={handleToggleConfirmModal}
                 confirmOnClick={onClickInsertButton}
             ></ConfirmModal>

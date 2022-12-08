@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, FormEventHandler } from "react";
 import Header from "#components/Header/Header";
 import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
@@ -31,7 +31,8 @@ const Courses = () => {
 
     const [cardList, setCardList] = useState<Course[]>([]);
     const [searchContent, setSearchContent] = useState("");
-    const handleSearchContentChange = (e: React.FormEvent<HTMLInputElement>) => setSearchContent(e.currentTarget.value);
+    const handleSearchContentChange: FormEventHandler<HTMLInputElement> = (e) =>
+        setSearchContent(e.currentTarget.value);
 
     const page = useRef(1);
     const incrementPage = () => {

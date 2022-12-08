@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, FormEventHandler } from "react";
+import React, { useState, FormEventHandler, useRef } from "react";
 import Header from "#components/Header/Header";
 import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
@@ -8,12 +8,12 @@ import OnOffFilter from "#components/OnOffFilter/OnOffFilter";
 import useOnOffFilter from "#hooks/useOnOffFilter";
 import { PLACEHOLDER } from "#constants/placeholder";
 import styled from "styled-components";
-import InfiniteScroll from "react-infinite-scroll-component";
-import useGet from "#hooks/http/useHttpGet";
+import InfiniteScroll from "react-infinite-scroller";
 import { LOCATION_ICON } from "#assets/icons";
 import CourseCard from "#components/Card/CourseCard/CourseCard";
-import { Course } from "#types/Course";
 import PlusButton from "#components/PlusButton/PlusButton";
+import useCourseListQuery from "#hooks/queries/useCourseListQuery";
+import { CourseFilterParams } from "#types/FilterParams";
 
 const CourseList = styled.div`
     padding: 2rem;
@@ -23,62 +23,47 @@ const CourseList = styled.div`
 `;
 
 const Courses = () => {
-    const { get } = useGet();
     const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter({ text: "3-5KM", min: 3, max: 5 });
 
     const [titleFilter, toggleTitleFilter] = useOnOffFilter(false);
     const [authorFilter, toggleAuthorFilter] = useOnOffFilter(false);
-
-    const [cardList, setCardList] = useState<Course[]>([]);
     const [searchContent, setSearchContent] = useState("");
-    const handleSearchContentChange: FormEventHandler<HTMLInputElement> = (e) =>
-        setSearchContent(e.currentTarget.value);
 
     const page = useRef(1);
-    const incrementPage = () => {
-        page.current++;
-    };
-    const [hasMore, setHasMore] = useState(true);
+    const { data, fetchNextPage, isLoading, hasNextPage, remove } = useCourseListQuery();
 
-    const courseQueryParams = () => {
-        const param: any = {};
-        param.title = titleFilter ? "true" : "false";
-        param.author = authorFilter ? "true" : "false";
+    const resetFilter = () => {
+        page.current = 1;
+        remove();
+        fetchNextPage({ pageParam: courseQueryParams() });
+    };
+
+    const handleSearchContentChange: FormEventHandler<HTMLInputElement> = (e) => {
+        setSearchContent(e.currentTarget.value);
+    };
+
+    const courseQueryParams = (): CourseFilterParams => {
+        const param: CourseFilterParams = {
+            maxLen: (currentDistanceFilter.max * 1000).toString(),
+            minLen: (currentDistanceFilter.min * 1000).toString(),
+            page: page.current,
+            title: titleFilter ? "true" : "false",
+            author: authorFilter ? "true" : "false",
+        };
         if (searchContent !== "") param.query = searchContent;
-        param.maxLen = (currentDistanceFilter.max * 1000).toString();
-        param.minLen = (currentDistanceFilter.min * 1000).toString();
-        param.page = page.current.toString();
         return param;
     };
 
-    const sendCourseFetchRequest = async () => {
-        const response: any = await get("/course", courseQueryParams());
-        if (response.data.length == 0) setHasMore(false);
-
-        setCardList((prev) => [...prev, ...response.data]);
-        incrementPage();
-    };
-
-    const resetSearchResultCards = () => {
-        page.current = 1;
-        setCardList([]);
-    };
-
-    useEffect(() => {
-        sendCourseFetchRequest();
-    }, []);
+    if (isLoading) return <div>Loading...</div>;
 
     return (
         <>
             <Header text="코스 목록" />
             <SearchBar
                 placeholder={PLACEHOLDER.SEARCH}
-                onClick={() => {
-                    resetSearchResultCards();
-                    sendCourseFetchRequest();
-                }}
                 content={searchContent}
                 onChange={handleSearchContentChange}
+                onClick={resetFilter}
             ></SearchBar>
             <FilterBar>
                 <OnOffFilter
@@ -103,23 +88,25 @@ const Courses = () => {
                     setCurrentFilterState={setCurrentDistanceFilter}
                 ></SelectFilter>
             </FilterBar>
+
             <InfiniteScroll
-                dataLength={cardList.length}
-                next={() => {
-                    if (!hasMore) return;
-                    sendCourseFetchRequest();
+                loadMore={() => {
+                    fetchNextPage({ pageParam: courseQueryParams() });
+                    page.current++;
                 }}
-                hasMore={hasMore}
+                hasMore={hasNextPage}
                 loader={<h4>Loading...</h4>}
             >
                 <CourseList>
-                    {cardList.map((card, i) => (
-                        <CourseCard data={card} key={i}></CourseCard>
-                    ))}
+                    {data?.pages.map((page, pageIdx) =>
+                        page.map((card, idx) => <CourseCard data={card} key={`${pageIdx}_${idx}`} />),
+                    )}
                 </CourseList>
             </InfiniteScroll>
+
             <PlusButton to="/course/new"></PlusButton>
         </>
     );
 };
+
 export default Courses;

@@ -1,5 +1,5 @@
 import RecruitCard from "#components/Card/RecruitCard/RecruitCard";
-import useRecruitListQuery from "#hooks/queries/useRecruitListQuery";
+import useRecruitsQuery from "#hooks/queries/useRecruitsQuery";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 const CardWrapper = styled.div`
@@ -19,7 +19,7 @@ export interface RecruitListProps {
 }
 
 const RecruitList = (props: RecruitListProps) => {
-    const { data, fetchNextPage, hasNextPage } = useRecruitListQuery({ ...props });
+    const { data, fetchNextPage, hasNextPage } = useRecruitsQuery({ ...props });
 
     return (
         <InfiniteScroll loadMore={() => fetchNextPage()} hasMore={hasNextPage} loader={<h4>Loading...</h4>}>

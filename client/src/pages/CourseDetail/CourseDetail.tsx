@@ -52,11 +52,7 @@ const CourseDetail = () => {
                 </Button>
             </ButtonWrapper>
             {showRecruitModal && (
-                <CreateRecruitModal
-                    modalVisible={showRecruitModal}
-                    courseId={data.id}
-                    toggleVisible={handleToggleRecruitModal}
-                >
+                <CreateRecruitModal courseId={data.id} toggleVisible={handleToggleRecruitModal}>
                     {ConfirmModal}
                 </CreateRecruitModal>
             )}

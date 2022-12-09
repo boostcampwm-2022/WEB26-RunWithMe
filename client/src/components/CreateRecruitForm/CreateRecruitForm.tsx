@@ -27,11 +27,10 @@ const Buttons = styled.div`
 interface CreateRecruitModalProps {
     courseId: number;
     toggleVisible: () => void;
-    modalVisible: boolean;
     children: FC<ConfirmModalProps>;
 }
 
-const CreateRecruitModal = ({ courseId, toggleVisible, children, modalVisible }: CreateRecruitModalProps) => {
+const CreateRecruitModal = ({ courseId, toggleVisible, children }: CreateRecruitModalProps) => {
     const [title, onChangeTitle, titleError] = useInput(recruitTitleValidator);
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
     const { startTime, onChangeStartTime } = useStartTimeInput();

@@ -1,5 +1,5 @@
 import CourseCard from "#components/Card/CourseCard/CourseCard";
-import useCourseListQuery from "#hooks/queries/useCourseListQuery";
+import useCoursesQuery from "#hooks/queries/useCoursesQuery";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 const CardWrapper = styled.div`
@@ -17,7 +17,7 @@ export interface CourseListProps {
 }
 
 const CorseList = ({ distance, query, authorFilter, titleFilter }: CourseListProps) => {
-    const { data, fetchNextPage, hasNextPage } = useCourseListQuery({ distance, query, authorFilter, titleFilter });
+    const { data, fetchNextPage, hasNextPage } = useCoursesQuery({ distance, query, authorFilter, titleFilter });
 
     return (
         <InfiniteScroll loadMore={() => fetchNextPage()} hasMore={hasNextPage} loader={<h4>Loading...</h4>}>

@@ -38,9 +38,6 @@ const CourseDetail = () => {
 
     if (isLoading) return <div>Loading...</div>;
     if (!data) return <div>404</div>;
-    // 1. context
-    // 2. 전역 모달
-    // 3. ?????????
     return (
         <>
             <Header text="코스 상세"></Header>

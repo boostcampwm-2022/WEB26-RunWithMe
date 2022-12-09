@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import ShowMap from "#components/Map/ShowMap/ShowMap";
 import useRecruitDetailQuery from "#hooks/queries/useRecruitDetailQuery";
-import { getMiddlePoint } from "#utils/mapUtils";
 import Header from "#components/Header/Header";
 import RecruitContent from "#components/RecruitContent/RecruitContent";
 import RecruitDetailModal from "#components/RecruitDetailModal/RecruitDetailModal";

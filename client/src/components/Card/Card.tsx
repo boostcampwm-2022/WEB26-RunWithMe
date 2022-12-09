@@ -1,5 +1,4 @@
 import CardMap from "#components/Map/CardMap/CardMap";
-import useCardMap from "#components/Map/CardMap/CardMap";
 import { LatLng } from "#types/LatLng";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";

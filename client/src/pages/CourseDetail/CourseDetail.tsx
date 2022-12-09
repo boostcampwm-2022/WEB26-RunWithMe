@@ -4,7 +4,6 @@ import { useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import ShowMap from "#components/Map/ShowMap/ShowMap";
-import { getMiddlePoint } from "#utils/mapUtils";
 import useCourseDetailQuery from "#hooks/queries/useCourseDetailQuery";
 import { JUSTIFY_CONTENT } from "#types/flexOptions";
 import CourseContent from "#components/CourseContent/CourseContent";

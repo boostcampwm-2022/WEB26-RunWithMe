@@ -6,9 +6,9 @@ import UndoButton from "#components/MapControl/UndoButton/UndoButton";
 import ZoomControl from "#components/MapControl/ZoomControl/ZoomControl";
 import { JEJU } from "#constants/location";
 import { MapProps } from "#types/MapProps";
-import { getCurrentLatLng } from "#utils/locationUtils";
 import { createMap, createPolyline, getLaMaByLatLng } from "#utils/mapUtils";
 import { useCallback, useEffect, useRef, useState } from "react";
+import useGeoLocationQuery from "./queries/useGeoLocationQuery";
 import useDrawCurve from "./useDrawCurve";
 import useMapTypeControl from "./useMapTypeControl";
 import useMarker from "./useMarker";
@@ -25,16 +25,7 @@ const useWriteMap = ({ height = "100vh" }: MapProps) => {
     const { mapType, onClickRoadMap, onClickSkyView } = useMapTypeControl(map);
     const { drawMarker, initMarker } = useMarker();
     const { setDrawCurveEnabled } = useDrawCurve({ container, map, setPath });
-
-    useEffect(() => {
-        getCurrentLatLng().then((center) => {
-            if (!container.current) return;
-            map.current = createMap(container.current, center);
-            polyLineRef.current = createPolyline(map.current);
-            kakao.maps.event.addListener(map.current, "click", onClickMap);
-            initMarker(map.current);
-        });
-    }, []);
+    const { data: geoLocation } = useGeoLocationQuery();
 
     const getExpandedPath = useCallback(() => {
         return path.reduce<kakao.maps.LatLng[]>((acc, cur) => {
@@ -50,13 +41,6 @@ const useWriteMap = ({ height = "100vh" }: MapProps) => {
         polyLineRef.current.setPath(_path);
         drawMarker(_path);
     }, []);
-
-    useEffect(updatePath, [path]);
-
-    useEffect(() => {
-        if (!map.current || !container.current) return;
-        setDrawCurveEnabled(isMapDraggable);
-    }, [isMapDraggable]);
 
     const onClickMap = useCallback(
         (mouseEvent: kakao.maps.event.MouseEvent) => {
@@ -93,16 +77,12 @@ const useWriteMap = ({ height = "100vh" }: MapProps) => {
     }, []);
 
     const onClickMyPositionButton = useCallback(() => {
-        getCurrentLatLng().then((center) => {
-            if (!map.current) return;
-            map.current.setCenter(new kakao.maps.LatLng(center.lat, center.lng));
-        });
+        if (!geoLocation || !map.current) return;
+        map.current.setCenter(getLaMaByLatLng(geoLocation));
     }, [map]);
 
-    return {
-        getPath: getExpandedPath,
-        pathLength,
-        renderMap: () => (
+    const render = useCallback(
+        () => (
             <div style={{ position: "relative" }}>
                 <div ref={container} style={{ width: "100%", height }} />
                 <ZoomControl onClickZoomIn={zoomIn} onClickZoomOut={zoomOut} />
@@ -113,6 +93,28 @@ const useWriteMap = ({ height = "100vh" }: MapProps) => {
                 <MyPositionButton onClick={onClickMyPositionButton} />
             </div>
         ),
+        [],
+    );
+
+    useEffect(() => {
+        if (!geoLocation || !container.current) return;
+        map.current = createMap(container.current, geoLocation);
+        polyLineRef.current = createPolyline(map.current);
+        kakao.maps.event.addListener(map.current, "click", onClickMap);
+        initMarker(map.current);
+    }, [geoLocation]);
+
+    useEffect(updatePath, [path]);
+
+    useEffect(() => {
+        if (!map.current || !container.current) return;
+        setDrawCurveEnabled(isMapDraggable);
+    }, [isMapDraggable]);
+
+    return {
+        getPath: getExpandedPath,
+        pathLength,
+        WriteMap: render,
     };
 };
 

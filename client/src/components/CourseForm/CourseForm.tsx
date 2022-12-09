@@ -23,7 +23,6 @@ const CourseForm = () => {
 
     const { renderMap, pathLength, getPath } = useWriteMap({
         height: `${window.innerHeight - 307}px`,
-        center: { lat: 33.450701, lng: 126.570667 },
     });
 
     const checkFormValidation = () => {

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useCallback, useState } from "react";
-import useShowMap from "#hooks/useShowMap";
+import { useState } from "react";
+import ShowMap from "#components/Map/ShowMap/ShowMap";
 import useRecruitDetailQuery from "#hooks/queries/useRecruitDetailQuery";
 import { getMiddlePoint } from "#utils/mapUtils";
 import Header from "#components/Header/Header";
@@ -12,15 +12,6 @@ const RecruitDetailPage = () => {
     const { data: recruit, isLoading } = useRecruitDetailQuery(Number(id));
     const [modalVisible, setModalVisible] = useState(false);
 
-    const renderMap = useCallback(
-        useShowMap({
-            height: `${window.innerHeight - 343 - 57}px`,
-            center: getMiddlePoint(recruit?.path || []),
-            runningPath: recruit?.path || [],
-        }).renderMap,
-        [recruit],
-    );
-
     const toggleModalVisible = () => {
         setModalVisible((prev) => !prev);
     };
@@ -31,7 +22,7 @@ const RecruitDetailPage = () => {
     return (
         <>
             <Header text="모집 상세"></Header>
-            {renderMap()}
+            <ShowMap height={`${window.innerHeight - 343 - 57}px`} path={recruit?.path || []} />
             <RecruitContent data={recruit} onClick={toggleModalVisible} />
             {modalVisible && <RecruitDetailModal data={recruit} toggleModal={toggleModalVisible} id={Number(id)} />}
         </>

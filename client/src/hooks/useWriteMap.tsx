@@ -7,13 +7,14 @@ import ZoomControl from "#components/MapControl/ZoomControl/ZoomControl";
 import { JEJU } from "#constants/location";
 import { MapProps } from "#types/MapProps";
 import { getCurrentLatLng } from "#utils/locationUtils";
+import { createMap, createPolyline, getLaMaByLatLng } from "#utils/mapUtils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useDrawCurve from "./useDrawCurve";
 import useMapTypeControl from "./useMapTypeControl";
 import useMarker from "./useMarker";
 import useZoomControl from "./useZoomControl";
 
-const useWriteMap = ({ height = "100vh", level = 1 }: MapProps) => {
+const useWriteMap = ({ height = "100vh" }: MapProps) => {
     const container = useRef<HTMLDivElement>(null);
     const map = useRef<kakao.maps.Map>();
     const polyLineRef = useRef<kakao.maps.Polyline>();
@@ -24,27 +25,12 @@ const useWriteMap = ({ height = "100vh", level = 1 }: MapProps) => {
     const { mapType, onClickRoadMap, onClickSkyView } = useMapTypeControl(map);
     const { drawMarker, initMarker } = useMarker();
     const { setDrawCurveEnabled } = useDrawCurve({ container, map, setPath });
-    //#region isRoad
-    // const { current: roadviewClient } = useRef<kakao.maps.RoadviewClient>(new kakao.maps.RoadviewClient());
-    // const checkIsRoad = useCallback((position: kakao.maps.LatLng) => {
-    //     return new Promise((resolve) =>
-    //         roadviewClient.getNearestPanoId(position, 5, (panoId: any) => {
-    //             resolve(!!panoId);
-    //         }),
-    //     );
-    // }, []);
-    //#endregion
+
     useEffect(() => {
         getCurrentLatLng().then((center) => {
             if (!container.current) return;
-            map.current = new kakao.maps.Map(container.current, {
-                center: new kakao.maps.LatLng(center.lat, center.lng),
-                level,
-            });
-            polyLineRef.current = new kakao.maps.Polyline({
-                map: map.current,
-                path: [],
-            });
+            map.current = createMap(container.current, center);
+            polyLineRef.current = createPolyline(map.current);
             kakao.maps.event.addListener(map.current, "click", onClickMap);
             initMarker(map.current);
         });
@@ -57,14 +43,18 @@ const useWriteMap = ({ height = "100vh", level = 1 }: MapProps) => {
         }, []);
     }, [path]);
 
-    useEffect(() => {
+    const updatePath = useCallback(() => {
         if (!polyLineRef.current) return;
         setPathLength(polyLineRef.current?.getLength());
-    }, [path]);
+        const _path = getExpandedPath();
+        polyLineRef.current.setPath(_path);
+        drawMarker(_path);
+    }, []);
+
+    useEffect(updatePath, [path]);
 
     useEffect(() => {
-        if (!map.current) return;
-        if (!container.current) return;
+        if (!map.current || !container.current) return;
         setDrawCurveEnabled(isMapDraggable);
     }, [isMapDraggable]);
 
@@ -75,13 +65,6 @@ const useWriteMap = ({ height = "100vh", level = 1 }: MapProps) => {
         },
         [polyLineRef],
     );
-
-    useEffect(() => {
-        if (!polyLineRef.current) return;
-        const _path = getExpandedPath();
-        polyLineRef.current.setPath(_path);
-        drawMarker(_path);
-    }, [path]);
 
     const onClickUndo = useCallback(() => {
         if (!polyLineRef.current) return;
@@ -117,7 +100,6 @@ const useWriteMap = ({ height = "100vh", level = 1 }: MapProps) => {
     }, [map]);
 
     return {
-        map: map.current,
         getPath: getExpandedPath,
         pathLength,
         renderMap: () => (

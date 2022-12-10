@@ -1,6 +1,5 @@
 import SignUp from "#pages/SignUp/SignUp";
 import Login from "#pages/Login/Login";
-import MenuPage from "#pages/Menu/MenuPage";
 import MainPage from "#pages/Main/MainPage";
 import Courses from "#pages/Courses/Courses";
 import { Route, Routes } from "react-router-dom";
@@ -22,7 +21,6 @@ function App() {
             <Routes>
                 <Route path="/" element={<MainPage />} />
                 <Route path="me" element={<MyPage />} />
-                <Route path="menu" element={<MenuPage />} />
                 <Route path="signup" element={<SignUp />} />
                 <Route path="login" element={<Login />} />
                 <Route path="courses" element={<Courses />} />

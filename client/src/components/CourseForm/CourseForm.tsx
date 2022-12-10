@@ -21,9 +21,8 @@ const CourseForm = () => {
     const navigate = useNavigate();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-    const { renderMap, pathLength, getPath } = useWriteMap({
+    const { WriteMap, pathLength, getPath } = useWriteMap({
         height: `${window.innerHeight - 307}px`,
-        center: { lat: 33.450701, lng: 126.570667 },
     });
 
     const checkFormValidation = () => {
@@ -56,7 +55,7 @@ const CourseForm = () => {
 
     return (
         <>
-            {renderMap()}
+            <WriteMap />
             <InputWrapper>
                 <div>
                     <span>총 거리</span>

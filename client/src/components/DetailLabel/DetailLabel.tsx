@@ -1,27 +1,32 @@
+import { JUSTIFY_CONTENT } from "#types/flexOptions";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
-import { flexRowSpaceBetween } from "styles/flex";
-import { fontLarge } from "styles/font";
+import { flexRow } from "styles/flex";
 
-const TextWrapper = styled.div`
-    ${flexRowSpaceBetween};
+const TextWrapper = styled.div<{ fontSize?: string }>`
+    ${flexRow({ justifyContent: JUSTIFY_CONTENT.SPACE_BETWEEN })};
     width: 100%;
     p:nth-child(1) {
-        ${fontLarge(COLOR.LIGHT_GRAY, 400)};
+        color: ${COLOR.LIGHT_GRAY};
+        font-weight: ${400};
+        font-size: ${({ fontSize }) => (fontSize ? fontSize : "1.6rem")};
     }
     p:nth-child(2) {
-        ${fontLarge(COLOR.BLACK, 500)};
+        color: ${COLOR.BLACK};
+        font-weight: ${500};
+        font-size: ${({ fontSize }) => (fontSize ? fontSize : "1.6rem")};
     }
 `;
 
 interface DetailLabelProps {
     title: string;
     value: string;
+    fontSize?: string;
 }
 
-const DetailLabel = ({ title, value }: DetailLabelProps) => {
+const DetailLabel = ({ title, value, fontSize }: DetailLabelProps) => {
     return (
-        <TextWrapper>
+        <TextWrapper fontSize={fontSize}>
             <p>{title}</p>
             <p>{value}</p>
         </TextWrapper>

@@ -14,7 +14,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   // 모집글을 게시자가 취소
-  @Post('recruit/cancel')
+  @Post('recruit/delete')
   async deleteRecruit(@Body() body: any) {
     const { recruitId } = body;
     const jobDto = this.appService.createCancelMessage(body) as any;
@@ -24,11 +24,11 @@ export class AppController {
     return { statusCode: 201 };
   }
 
-  @Post('join/cancel')
+  @Post('join/delete')
   async deleteJoin(@Body() body: any) {
     const { recruitId, user } = body;
+    body.users = [user];
     const jobDto = this.appService.createCancelMessage(body);
-
     await this.appService.deleteDelayedJob(recruitId, user.email);
     await this.appService.addJobToImmediateQ(jobDto);
     return { statusCode: 201 };
@@ -40,7 +40,6 @@ export class AppController {
     const { recruitId, user } = body;
     const jobDto = this.appService.createRecruitMessage(body);
     const delay = this.appService.getDelayTime(body.startTime);
-
     if (delay === 0) {
       await this.appService.addJobToImmediateQ(jobDto);
       return { statusCode: 201 };

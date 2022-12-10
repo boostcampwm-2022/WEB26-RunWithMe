@@ -27,11 +27,11 @@ export class AppService {
 
   // 30분 전 시작 알림
   createRecruitMessage(body: any) {
-    const { recruitId, author, title, hDong, startTime, pathLength } = body;
+    const { recruitId, user, title, hDong, startTime, pathLength } = body;
     const result = {};
 
     result['type'] = 'recruit';
-    result['email'] = author.email; // 이메일 하나
+    result['email'] = user.email; // 이메일 하나
     result['data'] = {
       title,
       hName: hDong.name,

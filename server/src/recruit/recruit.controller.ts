@@ -128,7 +128,6 @@ export class RecruitController {
         );
         const user = await this.recruitService.getUserByIdx(joinRecruitRequestDto.getUserId());
         const { email, userId } = user;
-
         if (user) {
             await firstValueFrom(
                 this.httpService

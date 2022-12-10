@@ -104,7 +104,6 @@ export class RecruitRepository extends Repository<Recruit> {
     async getMaxPpl(id: number) {
         return (await this.findOneById(id)).maxPpl;
     }
-
     async findManyByUser(userId: number): Promise<RawRecruitData[]> {
         return this.createQueryBuilder("recruit")
             .innerJoinAndSelect("recruit.course", "course")
@@ -112,7 +111,7 @@ export class RecruitRepository extends Repository<Recruit> {
             .innerJoinAndSelect("course.hCode", "h_dong")
             .leftJoinAndSelect("recruit.userRecruits", "user_recruit")
             .innerJoinAndSelect("recruit.user", "user")
-            .where("user_recruit.userId = :userId", { userId })
+            .leftJoinAndSelect("recruit.userRecruits", "sb")
             .select([
                 "recruit.id AS id",
                 "recruit.title AS title",
@@ -121,7 +120,6 @@ export class RecruitRepository extends Repository<Recruit> {
                 "recruit.pace AS pace",
                 "recruit.createdAt AS createdAt",
                 "user.userId AS userId",
-                "COUNT(user_recruit.id) AS currentPpl",
                 "course.id",
                 "course.title",
                 "course.path",
@@ -129,7 +127,10 @@ export class RecruitRepository extends Repository<Recruit> {
                 "h_dong.name",
                 "course.createdAt",
                 "u.userId AS course_userId",
+                "count(sb.id) as currentPpl",
             ])
+            .where("sb.recruitId = recruit.id")
+            .andWhere("user_recruit.userId = :userId", { userId })
             .groupBy("recruit.id")
             .getRawMany();
     }

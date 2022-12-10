@@ -10,11 +10,12 @@ export class MailService {
     email: string | Array<string>,
     data: any,
   ): Promise<void> {
+    console.log(type, email, data);
     try {
       const { subject, template } = this.getTemplate(type);
 
       await this.mailService.sendMail({
-        from: 'tjrwns1010@naver.com',
+        from: 'admin@runwithme.co.kr',
         to: email,
         subject,
         template,

@@ -1,24 +1,22 @@
 import Button from "#components/Button/Button";
 import Input from "#components/Input/Input";
 import useWriteMap from "#hooks/useWriteMap";
-import useHttpPost from "#hooks/http/useHttpPost";
 import useInput from "#hooks/useInput";
 import useLocalAPI from "#hooks/useLocalAPI";
 import getLatLngByXY from "#utils/mapUtils";
 import { PLACEHOLDER } from "#constants/placeholder";
 import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { courseTitleValidator } from "#utils/validationUtils";
 import { RegionResponse } from "#types/Region";
 import { InputWrapper } from "./CourseForm.styles";
 import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
 import { LOCAL_API_PATH } from "#types/LocalAPIType";
+import usePostCourseMutation from "#hooks/queries/usePostCourseMutation";
 
 const CourseForm = () => {
     const [title, onChangeTitle] = useInput(courseTitleValidator);
     const query = useLocalAPI<RegionResponse>(LOCAL_API_PATH.REGION_CODE);
-    const { post } = useHttpPost();
-    const navigate = useNavigate();
+    const { mutate } = usePostCourseMutation();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     const { WriteMap, pathLength, getPath } = useWriteMap({
@@ -41,13 +39,7 @@ const CourseForm = () => {
             const { lng: x, lat: y } = getLatLngByXY(path[0]);
             const regions = await query({ x, y });
             const { code: hCode } = regions.documents[1];
-            const response: any = await post("/course", {
-                title,
-                path: path.map(getLatLngByXY),
-                pathLength,
-                hCode,
-            });
-            navigate(`/course/${response.data.courseId}`);
+            mutate({ title: title as string, path: path.map(getLatLngByXY), pathLength, hCode });
         } catch (error: any) {
             alert(error.message);
         }

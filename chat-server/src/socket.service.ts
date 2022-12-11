@@ -1,8 +1,8 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Inject, CACHE_MANAGER } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-import { Chat } from './common/entities/chat.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Chat, ChatDocument } from './common/schemas/chat.schema';
 
 type CacheValue = {
   userId: string;
@@ -12,11 +12,10 @@ type CacheValue = {
 export class SocketService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    @InjectRepository(Chat) private chatRepository: Repository<Chat>,
+    @InjectModel(Chat.name) private chatModel: Model<ChatDocument>,
   ) {}
 
   async getCacheData(socketId: string): Promise<CacheValue> {
-    console.log(await this.cacheManager.get(`id:${socketId}`));
     return this.cacheManager.get(`id:${socketId}`);
   }
 
@@ -29,17 +28,14 @@ export class SocketService {
   }
 
   async getRecentMessage() {
-    const response = await this.chatRepository.find({
-      order: {
-        createdAt: 'DESC',
-      },
-      take: 10,
-    });
-
+    const response = await this.chatModel
+      .find()
+      .sort({ createdAt: -1 })
+      .limit(10);
     return response.reverse();
   }
 
   async saveRecentMessage(chatEntity: Chat) {
-    return this.chatRepository.save(chatEntity);
+    this.chatModel.create(chatEntity);
   }
 }

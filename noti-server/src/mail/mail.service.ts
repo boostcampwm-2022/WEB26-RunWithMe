@@ -12,7 +12,6 @@ export class MailService {
   ): Promise<void> {
     try {
       const { subject, template } = this.getTemplate(type);
-
       await this.mailService.sendMail({
         from: 'admin@runwithme.co.kr',
         to: email,
@@ -21,7 +20,7 @@ export class MailService {
         context: data,
       });
     } catch (err) {
-      throw new Error();
+      throw new Error(err);
     }
   }
 

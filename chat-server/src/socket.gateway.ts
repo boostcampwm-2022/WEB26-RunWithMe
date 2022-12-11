@@ -7,7 +7,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { Chat } from './common/entities/chat.entity';
+import { Chat } from './common/schemas/chat.schema';
 import { SocketService } from './socket.service';
 
 @WebSocketGateway({
@@ -29,7 +29,7 @@ export class SocketGateway implements OnGatewayDisconnect {
     const { recruitId } = data;
     socket.join(recruitId); // room에 입장
     await this.socketService.setCacheData(socket.id, data);
-    const recentMsg = await this.socketService.getRecentMessage();
+    const recentMsg = await this.socketService.getRecentMessage(recruitId);
     socket.emit('server_sent_recent', recentMsg);
   }
 

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, now } from 'mongoose';
 
 export type ChatDocument = HydratedDocument<Chat>;
 
@@ -14,7 +14,7 @@ export class Chat {
   @Prop()
   content: string;
 
-  @Prop({ type: Date })
+  @Prop({ default: now() })
   createdAt: Date;
 }
 

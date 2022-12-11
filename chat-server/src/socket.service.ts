@@ -27,9 +27,9 @@ export class SocketService {
     return this.cacheManager.del(`id:${socketId}`);
   }
 
-  async getRecentMessage() {
+  async getRecentMessage(recruitId: number) {
     const response = await this.chatModel
-      .find()
+      .find({ recruitId })
       .sort({ createdAt: -1 })
       .limit(10);
     return response.reverse();

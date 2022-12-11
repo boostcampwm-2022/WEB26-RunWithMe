@@ -7,7 +7,7 @@ interface UndoButtonProps extends MapControlProps {
 const MyPositionButton = ({ onClick, position = { top: "14px", left: "14px" } }: UndoButtonProps) => {
     return (
         <MapButton onClick={onClick} position={position}>
-            <img src={MY_POSITION_ICON} />
+            <img alt="MY_POSITION_ICON" src={MY_POSITION_ICON} />
         </MapButton>
     );
 };

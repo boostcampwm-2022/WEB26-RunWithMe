@@ -15,19 +15,19 @@ const RecruitCard = ({ data }: RecruitCardProps) => {
             <SummaryHead>
                 <CardTitle>{data.title}</CardTitle>
                 <PeopleWrapper>
-                    <img src={USER_ICON} />
+                    <img alt="USER_ICON" src={USER_ICON} />
                     <span>{`${data.currentPpl}/${data.maxPpl}`}</span>
                 </PeopleWrapper>
             </SummaryHead>
             <SummaryBody>
                 <div>
-                    <img src={LOCATION_ICON} />
+                    <img alt="LOCATION_ICON" src={LOCATION_ICON} />
                     <span>{data.course.hDong.name}</span>
-                    <img src={RULER_ICON} />
+                    <img alt="RULER_ICON" src={RULER_ICON} />
                     <span>{`${(data.course.pathLength / 1000).toFixed(1)}km`}</span>
-                    <img src={RUNNING_ICON} />
+                    <img alt="RUNNING_ICON" src={RUNNING_ICON} />
                     <span>{getDisplayPaceString(data.pace)}</span>
-                    <img src={CLOCK_ICON} />
+                    <img alt="CLOCK_ICON" src={CLOCK_ICON} />
                     <span>{timeDifference(data.startTime)}</span>
                 </div>
                 <UserIdLabel>{data.userId}</UserIdLabel>

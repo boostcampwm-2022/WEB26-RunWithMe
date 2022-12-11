@@ -1,7 +1,7 @@
-import { JUSTIFY_CONTENT } from "#types/flexOptions";
+import { ALIGN_ITEMS, JUSTIFY_CONTENT } from "#types/flexOptions";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
-import { flexRow, flexRowSpaceBetween } from "styles/flex";
+import { flexRow } from "styles/flex";
 import { fontMedium, fontSmall } from "styles/font";
 
 export const CardWrapper = styled.div`
@@ -26,10 +26,9 @@ export const CardTitle = styled.p`
 `;
 
 export const SummaryBody = styled.div`
-    ${flexRow({ justifyContent: JUSTIFY_CONTENT.SPACE_BETWEEN })};
-    align-items: center;
+    ${flexRow({ justifyContent: JUSTIFY_CONTENT.SPACE_BETWEEN, alignItems: ALIGN_ITEMS.CENTER })};
     div {
-        ${flexRow({ justifyContent: JUSTIFY_CONTENT.SPACE_BETWEEN })};
+        ${flexRow({ justifyContent: JUSTIFY_CONTENT.SPACE_BETWEEN, alignItems: ALIGN_ITEMS.CENTER })};
         margin-top: 4px;
         img {
             width: 10px;
@@ -45,7 +44,7 @@ export const SummaryBody = styled.div`
 `;
 
 export const UserIdLabel = styled.span`
-    color: ${COLOR.LIGHT_GRAY} !important;
+    color: ${COLOR.BLACK};
 `;
 
 export const PeopleWrapper = styled.div`
@@ -59,7 +58,7 @@ export const PeopleWrapper = styled.div`
 `;
 
 export const SummaryHead = styled.div`
-    ${flexRowSpaceBetween};
+    ${flexRow({ alignItems: ALIGN_ITEMS.CENTER, justifyContent: JUSTIFY_CONTENT.SPACE_BETWEEN })};
 `;
 
 export const TimeWrapper = styled.div`

@@ -6,6 +6,6 @@ interface ResetButtonProps {
 }
 
 const ResetButton = ({ width, onClick }: ResetButtonProps) => {
-    return <img style={{ width }} onClick={onClick} src={DELETE_ICON}></img>;
+    return <img alt="DELETE_ICON" style={{ width }} onClick={onClick} src={DELETE_ICON}></img>;
 };
 export default ResetButton;

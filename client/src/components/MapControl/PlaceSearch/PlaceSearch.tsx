@@ -31,7 +31,7 @@ const PlaceSearch = ({ position = { top: "14px" }, setCenter, getCenter }: Place
             <SearchWrapper>
                 <div>
                     <input ref={inputRef} onChange={onChangeQuery} placeholder="장소, 주소, 버스 검색" />
-                    <img src={SEARCH_ICON} />
+                    <img alt="SEARCH_ICON" src={SEARCH_ICON} />
                 </div>
             </SearchWrapper>
             {searchResult.length > 0 && (

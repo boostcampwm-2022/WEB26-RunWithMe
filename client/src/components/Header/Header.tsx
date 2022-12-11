@@ -33,10 +33,14 @@ const Header = ({ text, isMain = false }: HeaderProps) => {
     const userInfo = useRecoilValue(userState);
     return (
         <HeaderWrapper>
-            {isMain ? <div /> : <img src={ARROW_LEFT_ICON} onClick={() => navigate(-1)} />}
+            {isMain ? <div /> : <img alt="ARROW_LEFT_ICON" src={ARROW_LEFT_ICON} onClick={() => navigate(-1)} />}
 
             <p>{text}</p>
-            <img src={USER_CIRCLE_ICON} onClick={() => navigate(userInfo.accessToken ? "/me" : "/login")} />
+            <img
+                alt="USER_CIRCLE_ICON"
+                src={USER_CIRCLE_ICON}
+                onClick={() => navigate(userInfo.accessToken ? "/me" : "/login")}
+            />
         </HeaderWrapper>
     );
 };

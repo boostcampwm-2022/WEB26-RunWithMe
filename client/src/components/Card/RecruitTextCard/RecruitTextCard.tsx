@@ -2,24 +2,7 @@ import DetailLabel from "#components/DetailLabel/DetailLabel";
 import { Recruit } from "#types/Recruit";
 import { getDisplayPaceString, getTimeFormat } from "#utils/stringUtils";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-
-const Card = styled.div`
-    padding: 12px 16px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    div:not(:last-child) {
-        margin-bottom: 30px;
-    }
-    h2 {
-        display: block;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 100%;
-        margin-bottom: 12px;
-    }
-`;
+import { Card } from "./RecruitTextCard.styles";
 
 interface RecruitTextCardProps {
     data: Recruit;

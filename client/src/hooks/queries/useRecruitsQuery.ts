@@ -1,4 +1,4 @@
-import { RecruitListProps } from "#components/RecruitList/RecruitList";
+import { RecruitListProps } from "#components/CardList/RecruitList/RecruitList";
 import useHttpGet from "#hooks/http/useHttpGet";
 import HttpResponse from "#types/dto/HttpResponse";
 import { RecruitFilterParams } from "#types/FilterParams";
@@ -29,7 +29,8 @@ const useRecruitsQuery = ({ distance, query, availFilter, authorFilter, titleFil
         ["recruits", distance?.min, distance?.max, authorFilter, titleFilter, query],
         ({ pageParam = 1 }) => get("/recruit", recruitQueryParams(pageParam)).then((res) => res.data),
         {
-            getNextPageParam: (lastPage, allPages) => lastPage.length > 0 && allPages.length + 1,
+            getNextPageParam: (lastPage, allPages) => (lastPage ? lastPage?.length > 0 && allPages.length + 1 : 1),
+            suspense: true,
         },
     );
 };

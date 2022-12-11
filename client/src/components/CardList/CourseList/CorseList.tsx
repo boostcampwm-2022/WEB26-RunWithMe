@@ -23,7 +23,7 @@ const CorseList = ({ distance, query, authorFilter, titleFilter }: CourseListPro
         <InfiniteScroll loadMore={() => fetchNextPage()} hasMore={hasNextPage} loader={<h4>Loading...</h4>}>
             <CardWrapper>
                 {data?.pages.map((page, pageIdx) =>
-                    page.map((card, idx) => <CourseCard data={card} key={`${pageIdx}_${idx}`} />),
+                    page?.map((card, idx) => <CourseCard data={card} key={`${pageIdx}_${idx}`} />),
                 )}
             </CardWrapper>
         </InfiniteScroll>

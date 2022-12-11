@@ -2,14 +2,14 @@ import { Route, Routes } from "react-router-dom";
 import useRefreshQuery from "#hooks/queries/useRefreshQuery";
 import Layout from "#components/Layout/Layout";
 import { Suspense } from "react";
+import Loading from "#components/commons/Loading/Loading";
 import * as P from "#pages/index";
 
 function App() {
-    const { isLoading } = useRefreshQuery();
-    if (isLoading) return <div>Loading...</div>;
+    useRefreshQuery();
     return (
-        <Suspense fallback="<Loading>">
-            <Layout>
+        <Layout>
+            <Suspense fallback={<Loading />}>
                 <Routes>
                     <Route path="/" element={<P.MainPage />} />
                     <Route path="me" element={<P.MyPage />} />
@@ -29,8 +29,8 @@ function App() {
                         <Route path="recruits" element={<P.MockRecruits />} />
                     </Route>
                 </Routes>
-            </Layout>
-        </Suspense>
+            </Suspense>
+        </Layout>
     );
 }
 

@@ -47,7 +47,7 @@ const CourseForm = () => {
 
     return (
         <>
-            <WriteMap />
+            {WriteMap()}
             <InputWrapper>
                 <div>
                     <span>총 거리</span>

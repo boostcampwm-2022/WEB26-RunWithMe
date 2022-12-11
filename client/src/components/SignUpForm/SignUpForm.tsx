@@ -3,7 +3,7 @@ import AddressSearchInput from "#components/Input/AddressSearchInput/AddressSear
 import Input from "#components/Input/Input";
 import PaceInput from "#components/Input/PaceInput/PaceInput";
 import { PLACEHOLDER } from "#constants/placeholder";
-import useHttpPost from "#hooks/http/useHttpPost";
+import usePostUser from "#hooks/queries/usePostUserMutation";
 import useInput from "#hooks/useInput";
 import usePaceInput from "#hooks/usePaceInput";
 import useUserIdInput from "#hooks/useUserIdInput";
@@ -11,7 +11,6 @@ import { Address } from "#types/Address";
 import PostUserBody from "#types/dto/PostUserBody";
 import { confirmPasswordValidator, emailValidator, passwordValidator } from "#utils/validationUtils";
 import { ChangeEventHandler, useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { CheckboxWrapper, SignUpContainer } from "./SignUpForm.styles";
 
 const SignUpForm = () => {
@@ -23,12 +22,9 @@ const SignUpForm = () => {
         confirmPasswordValidator(String(password)),
     );
     const [receiveMail, setReceiveMail] = useState(false);
-    const { post } = useHttpPost<null, PostUserBody>();
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
-    const navigate = useNavigate();
-
+    const { mutate } = usePostUser();
     const checkFormValidation = () => confirmPassword && password && userId && region?.address.h_code && email;
-
     const onChangeReceiveMail: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
         setReceiveMail(e.target.checked);
     }, []);
@@ -43,12 +39,7 @@ const SignUpForm = () => {
             email: email as string,
             receiveMail,
         };
-        try {
-            await post("/user", userInfo);
-            navigate("/", { replace: true });
-        } catch (error: any) {
-            alert(error.message);
-        }
+        mutate(userInfo);
     };
 
     return (

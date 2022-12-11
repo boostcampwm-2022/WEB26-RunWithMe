@@ -6,15 +6,14 @@ import PaceInput from "#components/Input/PaceInput/PaceInput";
 import StartTimeInput from "#components/Input/StartTimeInput/StartTimeInput";
 import Modal from "#components/Modal/Modal";
 import { PLACEHOLDER } from "#constants/placeholder";
-import useHttpPost from "#hooks/http/useHttpPost";
 import useInput from "#hooks/useInput";
 import useMaxPplInput from "#hooks/useMaxPplInput";
 import usePaceInput from "#hooks/usePaceInput";
+import usePostRecruitMutation from "#hooks/queries/usePostRecruitMutation";
 import useStartTimeInput from "#hooks/useStartTimeInput";
 import { JUSTIFY_CONTENT } from "#types/flexOptions";
 import { recruitTitleValidator } from "#utils/validationUtils";
 import { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexRow } from "styles/flex";
@@ -36,8 +35,7 @@ const CreateRecruitModal = ({ courseId, toggleVisible, children }: CreateRecruit
     const { startTime, onChangeStartTime } = useStartTimeInput();
     const { maxPpl, onChangeMaxPpl } = useMaxPplInput();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
-    const { post } = useHttpPost();
-    const navigate = useNavigate();
+    const { mutate } = usePostRecruitMutation();
 
     const checkFormValidation = () => {
         return title && startTime && pace;
@@ -53,19 +51,7 @@ const CreateRecruitModal = ({ courseId, toggleVisible, children }: CreateRecruit
     };
 
     const onSubmitRecruit = async () => {
-        try {
-            const { data }: { data: any } = await post("/recruit", {
-                title,
-                courseId,
-                startTime,
-                maxPpl,
-                pace: pace.minute * 60 + pace.second,
-            });
-
-            navigate(`/recruit/${data.recruitId}`);
-        } catch (error: any) {
-            alert(error.message);
-        }
+        mutate({ title: title as string, courseId, startTime, maxPpl, pace: pace.minute * 60 + pace.second });
     };
 
     return (

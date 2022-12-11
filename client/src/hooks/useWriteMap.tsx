@@ -40,14 +40,14 @@ const useWriteMap = ({ height = "100vh" }: MapProps) => {
         const _path = getExpandedPath();
         polyLineRef.current.setPath(_path);
         drawMarker(_path);
-    }, []);
+    }, [path]);
 
     const onClickMap = useCallback(
         (mouseEvent: kakao.maps.event.MouseEvent) => {
             if (!polyLineRef.current) return;
             setPath((prev) => [...prev, mouseEvent.latLng]);
         },
-        [polyLineRef],
+        [polyLineRef.current],
     );
 
     const onClickUndo = useCallback(() => {

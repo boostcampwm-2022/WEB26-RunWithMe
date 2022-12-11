@@ -7,10 +7,10 @@ type PostCourseResponse = HttpResponse<{ courseId: number }>;
 const usePostCourseMutation = () => {
     const { post } = useHttpPost<PostCourseResponse, PostCourseBody>();
     const navigate = useNavigate();
-    return useMutation<PostCourseResponse, unknown, PostCourseBody>(
+    return useMutation<{ courseId: number }, unknown, PostCourseBody>(
         (body) => post(`/course`, body).then((res) => res.data),
         {
-            onSuccess: (res) => navigate(res.data.courseId),
+            onSuccess: (res) => navigate(`/course/${res.courseId}`),
         },
     );
 };

@@ -37,7 +37,7 @@ const SearchBar = ({ placeholder, onChange, onClick }: SearchBarProps) => {
         <>
             <SearchBarWrapper>
                 <input placeholder={placeholder} onChange={onChange}></input>
-                <img alt="SEARCH_ICON" src={SEARCH_ICON} onClick={onClick} />
+                <img width="14" height="14" alt="SEARCH_ICON" src={SEARCH_ICON} onClick={onClick} />
             </SearchBarWrapper>
         </>
     );

@@ -29,7 +29,7 @@ const MoreButton = ({ to }: MoreButtonProps) => {
             }}
         >
             <label>더 보기</label>
-            <img alt="MORE_BUTTON_ICON" src={MORE_BUTTON_ICON} />
+            <img width="14" height="14" alt="MORE_BUTTON_ICON" src={MORE_BUTTON_ICON} />
         </MoreButtonWrapper>
     );
 };

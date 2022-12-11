@@ -71,9 +71,9 @@ const Filter = ({ filterState, filterOptions, filterDescription, setCurrentFilte
                     </ModalFilterWrapper>
                 </Modal>
             )}
-            <img alt="filterIcon" src={filterIcon} />
+            <img width="14" height="14" alt="filterIcon" src={filterIcon} />
             <p>{filterState.text}</p>
-            <img alt="ARROW_DOWN_ICON" src={ARROW_DOWN_ICON} />
+            <img width="14" height="14" alt="ARROW_DOWN_ICON" src={ARROW_DOWN_ICON} />
         </FilterWrapper>
     );
 };

@@ -36,10 +36,10 @@ const ZoomControl = ({ onClickZoomIn, onClickZoomOut }: ZoomControlProps) => {
     return (
         <Wrapper>
             <div onClick={onClickZoomIn}>
-                <img alt="ZOOM_IN_ICON" src={ZOOM_IN_ICON} />
+                <img width="14" height="14" alt="ZOOM_IN_ICON" src={ZOOM_IN_ICON} />
             </div>
             <div onClick={onClickZoomOut}>
-                <img alt="ZOOM_OUT_ICON" src={ZOOM_OUT_ICON} />
+                <img width="14" height="14" alt="ZOOM_OUT_ICON" src={ZOOM_OUT_ICON} />
             </div>
         </Wrapper>
     );

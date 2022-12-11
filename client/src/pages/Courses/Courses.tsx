@@ -1,4 +1,4 @@
-import React, { useState, FormEventHandler } from "react";
+import React, { useState, FormEventHandler, Suspense } from "react";
 import Header from "#components/Header/Header";
 import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
@@ -9,7 +9,8 @@ import useOnOffFilter from "#hooks/useOnOffFilter";
 import { PLACEHOLDER } from "#constants/placeholder";
 import { LOCATION_ICON } from "#assets/icons";
 import PlusButton from "#components/PlusButton/PlusButton";
-import CourseList from "#components/CourseList/CorseList";
+import CourseList from "#components/CardList/CourseList/CorseList";
+import CardListLoader from "#components/CardList/CardList.loader";
 
 const Courses = () => {
     const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter({ text: "3-5KM", min: 3, max: 5 });
@@ -52,13 +53,15 @@ const Courses = () => {
                     setCurrentFilterState={setCurrentDistanceFilter}
                 ></SelectFilter>
             </FilterBar>
-            <CourseList
-                distance={currentDistanceFilter}
-                query={searchContent}
-                authorFilter={authorFilter}
-                titleFilter={titleFilter}
-            />
-            <PlusButton to="/course/new"></PlusButton>
+            <Suspense fallback={<CardListLoader />}>
+                <CourseList
+                    distance={currentDistanceFilter}
+                    query={searchContent}
+                    authorFilter={authorFilter}
+                    titleFilter={titleFilter}
+                />
+            </Suspense>
+            <PlusButton to="/course/new" />
         </>
     );
 };

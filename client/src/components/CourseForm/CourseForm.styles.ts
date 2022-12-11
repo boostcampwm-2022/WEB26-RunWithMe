@@ -18,3 +18,9 @@ export const InputWrapper = styled.div`
         }
     }
 `;
+
+export const MapContainer = styled.div<{ height: string }>`
+    position: relative;
+    width: 100%;
+    height: ${({ height }) => height};
+`;

@@ -26,7 +26,7 @@ export const Container = styled.div`
     }
     > div:last-child {
         background-color: ${COLOR.WHITE};
-        /* height: 100%; */
+        position: relative;
     }
     @media screen and (min-width: 480px) {
         ${flexRowCenter};

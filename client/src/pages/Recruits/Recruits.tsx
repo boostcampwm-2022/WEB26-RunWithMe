@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Header from "#components/Header/Header";
 import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
@@ -9,7 +9,8 @@ import useOnOffFilter from "#hooks/useOnOffFilter";
 import { PLACEHOLDER } from "#constants/placeholder";
 import { LOCATION_ICON, CLOCK_ICON } from "#assets/icons";
 import PlusButton from "#components/PlusButton/PlusButton";
-import RecruitList from "#components/RecruitList/RecruitList";
+import RecruitList from "#components/CardList/RecruitList/RecruitList";
+import CardListLoader from "#components/CardList/CardList.loader";
 
 const Recruits = () => {
     const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter({ text: "3-5KM", min: 3, max: 5 });
@@ -70,15 +71,17 @@ const Recruits = () => {
                     setCurrentFilterState={setCurrentTimeFilter}
                 ></SelectFilter>
             </FilterBar>
-            <RecruitList
-                distance={currentDistanceFilter}
-                time={currentTimeFilter}
-                query={searchContent}
-                authorFilter={authorFilter}
-                titleFilter={titleFilter}
-                availFilter={availFilter}
-            />
-            <PlusButton to="/courses"></PlusButton>
+            <Suspense fallback={<CardListLoader />}>
+                <RecruitList
+                    distance={currentDistanceFilter}
+                    time={currentTimeFilter}
+                    query={searchContent}
+                    authorFilter={authorFilter}
+                    titleFilter={titleFilter}
+                    availFilter={availFilter}
+                />
+                <PlusButton to="/courses"></PlusButton>
+            </Suspense>
         </>
     );
 };

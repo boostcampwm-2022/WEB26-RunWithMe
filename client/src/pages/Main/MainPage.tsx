@@ -1,6 +1,10 @@
+import MoreTitle from "#components/commons/MoreTitle/MoreTitle";
 import Header from "#components/Header/Header";
-import RecommendCourses from "#components/RecommendCourses/RecommendCourses";
-import RecommendRecruits from "#components/RecommendRecruits/RecommendRecruits";
+import CourseCarousel from "#components/RecommendCourses/CourseCarousel";
+import CourseCarouselLoader from "#components/RecommendCourses/CourseCarousel.loader";
+import RecruitCarousel from "#components/RecruitCarousel/RecruitCarousel";
+import RecruitCarouselLoader from "#components/RecruitCarousel/RecruitCarousel.loader";
+import { Suspense } from "react";
 import styled from "styled-components";
 
 const MainPageContainer = styled.div`
@@ -19,8 +23,18 @@ const MainPage = () => {
     return (
         <MainPageContainer>
             <Header isMain={true} text="RunWithMe" />
-            <RecommendCourses />
-            <RecommendRecruits />
+            <div>
+                <MoreTitle text="모집 목록" to="/recruits" />
+                <Suspense fallback={<CourseCarouselLoader />}>
+                    <CourseCarousel />
+                </Suspense>
+            </div>
+            <div>
+                <MoreTitle text="코스 목록" to="/courses" />
+                <Suspense fallback={<RecruitCarouselLoader />}>
+                    <RecruitCarousel />
+                </Suspense>
+            </div>
         </MainPageContainer>
     );
 };

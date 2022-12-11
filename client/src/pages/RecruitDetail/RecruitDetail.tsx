@@ -8,22 +8,25 @@ import RecruitDetailModal from "#components/RecruitDetailModal/RecruitDetailModa
 
 const RecruitDetailPage = () => {
     const { id } = useParams();
-    const { data: recruit, isLoading } = useRecruitDetailQuery(Number(id));
+    const { data: recruit } = useRecruitDetailQuery(Number(id));
     const [modalVisible, setModalVisible] = useState(false);
 
     const toggleModalVisible = () => {
         setModalVisible((prev) => !prev);
     };
 
-    if (isLoading) return <div>Loading...</div>;
-    if (!recruit) return <div>404</div>;
-
     return (
         <>
-            <Header text="모집 상세"></Header>
-            <ShowMap height={`${window.innerHeight - 343 - 57}px`} path={recruit?.path || []} />
-            <RecruitContent data={recruit} onClick={toggleModalVisible} />
-            {modalVisible && <RecruitDetailModal data={recruit} toggleModal={toggleModalVisible} id={Number(id)} />}
+            {recruit && (
+                <>
+                    <Header text="모집 상세"></Header>
+                    <ShowMap height={`${window.innerHeight - 343 - 57}px`} path={recruit?.path || []} />
+                    <RecruitContent data={recruit} onClick={toggleModalVisible} />
+                    {modalVisible && (
+                        <RecruitDetailModal data={recruit} toggleModal={toggleModalVisible} id={Number(id)} />
+                    )}
+                </>
+            )}
         </>
     );
 };

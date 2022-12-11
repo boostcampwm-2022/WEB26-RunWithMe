@@ -13,9 +13,9 @@ const CourseCard = ({ data }: CourseCardProps) => {
             <CardTitle>{data.title}</CardTitle>
             <SummaryBody>
                 <div>
-                    <img src={LOCATION_ICON} />
+                    <img width="14" height="14" alt="LOCATION_ICON" src={LOCATION_ICON} />
                     <span>{data.hDong.name}</span>
-                    <img src={RULER_ICON} />
+                    <img width="14" height="14" alt="RULER_ICON" src={RULER_ICON} />
                     <span>{`${(data.pathLength / 1000).toFixed(1)}km`}</span>
                 </div>
                 <UserIdLabel>{data.userId}</UserIdLabel>

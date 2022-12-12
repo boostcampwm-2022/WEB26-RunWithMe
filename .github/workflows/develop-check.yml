@@ -108,7 +108,7 @@ jobs:
 
             - name: Install noti-server dependencies
               if: ${{steps.cache-noti-server.outputs.cache-hit != 'true'}}
-              run: cd server && npm install
+              run: cd noti-server && npm install
 
             - name: Noti server eslint check
               run: ./noti-server/node_modules/.bin/eslint noti-server/src --ext .ts,.tsx

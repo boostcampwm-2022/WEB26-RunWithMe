@@ -32,7 +32,7 @@
     "@nestjs/websockets": "^9.2.1",
     "@types/bull": "^4.10.0",
     "bull": "^4.10.2",
-    "cache-manager": "^5.1.4",
+    "cache-manager": "^4.0.0",
     "cache-manager-ioredis": "^2.1.0",
     "ioredis": "^5.2.4",
     "mongoose": "^6.8.0",

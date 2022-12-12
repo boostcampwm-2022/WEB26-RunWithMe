@@ -17,7 +17,12 @@ export class SocketService {
     private managerService: ManagerService,
   ) {}
   async test() {
-    return this.managerService.generateQueue('저장되는지test');
+    await this.managerService.generateQueue('저장되는지test');
+    setTimeout(
+      async () => await this.managerService.deleteQueue('저장되는지test'),
+      5000,
+    );
+    // await this.managerService.deleteQueue('저장되는지test');
   }
   async getCacheData(socketId: string): Promise<CacheValue> {
     return this.cacheManager.get(`id:${socketId}`);
@@ -40,6 +45,6 @@ export class SocketService {
   }
 
   async saveRecentMessage(chatEntity: Chat) {
-    this.chatModel.create(chatEntity);
+    return this.chatModel.create(chatEntity);
   }
 }

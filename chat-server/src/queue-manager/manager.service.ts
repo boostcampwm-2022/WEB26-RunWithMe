@@ -1,13 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import * as Bull from 'bull';
 
 @Injectable()
 export class ManagerService {
-  constructor(
-    @Inject('redisCache') private redisCache: Cache,
-    @Inject('memoryCache') private memoryCache: Cache,
-  ) {} // 여기에서 가져온 캐시는 레디스
+  constructor(@Inject(CACHE_MANAGER) private redisCache: Cache) {} // 여기에서 가져온 캐시는 레디스
   async generateQueue(name: string) {
     const queue = new Bull(name);
     queue.pause();
@@ -27,14 +24,21 @@ export class ManagerService {
 
   async deleteQueue(name: string) {
     const deleteWork = [];
-
-    deleteWork.push(this.redisCache.del(name));
-    deleteWork.push(this.memoryCache.del(name));
+    const keyArr = await this.redisCache.store.keys(`bull:${name}:*`);
+    keyArr.map((key: string) => {
+      deleteWork.push(this.redisCache.del(key));
+    }); // bull.js Queue 지우는용
+    deleteWork.push(this.redisCache.del(name)); // 매핑된 인스턴스 지우는용
     return Promise.all(deleteWork);
   }
 
-  async getQueue(name: string) {
+  async getQueue(name: string): Promise<Bull.Queue> {
+    return this.redisCache.get(name);
     // 서버 메모리에서, name(key) 값으로 Queue Instance 가져와서 반환해주기
+  }
+
+  async getQueueList(recruitId: string) {
+    return this.redisCache.store.keys(`${recruitId}:*`);
   }
 }
 

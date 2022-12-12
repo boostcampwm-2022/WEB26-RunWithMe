@@ -91,28 +91,28 @@ jobs:
         if: ${{needs.check.outputs.noti-server=='true'}}
         runs-on: ubuntu-latest
         steps:
-          - name: Checkout
-            uses: actions/checkout@v3
+            - name: Checkout
+              uses: actions/checkout@v3
 
-          - name: Node
-            uses: actions/setup-node@v3
+            - name: Node
+              uses: actions/setup-node@v3
 
-          - name: Cache noti-server node modules
-            id: cache-noti-server
-            uses: actions/cache@v3
-            with:
-                path: noti-server/node_modules
-                key: npm-packages-noti-server-${{hashFiles('**/package-lock.json')}}
-                restore-keys: |
-                    npm-packages-noti-server-
+            - name: Cache noti-server node modules
+              id: cache-noti-server
+              uses: actions/cache@v3
+              with:
+                  path: noti-server/node_modules
+                  key: npm-packages-noti-server-${{hashFiles('**/package-lock.json')}}
+                  restore-keys: |
+                      npm-packages-noti-server-
 
-            - name: Install noti-server dependencies
-              if: ${{steps.cache-noti-server.outputs.cache-hit != 'true'}}
-              run: cd server && npm install
+              - name: Install noti-server dependencies
+                if: ${{steps.cache-noti-server.outputs.cache-hit != 'true'}}
+                run: cd server && npm install
 
 
-            - name: Noti server eslint check
-              run: ./noti-server/node_modules/.bin/eslint noti-server/src --ext .ts,.tsx
-            
-            - name: Run noti server build check
-              run : cd noti-server && npm run build
+              - name: Noti server eslint check
+                run: ./noti-server/node_modules/.bin/eslint noti-server/src --ext .ts,.tsx
+              
+              - name: Run noti server build check
+                run : cd noti-server && npm run build

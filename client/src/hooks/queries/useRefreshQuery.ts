@@ -29,6 +29,7 @@ const useRefreshQuery = () => {
         retry: !!(userInfo && userInfo.accessToken),
         refetchInterval: TIME.ACCESS_TOKEN_EXPIRE_TIME - TIME.MINUTE_IN_SECONDS,
         refetchOnReconnect: false,
+        suspense: true,
     });
 };
 

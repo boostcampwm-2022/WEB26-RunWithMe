@@ -93,14 +93,10 @@ export class AppService {
       getKeys.push(this.cache.get(key));
     });
 
-    console.log('keys', keys);
-
     const jobIds = await Promise.all(getKeys);
     jobIds.map((jobId) => {
       getJobs.push(this.delayedQueue.getJob(jobId));
     });
-
-    console.log('jobIds', jobIds);
 
     keys.map((key) => {
       deleteKeys.push(this.cache.del(key));
@@ -110,7 +106,6 @@ export class AppService {
     jobs.map((jobInstance: Job) => {
       removeJobs.push(jobInstance?.remove());
     });
-    console.log('jobs', jobs);
 
     await Promise.all(deleteKeys);
     await Promise.all(removeJobs);
@@ -122,7 +117,6 @@ export class AppService {
     const diffToSec = +startTime - +now;
 
     if (diffToSec >= 30 * 60 * 1000) {
-      console.log(+diffToSec - 30 * 60 * 1000);
       return +diffToSec - 30 * 60 * 1000;
     }
     return 0;
@@ -136,7 +130,7 @@ export class AppService {
   }
 
   async addJobToImmediateQ(jobDto: any) {
-    return this.immediateQueue.add(jobDto, {
+    await this.immediateQueue.add(jobDto, {
       removeOnComplete: true,
     });
   }

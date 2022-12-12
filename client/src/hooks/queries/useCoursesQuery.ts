@@ -1,4 +1,4 @@
-import { CourseListProps } from "#components/CourseList/CorseList";
+import { CourseListProps } from "#components/CardList/CourseList/CorseList";
 import useHttpGet from "#hooks/http/useHttpGet";
 import { Course } from "#types/Course";
 import HttpResponse from "#types/dto/HttpResponse";
@@ -26,7 +26,8 @@ const useCoursesQuery = ({ distance, query, authorFilter, titleFilter }: CourseL
         ["courses", distance?.min, distance?.max, authorFilter, titleFilter, query],
         ({ pageParam = 1 }) => get("/course", courseQueryParams(pageParam)).then((res) => res.data),
         {
-            getNextPageParam: (lastPage, allPages) => lastPage.length > 0 && allPages.length + 1,
+            getNextPageParam: (lastPage, allPages) => (lastPage ? lastPage?.length > 0 && allPages.length + 1 : 1),
+            suspense: true,
         },
     );
 };

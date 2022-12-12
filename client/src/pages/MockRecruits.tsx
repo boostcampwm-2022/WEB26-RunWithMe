@@ -102,7 +102,6 @@ const MockRecruits = () => {
     };
     const handleSubmit = async () => {
         for (let i = 0; i < reps; i++) {
-            console.log("send");
             sendAxiosRequest(generateRandomRecruit());
         }
     };

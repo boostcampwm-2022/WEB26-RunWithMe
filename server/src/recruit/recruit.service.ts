@@ -4,14 +4,14 @@ import { CreateRecruitRequestDto } from "./dto/request/create-recruit.request";
 import { GetRecruitsRequestDto } from "./dto/request/get-recruits.request";
 import { UserRecruitRepository } from "../common/repositories/user_recruit.repository";
 import { plainToGetRecruitDto } from "../common/utils/plainToGetRecruitDto";
-import { DataSource, getConnection } from "typeorm";
+import { DataSource } from "typeorm";
 import { plainToInstance } from "class-transformer";
 import { JoinRecruitRequestDto } from "./dto/request/join-recruit.request";
 import { Recruit } from "../common/entities/recruit.entity";
 import { DeleteRecruitRequestDto } from "./dto/request/delete-recruit.request";
-import { UserRecruit } from "src/common/entities/user_recruit.entity";
+import { UserRecruit } from "../common/entities/user_recruit.entity";
 import { UnjoinRecruitRequestDto } from "./dto/request/unjoin-recruit.request";
-import { UserRepository } from "src/common/repositories/user.repository";
+import { UserRepository } from "../common/repositories/user.repository";
 
 @Injectable()
 export class RecruitService {

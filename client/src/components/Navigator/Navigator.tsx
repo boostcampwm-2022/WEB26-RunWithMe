@@ -18,10 +18,10 @@ export const OptionsWrapper = styled.div`
     }
 `;
 
-type NavigatePath = { to: string; text: string };
+type Path = { to: string; text: string };
 
 interface NavigatorProps {
-    path: NavigatePath[];
+    path: Path[];
 }
 
 const Navigator = ({ path }: NavigatorProps) => {

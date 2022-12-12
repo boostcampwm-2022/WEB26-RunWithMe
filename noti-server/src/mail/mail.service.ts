@@ -10,10 +10,8 @@ export class MailService {
     email: string | Array<string>,
     data: any,
   ): Promise<void> {
-    console.log(type, email, data);
     try {
       const { subject, template } = this.getTemplate(type);
-
       await this.mailService.sendMail({
         from: 'admin@runwithme.co.kr',
         to: email,
@@ -22,8 +20,7 @@ export class MailService {
         context: data,
       });
     } catch (err) {
-      console.log(err);
-      throw new Error();
+      throw new Error(err);
     }
   }
 

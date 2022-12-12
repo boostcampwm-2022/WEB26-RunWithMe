@@ -1,3 +1,4 @@
+import CardLoader from "#components/Card/Card.loader";
 import CourseCard from "#components/Card/CourseCard/CourseCard";
 import useCoursesQuery from "#hooks/queries/useCoursesQuery";
 import InfiniteScroll from "react-infinite-scroller";
@@ -20,10 +21,10 @@ const CorseList = ({ distance, query, authorFilter, titleFilter }: CourseListPro
     const { data, fetchNextPage, hasNextPage } = useCoursesQuery({ distance, query, authorFilter, titleFilter });
 
     return (
-        <InfiniteScroll loadMore={() => fetchNextPage()} hasMore={hasNextPage} loader={<h4>Loading...</h4>}>
+        <InfiniteScroll loadMore={() => fetchNextPage()} hasMore={hasNextPage} loader={<CardLoader />}>
             <CardWrapper>
                 {data?.pages.map((page, pageIdx) =>
-                    page.map((card, idx) => <CourseCard data={card} key={`${pageIdx}_${idx}`} />),
+                    page?.map((card, idx) => <CourseCard data={card} key={`${pageIdx}_${idx}`} />),
                 )}
             </CardWrapper>
         </InfiniteScroll>

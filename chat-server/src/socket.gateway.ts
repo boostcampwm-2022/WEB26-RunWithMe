@@ -22,7 +22,7 @@ export class SocketGateway implements OnGatewayDisconnect {
   @WebSocketServer() public server: Server;
 
   @SubscribeMessage('join')
-  async handleLogin(
+  async handleJoin(
     @MessageBody() data: any,
     @ConnectedSocket() socket: Socket,
   ): Promise<void> {

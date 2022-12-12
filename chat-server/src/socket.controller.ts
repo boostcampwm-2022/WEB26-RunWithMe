@@ -1,10 +1,18 @@
-import { Delete, Get, Inject, Injectable, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Post } from '@nestjs/common';
 import { ManagerService } from './queue-manager/manager.service';
+import { SocketService } from './socket.service';
 
-@Injectable()
+@Controller()
 export class SocketController {
-  constructor(@Inject() private managerService: ManagerService) {}
+  constructor(
+    private managerService: ManagerService,
+    private socketService: SocketService,
+  ) {}
 
+  @Get('test')
+  async test() {
+    await this.socketService.test();
+  }
   // `1:June1010`
   @Post('queue')
   async generateQueue(bodyDto: any) {
@@ -17,10 +25,4 @@ export class SocketController {
     const { recruitId, userId } = bodyDto;
     await this.managerService.deleteQueue(`${recruitId}:${userId}`);
   }
-
-  // @Post('chat')
-  // async addChat() {}
-
-  // @Get('chat')
-  // async getChat() {}
 }

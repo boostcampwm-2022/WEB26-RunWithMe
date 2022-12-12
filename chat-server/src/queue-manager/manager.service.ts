@@ -1,12 +1,17 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-import Bull from 'bull';
+import * as Bull from 'bull';
 
 @Injectable()
 export class ManagerService {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {} // 여기에서 가져온 캐시는 레디스
+  constructor(
+    @Inject('redisCache') private redisCache: Cache,
+    @Inject('memoryCache') private memoryCache: Cache,
+  ) {} // 여기에서 가져온 캐시는 레디스
   async generateQueue(name: string) {
-    const queue: Bull.Queue = new Bull(name);
+    const queue = new Bull(name);
+    queue.pause();
+    await this.redisCache.set(name, queue);
     // 이후, 서버 메모리에 key: "7:June1010", val: Queue Instance 저장해주기
 
     // queue.process(메시지 전송하는 콜백함수) [2] : process 등록
@@ -14,7 +19,6 @@ export class ManagerService {
     // queue.resume() [3] : 온라인일경우 process 재개 socket.onconnect()
     // socket.ondisconnect() ->  pause()
     // socket에 합치는게 좋을 듯 -> 석준의 의견
-
     return queue;
   }
 
@@ -22,7 +26,11 @@ export class ManagerService {
   // registerCallback(name: string, func: Function) {queue.process(func)}
 
   async deleteQueue(name: string) {
-    return this.cacheManager.store.del(name);
+    const deleteWork = [];
+
+    deleteWork.push(this.redisCache.del(name));
+    deleteWork.push(this.memoryCache.del(name));
+    return Promise.all(deleteWork);
   }
 
   async getQueue(name: string) {

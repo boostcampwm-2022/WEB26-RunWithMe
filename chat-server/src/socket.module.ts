@@ -18,6 +18,7 @@ import { ManagerModule } from './queue-manager/manager.module';
     CacheModule.register({
       ttl: 0,
     }),
+
     ManagerModule,
     BullModule.forRoot({
       redis: {

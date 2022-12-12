@@ -27,15 +27,23 @@ export class SocketService {
     return this.cacheManager.del(`id:${socketId}`);
   }
 
-  async getRecentMessage() {
+  async getRecentMessage(recruitId: number) {
     const response = await this.chatModel
-      .find()
-      .sort({ createdAt: -1 })
-      .limit(10);
+      .find({ recruitId })
+      .sort({ createdAt: -1 });
+    // .limit(10);
     return response.reverse();
   }
 
   async saveRecentMessage(chatEntity: Chat) {
-    this.chatModel.create(chatEntity);
+    return this.chatModel.create(chatEntity);
+  }
+
+  async getLatestMessage(recruitId: number) {
+    const response = await this.chatModel
+      .find({ recruitId })
+      .sort({ createdAt: -1 })
+      .limit(1);
+    return response[0];
   }
 }

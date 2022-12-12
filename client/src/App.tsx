@@ -23,6 +23,7 @@ function App() {
                     </Route>
                     <Route path="recruit">
                         <Route path=":id" element={<P.RecruitDetail />} />
+                        <Route path=":id/chat" element={<P.ChatPage />} />
                     </Route>
                     <Route path="mock">
                         <Route path="courses" element={<P.MockCourses />} />

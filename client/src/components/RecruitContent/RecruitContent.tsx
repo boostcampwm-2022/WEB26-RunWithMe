@@ -1,9 +1,10 @@
 import Button from "#components/Button/Button";
+import ChatButton from "#components/commons/ChatButton/ChatButton";
 import { RecruitDetail } from "#types/RecruitDetail";
 import { getPaceFormat } from "#utils/paceUtils";
 import { getTimeFormat } from "#utils/stringUtils";
 import { useCallback } from "react";
-import { Content, Title } from "./RecruitContent.styles";
+import { ButtonWrapper, Content, Title } from "./RecruitContent.styles";
 
 interface RecruitContentProps {
     data: RecruitDetail;
@@ -27,7 +28,7 @@ const RecruitContent = ({ onClick, data }: RecruitContentProps) => {
                 </div>
                 <div>
                     <span>총거리</span>
-                    <p>{data.pathLength}km</p>
+                    <p>{(data.pathLength / 1000).toFixed(2)}km</p>
                 </div>
                 <div>
                     <span>페이스</span>
@@ -47,7 +48,10 @@ const RecruitContent = ({ onClick, data }: RecruitContentProps) => {
                         {data.currentPpl} / {data.maxPpl}
                     </p>
                 </div>
-                <Button onClick={onClick}>{getButtonText(data)}</Button>
+                <ButtonWrapper>
+                    <Button onClick={onClick}>{getButtonText(data)}</Button>
+                    {data.isParticipating && <ChatButton />}
+                </ButtonWrapper>
             </Content>
         </>
     );

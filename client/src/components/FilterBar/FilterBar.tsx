@@ -10,8 +10,8 @@ const FilterBarWrapper = styled.div`
     border-bottom: ${`1px solid ${COLOR.BABY_BLUE}`};
     ::-webkit-scrollbar {
         height: 0;
-        width: 0; /* Remove scrollbar space */
-        background: transparent; /* Optional: just make scrollbar invisible */
+        width: 0;
+        background: transparent;
     }
 `;
 

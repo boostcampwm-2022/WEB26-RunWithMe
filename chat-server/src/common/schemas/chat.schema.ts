@@ -14,7 +14,7 @@ export class Chat {
   @Prop()
   content: string;
 
-  @Prop({ type: Date })
+  @Prop({ default: new Date() })
   createdAt: Date;
 }
 

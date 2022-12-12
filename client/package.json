@@ -26,6 +26,7 @@
     "react-slick": "^0.29.0",
     "react-spinners": "^0.13.7",
     "recoil": "^0.7.6",
+    "socket.io-client": "^4.5.4",
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
   },

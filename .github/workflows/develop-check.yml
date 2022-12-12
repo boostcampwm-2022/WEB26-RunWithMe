@@ -94,7 +94,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
 
-            - name: Node
+            - name: Nodejs Setup
               uses: actions/setup-node@v3
 
             - name: Cache noti-server node modules
@@ -106,13 +106,12 @@ jobs:
                   restore-keys: |
                       npm-packages-noti-server-
 
-              - name: Install noti-server dependencies
-                if: ${{steps.cache-noti-server.outputs.cache-hit != 'true'}}
-                run: cd server && npm install
+            - name: Install noti-server dependencies
+              if: ${{steps.cache-noti-server.outputs.cache-hit != 'true'}}
+              run: cd server && npm install
 
+            - name: Noti server eslint check
+              run: ./noti-server/node_modules/.bin/eslint noti-server/src --ext .ts,.tsx
 
-              - name: Noti server eslint check
-                run: ./noti-server/node_modules/.bin/eslint noti-server/src --ext .ts,.tsx
-              
-              - name: Run noti server build check
-                run : cd noti-server && npm run build
+            - name: Run noti server build check
+              run: cd noti-server && npm run build

@@ -3,7 +3,7 @@ import { SOCKET_EVENT } from "#constants/socketEvents";
 import { HEADER_HEIGHT } from "#constants/styles";
 import { ChatResponse } from "#types/Chat";
 import { JUSTIFY_CONTENT } from "#types/flexOptions";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { io, Socket } from "socket.io-client";

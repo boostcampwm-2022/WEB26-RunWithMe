@@ -1,0 +1,26 @@
+{
+  "name": "runwithme",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "redis": "redis-server",
+    "dev:api": "cd server && npm run start:dev",
+    "dev:chat": "cd chat-server && npm run start:dev",
+    "dev:noti": "cd noti-server && npm run start:dev",
+    "dev:client": "cd client && npm run start",
+    "dev": "concurrently \"npm run redis\" \"npm run dev:api\" \"npm run dev:client\" \"npm run dev:noti\" \"npm run dev:chat\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boostcampwm-2022/WEB26.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/boostcampwm-2022/WEB26/issues"
+  },
+  "homepage": "https://github.com/boostcampwm-2022/WEB26#readme",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

@@ -130,7 +130,7 @@ export class AppService {
   }
 
   async addJobToImmediateQ(jobDto: any) {
-    return this.immediateQueue.add(jobDto, {
+    await this.immediateQueue.add(jobDto, {
       removeOnComplete: true,
     });
   }

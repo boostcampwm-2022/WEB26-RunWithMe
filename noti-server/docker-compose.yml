@@ -1,0 +1,25 @@
+services:
+  noti-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: noti-server
+    ports:
+      - '13000:13000'
+    command: npm run start
+    networks:
+      - webnet
+    depends_on:
+      - noti-redis
+
+  noti-redis:
+    container_name: noti-redis
+    image: redis:5
+    command: redis-server
+    ports:
+      - '6379:6379'
+    networks:
+      - webnet
+
+networks:
+  webnet:

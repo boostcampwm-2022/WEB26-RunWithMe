@@ -1,0 +1,31 @@
+services:
+  chat-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chat-server
+    ports:
+      - '8080:8080'
+    command: npm run start
+    networks:
+      - webnet
+    depends_on:
+      - mongodb_chat
+    environment:
+      - MONGO_URL=mongodb://mongodb_chat:27017/chat
+
+  mongodb_chat:
+    container_name: mongodb_chat
+    command: mongod --quiet --logpath /dev/null
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    networks:
+      - webnet
+    logging:
+      driver: 'none'
+
+networks:
+  webnet:
+volumes:
+  chat-server:

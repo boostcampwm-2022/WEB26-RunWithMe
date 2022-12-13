@@ -17,6 +17,9 @@ services:
         depends_on:
             - mysqldb
             - redis
+        environment:
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
 
     redis:
         container_name: redis

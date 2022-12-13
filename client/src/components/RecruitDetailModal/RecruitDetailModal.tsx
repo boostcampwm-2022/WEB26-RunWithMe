@@ -1,4 +1,5 @@
 import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
+import useAuth from "#hooks/useAuth";
 import { RecruitDetail } from "#types/RecruitDetail";
 import { Dispatch, SetStateAction, useCallback } from "react";
 import useDeleteJoinMutation from "../../hooks/queries/useDeleteJoinMutation";
@@ -16,6 +17,7 @@ interface RecruitConfirmModalProps {
 }
 
 const RecruitConfirmModal = ({ id, toggleModal, data }: RecruitConfirmModalProps) => {
+    useAuth();
     const { mutate: deleteJoin } = useDeleteJoinMutation(Number(id));
     const { mutate: deleteRecruit } = useDeleteRecruitMutation(Number(id));
     const { mutate: join } = useJoinMutation(Number(id));

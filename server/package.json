@@ -6,6 +6,8 @@
     "private": true,
     "license": "UNLICENSED",
     "scripts": {
+        "pretest:e2e": "docker-compose -f docker-compose.test.yml up -d --build --wait && sleep 5",
+        "posttest:e2e": "docker-compose down && sleep 5",
         "prebuild": "rimraf dist",
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

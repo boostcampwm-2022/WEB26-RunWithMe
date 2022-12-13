@@ -253,7 +253,7 @@ describe("AppController (e2e)", () => {
                     .send({ recruitId: 2 })
                     .expect(201);
 
-                response = await request(app.getHttpServer()).post("/recruit/join").send({ recruitId: 2 }).expect(201);
+                response = await request(app.getHttpServer()).post("/recruit/join").send({ recruitId: 2 });
 
                 expect(response.body.statusCode).toEqual(423);
                 expect(response.body.message).toEqual("이미 참여중인 게시글입니다");

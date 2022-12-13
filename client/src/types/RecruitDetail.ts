@@ -13,4 +13,5 @@ export interface RecruitDetail {
     userId: string;
     isParticipating: boolean;
     isAuthor: boolean;
+    waiting?: number;
 }

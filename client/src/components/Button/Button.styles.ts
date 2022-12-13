@@ -15,4 +15,5 @@ export const Button = styled.button<ButtonProps>`
     width: ${({ width }) => width};
     ${({ color }) => fontLarge(color, 500)}
     background-color: ${({ backgroundColor }) => backgroundColor};
+    position: relative;
 `;

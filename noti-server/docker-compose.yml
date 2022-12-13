@@ -11,13 +11,16 @@ services:
       - webnet
     depends_on:
       - noti-redis
+    environment:
+      - REDIS_HOST=noti-redis
+      - REDIS=6000
 
   noti-redis:
     container_name: noti-redis
     image: redis:5
     command: redis-server
     ports:
-      - '6379:6379'
+      - '6000:6000'
     networks:
       - webnet
 

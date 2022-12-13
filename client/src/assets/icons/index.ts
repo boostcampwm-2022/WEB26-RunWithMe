@@ -18,6 +18,8 @@ import CLOCK_ICON from "./clock_icon.svg";
 import START_ICON from "./start_icon.svg";
 import ARRIVE_ICON from "./arrive_icon.svg";
 import MY_POSITION_ICON from "./my_position_icon.svg";
+import SEND_ICON from "./send_icon.svg";
+
 export {
     USER_CIRCLE_ICON,
     ARROW_LEFT_ICON,
@@ -39,4 +41,5 @@ export {
     START_ICON,
     ARRIVE_ICON,
     MY_POSITION_ICON,
+    SEND_ICON,
 };

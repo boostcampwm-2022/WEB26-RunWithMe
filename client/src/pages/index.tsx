@@ -1,5 +1,6 @@
 import { lazy } from "react";
 
+export const ChatPage = lazy(() => import("#pages/Chat/ChatPage"));
 export const MainPage = lazy(() => import("#pages/Main/MainPage"));
 export const MyPage = lazy(() => import("#pages/MyPage/MyPage"));
 export const SignUp = lazy(() => import("#pages/SignUp/SignUp"));

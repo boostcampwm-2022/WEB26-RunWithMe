@@ -1,16 +1,16 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import * as Bull from 'bull';
 
-@Injectable()
 export class ManagerService {
-  constructor(@Inject(CACHE_MANAGER) private redisCache: Cache) {} // 여기에서 가져온 캐시는 레디스
+  constructor(
+    @Inject(CACHE_MANAGER) private redisCache: Cache,
+    @Inject(Map) private map: Map<string, Bull.Queue>,
+  ) {}
   async generateQueue(name: string) {
     const queue = new Bull(name);
     queue.pause();
-    await this.redisCache.set(name, queue);
-    // 이후, 서버 메모리에 key: "7:June1010", val: Queue Instance 저장해주기
-
+    this.map.set(name, queue); // 서버 메모리에 key: "7:June1010", val: Queue Instance 저장해주기
     // queue.process(메시지 전송하는 콜백함수) [2] : process 등록
     // queue.pause() [1] :  모집신청/참가신청
     // queue.resume() [3] : 온라인일경우 process 재개 socket.onconnect()
@@ -22,23 +22,38 @@ export class ManagerService {
   // 특정 큐에 소켓 전송 이벤트 emit/broadcast하는 걸 여기에 등록해주는 메서드.
   // registerCallback(name: string, func: Function) {queue.process(func)}
 
-  async deleteQueue(name: string) {
+  async deleteOneQueue(name: string) {
     const deleteWork = [];
     const keyArr = await this.redisCache.store.keys(`bull:${name}:*`);
     keyArr.map((key: string) => {
       deleteWork.push(this.redisCache.del(key));
     }); // bull.js Queue 지우는용
-    deleteWork.push(this.redisCache.del(name)); // 매핑된 인스턴스 지우는용
+    this.map.delete(name); // 매핑된 인스턴스 지우는용
     return Promise.all(deleteWork);
   }
 
-  async getQueue(name: string): Promise<Bull.Queue> {
-    return this.redisCache.get(name);
-    // 서버 메모리에서, name(key) 값으로 Queue Instance 가져와서 반환해주기
+  async deleteManyQueue(recruitId: string) {
+    const deleteWork = [];
+    const keyArr = await this.redisCache.store.keys(`bull:${recruitId}:*`);
+    keyArr.map((key: string) => {
+      deleteWork.push(this.redisCache.del(key));
+    }); // bull.js Queue 지우는용
+    const keys = Array.from(this.map.keys()).filter(
+      (key) => key.split(':')[0] === recruitId,
+    );
+    keys.map((key: string) => this.map.delete(key)); // 매핑된 모든 인스턴스 지우는용
   }
 
-  async getQueueList(recruitId: string) {
-    return this.redisCache.store.keys(`${recruitId}:*`);
+  // 서버 메모리에서, name(key) 값으로 Queue Instance 가져와서 반환해주기
+  getQueue(name: string): Bull.Queue {
+    return this.map.get(name);
+  }
+
+  getQueueList(recruitId: string) {
+    const keys = Array.from(this.map.keys()).filter(
+      (key) => key.split(':')[0] === recruitId,
+    );
+    return keys.map((key) => this.map.get(key));
   }
 }
 

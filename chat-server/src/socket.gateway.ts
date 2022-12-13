@@ -10,13 +10,13 @@ import { Server, Socket } from 'socket.io';
 import { Chat } from './common/schemas/chat.schema';
 import { ManagerService } from './queue-manager/manager.service';
 import { SocketService } from './socket.service';
-import Bull, { Job } from 'bull';
-import { queue } from 'rxjs';
+import * as Bull from 'bull';
 
 @WebSocketGateway({
   namespace: 'chat',
   cors: {
-    origin: ['http://localhost:3000'],
+    origin: '*',
+    credential: true,
   },
 })
 export class SocketGateway implements OnGatewayDisconnect {
@@ -33,16 +33,17 @@ export class SocketGateway implements OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
   ): Promise<void> {
     const { recruitId, userId } = data;
-    socket.join(recruitId); // room에 입장
+    console.log(recruitId, userId);
     await this.socketService.setCacheData(socket.id, data);
-    const queue = await this.queueService.getQueue(`${recruitId}:${userId}`);
-    console.log(queue);
-
-    // 안읽은 메시지들 전송
-    queue.process((message: any) => {
-      socket.emit('server_sent_unread', message);
-    });
-
+    const queue = this.queueService.getQueue(`${recruitId}:${userId}`);
+    if (!queue) return;
+    try {
+      await queue.process((job, done) => {
+        socket.emit('server_sent_unread', job.data);
+        done();
+      });
+    } catch (err) {}
+    await queue.resume();
     // + 이전 메시지를 리버스 인피니트 스크롤로 보내주기
   }
 
@@ -56,13 +57,12 @@ export class SocketGateway implements OnGatewayDisconnect {
     const { userId, recruitId } = await this.socketService.getCacheData(
       socket.id,
     );
-    const queueList = await this.queueService.getQueueList(
-      recruitId.toString(),
-    );
+    const queueList = this.queueService.getQueueList(recruitId.toString());
     const chat = new Chat();
     chat.sender = userId;
     chat.recruitId = recruitId;
     chat.content = content;
+    chat.createdAt = new Date();
     const addWork = [];
     queueList.map((queue: Bull.Queue) => {
       addWork.push(queue.add(chat));
@@ -72,11 +72,10 @@ export class SocketGateway implements OnGatewayDisconnect {
   }
 
   async handleDisconnect(@ConnectedSocket() socket: Socket): Promise<void> {
-    // 클라이언트 측에서 아래 두 정보를 보내주어야 함.
     const { recruitId, userId } = await this.socketService.getCacheData(
       socket.id,
     );
-    const queue = await this.queueService.getQueue(`${recruitId}:${userId}`);
+    const queue = this.queueService.getQueue(`${recruitId}:${userId}`);
     queue.pause();
     await this.socketService.delCacheData(socket.id);
   }

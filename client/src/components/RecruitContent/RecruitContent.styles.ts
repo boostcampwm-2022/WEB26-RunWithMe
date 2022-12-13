@@ -4,6 +4,7 @@ import { COLOR } from "styles/color";
 import { flexColumn, flexRow } from "styles/flex";
 
 export const Title = styled.div`
+    ${flexRow({ alignItems: ALIGN_ITEMS.CENTER, justifyContent: JUSTIFY_CONTENT.SPACE_BETWEEN })}
     box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.25);
     font-size: 2rem;
     font-weight: bold;
@@ -28,4 +29,9 @@ export const Content = styled.div`
             color: ${COLOR.BLACK};
         }
     }
+`;
+
+export const ButtonWrapper = styled.div`
+    justify-content: center !important;
+    gap: 8px;
 `;

@@ -16,14 +16,7 @@ export class SocketService {
     @InjectModel(Chat.name) private chatModel: Model<ChatDocument>,
     private managerService: ManagerService,
   ) {}
-  async test() {
-    await this.managerService.generateQueue('저장되는지test');
-    setTimeout(
-      async () => await this.managerService.deleteQueue('저장되는지test'),
-      5000,
-    );
-    // await this.managerService.deleteQueue('저장되는지test');
-  }
+
   async getCacheData(socketId: string): Promise<CacheValue> {
     return this.cacheManager.get(`id:${socketId}`);
   }

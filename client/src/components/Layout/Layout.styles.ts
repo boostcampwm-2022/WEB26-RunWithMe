@@ -5,7 +5,7 @@ import { flexColumn, flexRowCenter } from "styles/flex";
 export const Container = styled.div`
     background-image: linear-gradient(90deg, #a1c4fd 10%, #c2e9fb 90%);
     > div:first-child {
-        ${flexColumn}
+        ${flexColumn};
         justify-content: center;
         height: 100%;
         margin-right: 10rem;
@@ -18,6 +18,8 @@ export const Container = styled.div`
             margin-bottom: 1rem;
         }
         @media screen and (min-width: 960px) {
+            width: 500px;
+            min-width: 500px;
             display: flex;
         }
         @media screen and (max-width: 960px) {

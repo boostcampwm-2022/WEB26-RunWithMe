@@ -17,6 +17,7 @@ import { FC, useState } from "react";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { flexRow } from "styles/flex";
+import useAuth from "#hooks/useAuth";
 
 const Buttons = styled.div`
     ${flexRow({ justifyContent: JUSTIFY_CONTENT.SPACE_AROUND })}
@@ -30,6 +31,7 @@ interface CreateRecruitModalProps {
 }
 
 const CreateRecruitModal = ({ courseId, toggleVisible, children }: CreateRecruitModalProps) => {
+    useAuth();
     const [title, onChangeTitle, titleError] = useInput(recruitTitleValidator);
     const { pace, onChangeMinute, onChangeSecond } = usePaceInput();
     const { startTime, onChangeStartTime } = useStartTimeInput();

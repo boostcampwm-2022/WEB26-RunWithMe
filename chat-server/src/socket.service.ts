@@ -30,8 +30,8 @@ export class SocketService {
   async getRecentMessage(recruitId: number) {
     const response = await this.chatModel
       .find({ recruitId })
-      .sort({ createdAt: -1 });
-    // .limit(10);
+      .sort({ createdAt: -1 })
+      .limit(10);
     return response.reverse();
   }
 

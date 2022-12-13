@@ -24,7 +24,7 @@ const LoginForm = () => {
         try {
             const response: any = await post("/auth/login", { userId, password });
             login(response.data);
-            navigate("/");
+            navigate(-1);
         } catch (error: any) {
             alert(error.message);
         }

@@ -6,7 +6,7 @@ const ChatButton = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     return (
-        <Button backgroundColor={COLOR.ORANGE} onClick={() => navigate(`/recruit/${id}/chat`)}>
+        <Button backgroundColor={COLOR.CHAT_BUTTON} onClick={() => navigate(`/recruit/${id}/chat`)}>
             채팅
         </Button>
     );

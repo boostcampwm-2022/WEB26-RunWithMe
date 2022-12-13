@@ -1,6 +1,5 @@
 import { CacheModule, Module } from '@nestjs/common';
 import * as redisStore from 'cache-manager-ioredis';
-// import type { ClientOpts } from 'redis';
 import { ManagerService } from './manager.service';
 import { BullModule } from '@nestjs/bull';
 

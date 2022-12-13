@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import { throwIfEmpty } from 'rxjs';
 import { ManagerService } from './queue-manager/manager.service';
 import { SocketService } from './socket.service';
 
@@ -43,5 +44,25 @@ export class SocketController {
     const { recruitId } = bodyDto;
     await this.managerService.deleteManyQueue(recruitId);
     return { statusCode: 201 };
+  }
+
+  // GET localhost:8080/chat?userId=pushedrumex&page=2&recruidId=1
+  @Get('chat')
+  async getChat(
+    @Query() query: { userId: string; page: number; recruitId: number },
+  ) {
+    const { recruitId, userId, page } = query;
+    const unReadCount = await this.managerService.getQueueSize(
+      `${recruitId}:${userId}`,
+    );
+    const data = await this.socketService.getRecentMessage(
+      recruitId,
+      page,
+      unReadCount,
+    );
+    return {
+      statusCode: 200,
+      data,
+    };
   }
 }

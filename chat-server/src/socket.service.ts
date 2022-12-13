@@ -29,16 +29,16 @@ export class SocketService {
     return this.cacheManager.del(`id:${socketId}`);
   }
 
-  async getRecentMessage(recruitId: number) {
+  async getRecentMessage(recruitId: number, page = 1, unReadCount = 0) {
     const response = await this.chatModel
       .find({ recruitId })
       .sort({ createdAt: -1 })
-      .limit(10);
+      .skip((page - 1) * 20 + unReadCount)
+      .limit(20);
     return response.reverse();
   }
 
   async saveRecentMessage(chatEntity: Chat) {
-    console.log('saveRecentMessage', chatEntity);
     return this.chatModel.create(chatEntity);
   }
 }

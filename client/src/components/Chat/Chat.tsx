@@ -33,7 +33,7 @@ const Chat = () => {
         // socket.on(SOCKET_EVENT.SERVER_SENT, (data) => setChatList((prev) => [...prev, data]));
         socket.on(SOCKET_EVENT.SERVER_SENT_UNREAD, (data) => setChatList((prev) => [...prev, data]));
         socketRef.current = socket;
-        () => {
+        return () => {
             socket.disconnect();
         };
     }, [userId]);
@@ -49,7 +49,7 @@ const Chat = () => {
     return (
         <ChatContainer>
             <ChatRoomSummary id={Number(id)} />
-            <ChatList data={chatList} />
+            <ChatList data={chatList} setChatList={setChatList} />
             <ChatInput sendMessage={sendMessage} />
         </ChatContainer>
     );

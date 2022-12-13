@@ -16,5 +16,5 @@ export const MILLISECONDS_TO_HOURS = (time: number) => {
 };
 
 export const MILLISECONDS_TO_MINUTES = (time: number) => {
-    return Math.floor(time / TIME.HOUR_IN_MILLISECONDS);
+    return Math.floor(time / TIME.MINUTE_IN_MILLISECONDS);
 };

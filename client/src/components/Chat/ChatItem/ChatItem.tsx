@@ -54,11 +54,7 @@ const ChatItem = ({ data }: ChatItemProps) => {
                 {userId !== data.sender && <span>{data.sender}</span>}
                 <span>{data.content}</span>
             </ContentWrapper>
-            <span>
-                {timeDifference(
-                    new Date(new Date(data.createdAt).getTime() + new Date().getTimezoneOffset() * 60000).toISOString(),
-                )}
-            </span>
+            <span>{timeDifference(new Date(new Date(data.createdAt).getTime()).toString())}</span>
         </ChatItemContainer>
     );
 };

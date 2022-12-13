@@ -33,6 +33,9 @@ const Chat = () => {
         // socket.on(SOCKET_EVENT.SERVER_SENT, (data) => setChatList((prev) => [...prev, data]));
         socket.on(SOCKET_EVENT.SERVER_SENT_UNREAD, (data) => setChatList((prev) => [...prev, data]));
         socketRef.current = socket;
+        () => {
+            socket.disconnect();
+        };
     }, [userId]);
 
     const sendMessage = useCallback(

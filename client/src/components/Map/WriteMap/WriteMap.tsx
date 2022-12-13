@@ -1,4 +1,4 @@
-import LockButton from "#components/MapControl/LockButton/LockButton";
+import DrawButton from "#components/MapControl/DrawButton/DrawButton";
 import MapTypeControl from "#components/MapControl/MapTypeControl/MapTypeControl";
 import MyPositionButton from "#components/MapControl/MyPositionButton/MyPositionButton";
 import PlaceSearch from "#components/MapControl/PlaceSearch/PlaceSearch";
@@ -105,7 +105,7 @@ const WriteMap = ({ path, setPath, setPathLength }: WriteMapProps) => {
             <div ref={container} style={{ width: "100%", height: "100%" }} />
             <ZoomControl onClickZoomIn={zoomIn} onClickZoomOut={zoomOut} />
             <UndoButton onClick={onClickUndo} />
-            <LockButton isLocked={!isMapDraggable} onClick={onClickLock} />
+            <DrawButton isLocked={!isMapDraggable} onClick={onClickLock} />
             <PlaceSearch setCenter={setCenter} getCenter={getCenter} />
             <MapTypeControl onClickRoadMap={onClickRoadMap} onClickSkyView={onClickSkyView} mapType={mapType} />
             <MyPositionButton onClick={onClickMyPositionButton} />

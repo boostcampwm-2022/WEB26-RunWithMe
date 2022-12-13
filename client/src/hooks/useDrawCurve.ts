@@ -8,10 +8,10 @@ interface UseDrawCruveProps {
 const useDrawCurve = ({ container, map, setPath }: UseDrawCruveProps) => {
     const coordsFromContainerPoint = useCallback(
         ({ map, x, y }: { map: kakao.maps.Map; x: number; y: number }) => {
-            const point = new kakao.maps.Point(x, y - 57);
+            const point = new kakao.maps.Point(x - (container.current?.getBoundingClientRect().x || 0), y - 57);
             return map.getProjection().coordsFromContainerPoint(point);
         },
-        [map],
+        [map, container.current],
     );
 
     const touchMoveEventHandler = useCallback(() => {

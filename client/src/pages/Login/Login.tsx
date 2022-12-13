@@ -1,10 +1,11 @@
-import React from "react";
 import Header from "#components/Header/Header";
 import { LogoWrapper } from "./Login.styles";
 import Navigator from "#components/Navigator/Navigator";
 import LoginForm from "#components/LoginForm/LoginForm";
+import useAuth from "#hooks/useAuth";
 
 const Login = () => {
+    useAuth(false);
     return (
         <>
             <Header text="로그인" />

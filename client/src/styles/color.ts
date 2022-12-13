@@ -7,4 +7,5 @@ export enum COLOR {
     BABY_BLUE = "#ACB7C7",
     ORANGE = "#FFB800",
     F1F4F7 = "#F1F4F7",
+    CHAT_BUTTON = "#4A668B",
 }

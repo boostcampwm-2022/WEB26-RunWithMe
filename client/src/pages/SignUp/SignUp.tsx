@@ -3,8 +3,10 @@ import { Logo } from "./SignUp.styles";
 
 import SignUpForm from "#components/SignUpForm/SignUpForm";
 import Navigator from "#components/Navigator/Navigator";
+import useAuth from "#hooks/useAuth";
 
 const SignUp = () => {
+    useAuth(false);
     return (
         <>
             <Header text="회원가입"></Header>

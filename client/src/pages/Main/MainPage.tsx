@@ -24,13 +24,13 @@ const MainPage = () => {
         <MainPageContainer>
             <Header isMain={true} text="RunWithMe" />
             <div>
-                <MoreTitle text="모집 목록" to="/recruits" />
+                <MoreTitle text="코스 목록" to="/recruits" />
                 <Suspense fallback={<CourseCarouselLoader />}>
                     <CourseCarousel />
                 </Suspense>
             </div>
             <div>
-                <MoreTitle text="코스 목록" to="/courses" />
+                <MoreTitle text="모집 목록" to="/courses" />
                 <Suspense fallback={<RecruitCarouselLoader />}>
                     <RecruitCarousel />
                 </Suspense>

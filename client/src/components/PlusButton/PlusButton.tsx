@@ -8,9 +8,12 @@ const Button = styled.img`
     width: 56px;
     height: 56px;
     position: fixed;
-    right: 12px;
+    right: calc((100vw - 390px) / 2 + 12px);
     bottom: 12px;
     z-index: 2;
+    @media screen and (min-width: 960px) {
+        right: calc((100vw - 990px) / 2 + 12px);
+    }
 `;
 
 interface PlusButtonProps {

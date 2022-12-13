@@ -38,6 +38,7 @@ export class SocketService {
   }
 
   async saveRecentMessage(chatEntity: Chat) {
+    console.log('saveRecentMessage', chatEntity);
     return this.chatModel.create(chatEntity);
   }
 }

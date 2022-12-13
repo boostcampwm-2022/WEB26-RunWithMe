@@ -1,7 +1,8 @@
-import { CACHE_MANAGER, Inject } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable, Scope } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import * as Bull from 'bull';
 
+@Injectable({ scope: Scope.DEFAULT })
 export class ManagerService {
   constructor(
     @Inject(CACHE_MANAGER) private redisCache: Cache,
@@ -11,6 +12,7 @@ export class ManagerService {
     const queue = new Bull(name);
     queue.pause();
     this.map.set(name, queue); // 서버 메모리에 key: "7:June1010", val: Queue Instance 저장해주기
+    console.log('generateQueue: ', this.map);
     // queue.process(메시지 전송하는 콜백함수) [2] : process 등록
     // queue.pause() [1] :  모집신청/참가신청
     // queue.resume() [3] : 온라인일경우 process 재개 socket.onconnect()
@@ -46,10 +48,12 @@ export class ManagerService {
 
   // 서버 메모리에서, name(key) 값으로 Queue Instance 가져와서 반환해주기
   getQueue(name: string): Bull.Queue {
+    console.log('getQueue: ', this.map);
     return this.map.get(name);
   }
 
   getQueueList(recruitId: string) {
+    console.log('getQueueList: ', this.map);
     const keys = Array.from(this.map.keys()).filter(
       (key) => key.split(':')[0] === recruitId,
     );

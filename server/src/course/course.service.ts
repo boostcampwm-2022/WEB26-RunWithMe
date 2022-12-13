@@ -1,19 +1,19 @@
 import { Injectable } from "@nestjs/common";
 import { Course } from "../common/entities/course.entity";
 import { CourseRepository } from "../common/repositories/course.repository";
-import { CreateCourseDto } from "./dto/request/create-course.dto";
-import { GetCourseDto } from "./dto/request/get-course.dto";
+import { CreateCourseRequestDto } from "./dto/request/create-course.request";
+import { GetCoursesRequestDto } from "./dto/request/get-courses.request";
 
 @Injectable()
 export class CourseService {
     constructor(private courseRepository: CourseRepository) {}
 
-    async create(createRecruitDto: CreateCourseDto): Promise<Course> {
-        const courseEntity = createRecruitDto.toEntity();
+    async create(createCourseRequestDto: CreateCourseRequestDto): Promise<Course> {
+        const courseEntity = createCourseRequestDto.toEntity();
         return this.courseRepository.createOne(courseEntity);
     }
 
-    async getMany(queryParams: GetCourseDto) {
+    async getMany(queryParams: GetCoursesRequestDto) {
         if (queryParams.getQuery() === "") {
             return [];
         }
@@ -31,7 +31,6 @@ export class CourseService {
             queryParams.getMinLength(),
             queryParams.getMaxLength(),
         );
-
         return courseList.map(({ id, title, path, pathLength, createdAt, user, hCode }) => {
             return {
                 id,
@@ -40,15 +39,15 @@ export class CourseService {
                 pathLength,
                 hDong: hCode,
                 createdAt,
-                user,
+                userId: user.userId,
             };
         });
     }
 
     async getOne(recruitId: number) {
         const data = await this.courseRepository.findCourseDetail(recruitId);
-        const { title, path, pathLength } = data;
-        return { title, path: JSON.parse(path), pathLength, hDong: data.hCode, userId: data.user.userId };
+        const { id, title, path, pathLength } = data;
+        return { id, title, path: JSON.parse(path), pathLength, hDong: data.hCode, userId: data.user.userId };
     }
 
     async isExistingCourse(recruitId: number): Promise<boolean> {

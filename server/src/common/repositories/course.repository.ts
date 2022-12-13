@@ -13,7 +13,7 @@ export class CourseRepository extends Repository<Course> {
         return this.createQueryBuilder("course")
             .innerJoinAndSelect("course.hCode", "h_dong")
             .innerJoinAndSelect("course.user", "user")
-            .select(["course.title", "course.path", "course.pathLength", "user.userId", "h_dong.name"])
+            .select(["course.id", "course.title", "course.path", "course.pathLength", "user.userId", "h_dong.name"])
             .where("course.id = :courseId", { courseId })
             .getOne();
     }
@@ -67,5 +67,19 @@ export class CourseRepository extends Repository<Course> {
     }
     async countAll() {
         return await this.count();
+    }
+
+    async findManyByUser(userId: number): Promise<Course[]> {
+        return await this.find({
+            relations: {
+                user: true,
+                hCode: true,
+            },
+            where: {
+                user: {
+                    id: userId,
+                },
+            },
+        });
     }
 }

@@ -1,3 +1,4 @@
+import { ALIGN_ITEMS } from "#types/flexOptions";
 import { MapControlPosition } from "#types/MapControlProps";
 import styled, { css } from "styled-components";
 import { COLOR } from "styles/color";
@@ -13,8 +14,7 @@ const SearchBarItemStyle = css`
 `;
 
 export const SearchContainer = styled.div<{ position: MapControlPosition }>`
-    ${flexColumn}
-    align-items: center;
+    ${flexColumn({ alignItems: ALIGN_ITEMS.CENTER })}
     position: absolute;
     width: 100%;
     z-index: 1;

@@ -8,7 +8,7 @@ export function hasNumber(myString: string) {
 export const getTimeFormat = (timeZone: string): string => {
     const date = timeZone.split("T")[0].split("-");
     const time = timeZone.split("T")[1].split(":");
-    return `${date[0]}년 ${date[1]}월 ${date[2]}일 ${Number(time[0]) >= 12 ? "오후" : "오전"} ${time[0]}시 ${
-        time[1]
-    }분`;
+    return `${date[0]}년 ${date[1]}월 ${date[2]}일 ${Number(time[0]) >= 12 ? "오후" : "오전"} ${
+        Number(time[0]) % 12
+    }시 ${time[1]}분`;
 };

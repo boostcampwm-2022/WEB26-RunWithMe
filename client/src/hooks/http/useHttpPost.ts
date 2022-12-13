@@ -1,9 +1,8 @@
-import { AxiosResponse } from "axios";
 import useAxios from "./useAxios";
 const useHttpPost = <Res = any, Req = any>() => {
     const { axios } = useAxios();
 
-    const post = async (url: string, data: Req): Promise<AxiosResponse<Res>> => {
+    const post = async (url: string, data: Req): Promise<Res> => {
         return await axios
             .post(url, data)
             .then((res) => {

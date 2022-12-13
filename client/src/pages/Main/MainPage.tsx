@@ -1,60 +1,41 @@
+import MoreTitle from "#components/commons/MoreTitle/MoreTitle";
 import Header from "#components/Header/Header";
-import MoreButton from "#components/MoreButton/MoreButton";
-import Slider, { Settings } from "react-slick";
-import CourseCard from "#components/Card/CourseCard/CourseCard";
-import { CarouselWrapper, ListTitle, MainPageContainer, TitleWrapper } from "./MainPage.styles";
-import RecruitTextCard from "#components/Card/RecruitTextCard/RecruitTextCard";
-import useCoursesQuery from "#hooks/queries/useCoursesQuery";
-import useRecruitsQuery from "#hooks/queries/useRecruitsQuery";
-import { Course } from "#types/Course";
-import { Recruit } from "#types/Recruit";
+import CourseCarousel from "#components/RecommendCourses/CourseCarousel";
+import CourseCarouselLoader from "#components/RecommendCourses/CourseCarousel.loader";
+import RecruitCarousel from "#components/RecruitCarousel/RecruitCarousel";
+import RecruitCarouselLoader from "#components/RecruitCarousel/RecruitCarousel.loader";
+import { Suspense } from "react";
+import styled from "styled-components";
 
-const settings: Settings = {
-    centerMode: true,
-    infinite: true,
-    slidesToShow: 1,
-    dots: true,
-    slidesToScroll: 1,
-};
+const MainPageContainer = styled.div`
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: 100vh;
+    > div:first-child {
+        margin-bottom: 16px;
+    }
+    > div:last-child {
+        margin-top: 48px;
+    }
+`;
 
 const MainPage = () => {
-    const { data: course, isLoading: coursesLoading } = useCoursesQuery();
-    const { data: recruit, isLoading: recruitsLoading } = useRecruitsQuery();
-    if (coursesLoading || recruitsLoading) return <div>Loading...</div>;
-    if (!course || !recruit) return <div>404</div>;
-
     return (
-        <>
+        <MainPageContainer>
             <Header isMain={true} text="RunWithMe" />
-            <MainPageContainer>
-                <div>
-                    <TitleWrapper>
-                        <ListTitle>코스 목록</ListTitle>
-                        <MoreButton to="/courses" />
-                    </TitleWrapper>
-                    <CarouselWrapper>
-                        <Slider {...settings}>
-                            {course.data.map((c: Course, idx: number) => (
-                                <CourseCard data={c} key={idx} />
-                            ))}
-                        </Slider>
-                    </CarouselWrapper>
-                </div>
-                <div>
-                    <TitleWrapper>
-                        <ListTitle>모집 목록</ListTitle>
-                        <MoreButton to="recruits" />
-                    </TitleWrapper>
-                    <CarouselWrapper>
-                        <Slider {...settings}>
-                            {recruit.data.map((r: Recruit, idx: number) => (
-                                <RecruitTextCard data={r} key={idx} />
-                            ))}
-                        </Slider>
-                    </CarouselWrapper>
-                </div>
-            </MainPageContainer>
-        </>
+            <div>
+                <MoreTitle text="코스 목록" to="/courses" />
+                <Suspense fallback={<CourseCarouselLoader />}>
+                    <CourseCarousel />
+                </Suspense>
+            </div>
+            <div>
+                <MoreTitle text="모집 목록" to="/recruits" />
+                <Suspense fallback={<RecruitCarouselLoader />}>
+                    <RecruitCarousel />
+                </Suspense>
+            </div>
+        </MainPageContainer>
     );
 };
 

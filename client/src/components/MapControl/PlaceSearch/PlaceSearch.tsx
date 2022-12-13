@@ -10,7 +10,7 @@ interface PlaceSearchProps extends MapControlProps {
     getCenter: () => kakao.maps.LatLng;
 }
 
-const PlaceSearch = ({ position, setCenter, getCenter }: PlaceSearchProps) => {
+const PlaceSearch = ({ position = { top: "14px" }, setCenter, getCenter }: PlaceSearchProps) => {
     const { searchResult, search, clear } = usePlaceSearch();
     const inputRef = useRef<HTMLInputElement>(null);
     const onChangeQuery = debounce((e: ChangeEvent<HTMLInputElement>) => search(e.target.value, getCenter()), 200);
@@ -31,7 +31,7 @@ const PlaceSearch = ({ position, setCenter, getCenter }: PlaceSearchProps) => {
             <SearchWrapper>
                 <div>
                     <input ref={inputRef} onChange={onChangeQuery} placeholder="장소, 주소, 버스 검색" />
-                    <img src={SEARCH_ICON} />
+                    <img width="14" height="14" alt="SEARCH_ICON" src={SEARCH_ICON} />
                 </div>
             </SearchWrapper>
             {searchResult.length > 0 && (

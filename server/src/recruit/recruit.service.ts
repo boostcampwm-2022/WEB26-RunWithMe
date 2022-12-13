@@ -1,29 +1,35 @@
 import { Injectable } from "@nestjs/common";
 import { RecruitRepository } from "../common/repositories/recruit.repository";
-import { CreateRecruitReqDto } from "./dto/request/create.request";
-import { GetRecruitDto } from "./dto/request/get-many.request";
+import { CreateRecruitRequestDto } from "./dto/request/create-recruit.request";
+import { GetRecruitsRequestDto } from "./dto/request/get-recruits.request";
 import { UserRecruitRepository } from "../common/repositories/user_recruit.repository";
 import { plainToGetRecruitDto } from "../common/utils/plainToGetRecruitDto";
 import { DataSource } from "typeorm";
 import { plainToInstance } from "class-transformer";
-import { JoinRecruitDto } from "./dto/request/join-recruit.request";
+import { JoinRecruitRequestDto } from "./dto/request/join-recruit.request";
 import { Recruit } from "../common/entities/recruit.entity";
+import { DeleteRecruitRequestDto } from "./dto/request/delete-recruit.request";
+import { UserRecruit } from "../common/entities/user_recruit.entity";
+import { UnjoinRecruitRequestDto } from "./dto/request/unjoin-recruit.request";
+import { UserRepository } from "../common/repositories/user.repository";
+
 @Injectable()
 export class RecruitService {
     constructor(
         private recruitRepository: RecruitRepository,
         private userRecruitRepository: UserRecruitRepository,
+        private userRepository: UserRepository,
         private dataSource: DataSource,
     ) {}
 
-    async create(createRecruitDto: CreateRecruitReqDto) {
+    async create(createRecruitRequestDto: CreateRecruitRequestDto) {
         const queryRunner = this.dataSource.createQueryRunner();
         let recruitEntity: Recruit;
 
         await queryRunner.connect();
         await queryRunner.manager.transaction(async (manager) => {
-            recruitEntity = await manager.save(createRecruitDto.toEntity());
-            const userRecruitDto = plainToInstance(JoinRecruitDto, {
+            recruitEntity = await manager.save(createRecruitRequestDto.toEntity());
+            const userRecruitDto = plainToInstance(JoinRecruitRequestDto, {
                 userId: recruitEntity.userId,
                 recruitId: recruitEntity.id,
             });
@@ -32,7 +38,17 @@ export class RecruitService {
         return recruitEntity;
     }
 
-    async getMany(queryParams: GetRecruitDto) {
+    async delete(deleteRecruitRequestDto: DeleteRecruitRequestDto) {
+        const queryRunner = this.dataSource.createQueryRunner();
+
+        await queryRunner.connect();
+        await queryRunner.manager.transaction(async (manager) => {
+            const recruitEntity = await this.recruitRepository.findOneById(deleteRecruitRequestDto.getRecruitId());
+            await manager.delete(UserRecruit, { recruitId: deleteRecruitRequestDto.getRecruitId() });
+            await manager.remove(recruitEntity);
+        });
+    }
+    async getMany(queryParams: GetRecruitsRequestDto) {
         if (queryParams.getQuery() === "") {
             return [];
         }
@@ -63,6 +79,13 @@ export class RecruitService {
                 return true;
             })
             .map(plainToGetRecruitDto);
+    }
+
+    async notiGetOne(userId: number, recruitId: number) {
+        const data = await this.getOne(userId, recruitId);
+        const { title, hDong, startTime, pathLength } = data;
+        const author = await this.recruitRepository.getAuthorByRecruitId(recruitId);
+        return { author, title, hDong, startTime, pathLength };
     }
 
     async getOne(_userId: number, recruitId: number) {
@@ -114,7 +137,19 @@ export class RecruitService {
         return recruitEntity.userId === userId;
     }
 
-    join(createUserRecruitDto: JoinRecruitDto) {
-        this.userRecruitRepository.createUserRecruit(createUserRecruitDto.toEntity());
+    join(joinRecruitRequestDto: JoinRecruitRequestDto) {
+        this.userRecruitRepository.createUserRecruit(joinRecruitRequestDto.toEntity());
+    }
+
+    unjoin(unjoinRecruitRequestDto: UnjoinRecruitRequestDto) {
+        this.userRecruitRepository.deleteUserRecruit(unjoinRecruitRequestDto.toEntity());
+    }
+
+    async getUsersByRecruitId(recruitId: number) {
+        return this.userRecruitRepository.getUsersByRecruitId(recruitId);
+    }
+
+    async getUserByIdx(userId: number) {
+        return this.userRepository.findOneByUserIdx(userId);
     }
 }

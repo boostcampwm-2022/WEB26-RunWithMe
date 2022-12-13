@@ -2,7 +2,7 @@ import { Type } from "class-transformer";
 import { IsNumber, IsString } from "class-validator";
 import { Recruit } from "../../../common/entities/recruit.entity";
 
-export class CreateRecruitReqDto {
+export class CreateRecruitRequestDto {
     @IsString()
     private title: string;
 
@@ -24,6 +24,18 @@ export class CreateRecruitReqDto {
     @Type(() => Number)
     @IsNumber()
     private courseId: number;
+
+    getUserId() {
+        return this.userId;
+    }
+
+    getStartTime() {
+        return this.startTime;
+    }
+
+    getTitle() {
+        return this.title;
+    }
 
     toEntity(): Recruit {
         return Recruit.of(this.title, this.startTime, this.maxPpl, this.pace, this.userId, this.courseId);

@@ -1,0 +1,5 @@
+export enum MYPAGE {
+    PROFILE = "MYPROFILE",
+    COURSES = "MYCOURSES",
+    RECRUITS = "MYRECRUITS",
+}

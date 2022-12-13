@@ -1,11 +1,13 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsValidPassword } from "src/common/decorators";
+import { Expose, plainToInstance } from "class-transformer";
 
-export class LoginUserResDto {
-    @ApiProperty({ type: String, description: "사용자 id" })
+export class LoginUserResponseDto {
+    @Expose()
+    private accessToken: string;
+
+    @Expose()
     private userId: string;
 
-    @IsValidPassword()
-    @ApiProperty({ type: String, description: "비밀번호" })
-    private password: string;
+    static from(data: { accessToken: string; userId: string }) {
+        return plainToInstance(LoginUserResponseDto, data, { excludeExtraneousValues: true });
+    }
 }

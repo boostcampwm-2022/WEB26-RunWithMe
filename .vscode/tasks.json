@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "client build",
+            "command": "npm",
+            "args": ["start"],
+            "options": {
+                "cwd": "${workspaceFolder}/client"
+            },
+            "presentation": { "group": "runwithme" }
+        },
+        {
+            "label": "api-server build",
+            "command": "npm",
+            "args": ["run", "start:dev"],
+            "options": {
+                "cwd": "${workspaceFolder}/server"
+            },
+            "presentation": { "group": "runwithme" }
+        },
+        {
+            "label": "noti-server build",
+            "command": "npm",
+            "args": ["run", "start:dev"],
+            "options": {
+                "cwd": "${workspaceFolder}/noti-server"
+            },
+            "presentation": { "group": "runwithme" }
+        },
+        {
+            "label": "chat-server build",
+            "command": "npm",
+            "args": ["run", "start:dev"],
+            "options": {
+                "cwd": "${workspaceFolder}/chat-server"
+            },
+            "presentation": { "group": "runwithme" }
+        },
+        {
+            "label": "Total build",
+            "dependsOn": ["api-server build", "noti-server build", "chat-server build"]
+        }
+    ]
+}

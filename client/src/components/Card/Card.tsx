@@ -1,4 +1,4 @@
-import useCardMap from "#hooks/useCardMap";
+import CardMap from "#components/Map/CardMap/CardMap";
 import { LatLng } from "#types/LatLng";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,10 +12,9 @@ interface CardProps {
 
 const Card = ({ to, children, path }: CardProps) => {
     const navigate = useNavigate();
-    const { renderMap } = useCardMap({ runningPath: path });
     return (
         <CardWrapper onClick={() => navigate(to)}>
-            {renderMap()}
+            <CardMap path={path} />
             <Summary>{children}</Summary>
         </CardWrapper>
     );

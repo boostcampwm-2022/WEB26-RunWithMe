@@ -1,27 +1,14 @@
-import styled from "styled-components";
-import { COLOR } from "styles/color";
-import { flexRowSpaceBetween } from "styles/flex";
-import { fontSmall } from "styles/font";
-
-const TextWrapper = styled.div`
-    ${flexRowSpaceBetween};
-    width: 100%;
-    p:nth-child(1) {
-        ${fontSmall(COLOR.LIGHT_GRAY, 400)};
-    }
-    p:nth-child(2) {
-        ${fontSmall(COLOR.BLACK, 500)};
-    }
-`;
+import { TextWrapper } from "./DetailLabel.styles";
 
 interface DetailLabelProps {
     title: string;
     value: string;
+    fontSize?: string;
 }
 
-const DetailLabel = ({ title, value }: DetailLabelProps) => {
+const DetailLabel = ({ title, value, fontSize }: DetailLabelProps) => {
     return (
-        <TextWrapper>
+        <TextWrapper fontSize={fontSize}>
             <p>{title}</p>
             <p>{value}</p>
         </TextWrapper>

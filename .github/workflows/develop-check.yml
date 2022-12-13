@@ -12,6 +12,8 @@ jobs:
         outputs:
             client: ${{steps.filter.outputs.client}}
             server: ${{steps.filter.outputs.server}}
+            noti-server: ${{steps.filter.outputs.server}}
+
         steps:
             - uses: dorny/paths-filter@v2
               id: filter
@@ -21,6 +23,8 @@ jobs:
                         - 'client/**'
                       server:
                         - 'server/**'
+                      noti-server:
+                        - 'noti-server/**'
 
     client:
         needs: check
@@ -31,7 +35,7 @@ jobs:
               uses: actions/checkout@v3
 
             - name: Nodejs Setup
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v3
 
             - name: Cache client node modules
               id: cache-client
@@ -61,7 +65,7 @@ jobs:
               uses: actions/checkout@v3
 
             - name: Nodejs Setup
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v3
 
             - name: Cache server node modules
               id: cache-server
@@ -81,3 +85,33 @@ jobs:
 
             - name: Run server build check
               run: cd server && npm run build
+
+    noti-server:
+        needs: check
+        if: ${{needs.check.outputs.noti-server=='true'}}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Nodejs Setup
+              uses: actions/setup-node@v3
+
+            - name: Cache noti-server node modules
+              id: cache-noti-server
+              uses: actions/cache@v3
+              with:
+                  path: noti-server/node_modules
+                  key: npm-packages-noti-server-${{hashFiles('**/package-lock.json')}}
+                  restore-keys: |
+                      npm-packages-noti-server-
+
+            - name: Install noti-server dependencies
+              if: ${{steps.cache-noti-server.outputs.cache-hit != 'true'}}
+              run: cd noti-server && npm install
+
+            - name: Noti server eslint check
+              run: ./noti-server/node_modules/.bin/eslint noti-server/src --ext .ts,.tsx
+
+            - name: Run noti server build check
+              run: cd noti-server && npm run build

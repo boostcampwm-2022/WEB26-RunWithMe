@@ -3,7 +3,7 @@ import { ClassSerializerInterceptor, ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 import * as cookieParser from "cookie-parser";
-
+import * as compression from "compression";
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const options = new DocumentBuilder()
@@ -28,6 +28,8 @@ async function bootstrap() {
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
         credentials: true,
     });
+    app.setGlobalPrefix("/api");
+    app.use(compression());
     app.use(cookieParser());
     app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
     app.useGlobalPipes(

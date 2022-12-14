@@ -7,10 +7,6 @@ import { UserRecruitRepository } from "../common/repositories/user_recruit.repos
 import { RecruitRepository } from "../common/repositories/recruit.repository";
 import { CustomJwtModule } from "../common/modules/custom-jwt/custom-jwt.module";
 import { HttpModule } from "@nestjs/axios";
-<<<<<<< Updated upstream
-=======
-import { UserModule } from "../user/user.module";
->>>>>>> Stashed changes
 
 @Module({
     imports: [

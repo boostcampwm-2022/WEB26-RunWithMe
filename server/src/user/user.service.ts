@@ -63,4 +63,9 @@ export class UserService {
 
         return { userId, hDong: { name: h_dong_name }, pace };
     }
+
+    async getUserIdByUserIdx(_userIdx: number) {
+        const { userId } = await this.userRepository.findOneByUserIdx(_userIdx);
+        return userId;
+    }
 }

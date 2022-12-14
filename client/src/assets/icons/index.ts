@@ -19,6 +19,7 @@ import MY_POSITION_ICON from "./my_position_icon.svg";
 import SEND_ICON from "./send_icon.svg";
 import STRAIGHT_ICON from "./straight_icon.svg";
 import CURVE_ICON from "./curve_icon.svg";
+import HOME_ICON from "./home_icon.svg";
 
 export {
     USER_CIRCLE_ICON,
@@ -42,4 +43,5 @@ export {
     SEND_ICON,
     STRAIGHT_ICON,
     CURVE_ICON,
+    HOME_ICON,
 };

@@ -55,7 +55,9 @@ const MyPageRecruits = ({ MyPageOption }: MyPageProps) => {
         if (!pastRecruitsToggled) filteredRecruit = filterPastRecruits(filteredRecruit);
         if (myRecruitsToggled) filteredRecruit = filterMyRecruits(filteredRecruit);
 
-        return filteredRecruit.map((r: Recruit, idx: number) => <RecruitCard data={r} key={idx} />);
+        return filteredRecruit.map((r: Recruit, idx: number) => (
+            <RecruitCard data={r} key={idx} userIdVisible={false} />
+        ));
     };
 
     return (

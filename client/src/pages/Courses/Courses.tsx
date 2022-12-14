@@ -1,4 +1,4 @@
-import React, { useState, FormEventHandler, Suspense } from "react";
+import React, { useState, Suspense, ChangeEvent } from "react";
 import Header from "#components/Header/Header";
 import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
@@ -11,6 +11,7 @@ import { LOCATION_ICON } from "#assets/icons";
 import PlusButton from "#components/PlusButton/PlusButton";
 import CourseList from "#components/CardList/CourseList/CorseList";
 import CardListLoader from "#components/CardList/CardList.loader";
+import { debounce } from "#utils/timerUtils";
 
 const Courses = () => {
     const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter({ text: "3-5KM", min: 3, max: 5 });
@@ -18,9 +19,9 @@ const Courses = () => {
     const [authorFilter, toggleAuthorFilter] = useOnOffFilter(false);
     const [searchContent, setSearchContent] = useState("");
 
-    const handleSearchContentChange: FormEventHandler<HTMLInputElement> = (e) => {
-        setSearchContent(e.currentTarget.value);
-    };
+    const handleSearchContentChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
+        setSearchContent(e.target.value);
+    }, 200);
 
     return (
         <>
@@ -45,6 +46,7 @@ const Courses = () => {
                     filterIcon={LOCATION_ICON}
                     filterState={currentDistanceFilter}
                     filterOptions={[
+                        { text: "5KM 이상", min: 5, max: Number.MAX_SAFE_INTEGER },
                         { text: "3-5KM", min: 3, max: 5 },
                         { text: "1-3KM", min: 1, max: 3 },
                         { text: "1KM 이내", min: 0, max: 1 },

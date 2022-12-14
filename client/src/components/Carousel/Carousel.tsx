@@ -2,6 +2,8 @@ import { ReactNode } from "react";
 import Slider, { Settings } from "react-slick";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 interface CarouselProps {
     children: ReactNode;
@@ -16,7 +18,7 @@ export const Container = styled.div`
         .slick-active {
             button {
                 ::before {
-                    color: ${COLOR.ORANGE} !important;
+                    color: ${COLOR.DOT} !important;
                 }
             }
         }

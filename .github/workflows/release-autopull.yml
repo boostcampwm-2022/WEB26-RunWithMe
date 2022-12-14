@@ -34,9 +34,5 @@ jobs:
                   script: |
                       cd /root/runwithme
                       git pull https://github.com/boostcampwm-2022/WEB26-RunWithMe.git release
-
-            - name: clean build and restart docker container for notification server
-              run: cd /root/runwithme/noti-server && docker-compose down && docker-compose build --no-cache && docker-compose up -d
-
-            - name: clean build and restart docker container for chat server
-              run: cd /root/runwithme/chat-server && docker-compose down && docker-compose build --no-cache && docker-compose up -d
+                      cd noti-server && docker-compose down && docker-compose build --no-cache && docker-compose up -d
+                      cd ../chat-server && docker-compose down && docker-compose build --no-cache && docker-compose up -d

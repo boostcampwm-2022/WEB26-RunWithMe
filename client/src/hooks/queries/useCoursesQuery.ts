@@ -26,7 +26,11 @@ const useCoursesQuery = ({ distance, query, authorFilter, titleFilter }: CourseL
         ["courses", distance?.min, distance?.max, authorFilter, titleFilter, query],
         ({ pageParam = 1 }) => get("/course", courseQueryParams(pageParam)).then((res) => res.data),
         {
-            getNextPageParam: (lastPage, allPages) => (lastPage ? lastPage?.length > 0 && allPages.length + 1 : 1),
+            getNextPageParam: (lastPage, allPages) => {
+                if (!lastPage) return 1;
+                if (lastPage?.length > 0) return allPages.length + 1;
+                else return undefined;
+            },
             suspense: true,
         },
     );

@@ -56,6 +56,7 @@ export class CourseRepository extends Repository<Course> {
             ])
             .offset((page - 1) * pageSize)
             .limit(pageSize)
+            .orderBy("course.id", "DESC")
             .getMany();
     }
     async findOneById(id: number): Promise<Course> {

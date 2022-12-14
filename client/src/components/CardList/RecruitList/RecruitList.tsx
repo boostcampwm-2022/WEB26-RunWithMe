@@ -25,6 +25,7 @@ const RecruitList = (props: RecruitListProps) => {
                     <CardLoader />
                 </div>
             }
+            useWindow={false}
         >
             <CardWrapper>
                 {data?.pages.map((page, pageIdx) =>

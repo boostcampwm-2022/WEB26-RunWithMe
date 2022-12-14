@@ -39,6 +39,7 @@ export class RecruitRepository extends Repository<Recruit> {
                 "h_dong.name",
             ])
             .where("recruit.id = :recruitId", { recruitId })
+            .orderBy("recruit.id", "DESC")
             .getRawOne();
     }
 
@@ -94,6 +95,7 @@ export class RecruitRepository extends Repository<Recruit> {
             .groupBy("recruit.id")
             .offset((page - 1) * pageSize)
             .limit(pageSize)
+            .orderBy("recruit.id", "DESC")
             .getRawMany();
     }
 

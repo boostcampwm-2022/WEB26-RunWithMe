@@ -27,7 +27,7 @@ jobs:
             - name: git pull for chat & notification server
               uses: appleboy/ssh-action@master
               with:
-                  host: ${{secrets.REMOTE_NO_IP}}
+                  host: ${{secrets.REMOTE_NOTI_IP}}
                   username: ${{secrets.REMOTE_NOTI_SSH_ID}}
                   password: ${{secrets.REMOTE_NOTI_PASSWORD}}
                   port: ${{secrets.REMOTE_NOTI_SSH_PORT}}

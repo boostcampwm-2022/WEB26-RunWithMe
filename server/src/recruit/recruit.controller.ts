@@ -14,6 +14,10 @@ import { UnjoinRecruitRequestDto } from "./dto/request/unjoin-recruit.request";
 import { HttpService } from "@nestjs/axios";
 import { AxiosError } from "axios";
 import { catchError, firstValueFrom } from "rxjs";
+<<<<<<< Updated upstream
+=======
+import { UserService } from "../user/user.service";
+>>>>>>> Stashed changes
 
 @Controller("recruit")
 @ApiTags("모집글 관리")

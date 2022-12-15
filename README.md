@@ -9,7 +9,7 @@
   
 ## 🛠 기술 스택
 
-<img width="856" alt="스크린샷 2022-12-15 오후 5 52 29" src="https://user-images.githubusercontent.com/97938489/207815255-f0e3a4c1-b519-4e09-8ea1-6c98ae60839a.png">
+<img width="700" alt="스크린샷 2022-12-15 오후 5 59 35" src="https://user-images.githubusercontent.com/97938489/207816864-df375aba-56db-4074-9592-97e0b5ea4ea2.png">
 
 ## 🙋‍♂️행복회로 팀원들을 소개합니다
 

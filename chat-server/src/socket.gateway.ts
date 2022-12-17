@@ -33,7 +33,6 @@ export class SocketGateway implements OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
   ): Promise<void> {
     const { recruitId, userId } = data;
-    console.log(recruitId, userId);
     await this.socketService.setCacheData(socket.id, data);
 
     const unReadCount = await this.managerService.getQueueSize(
@@ -67,7 +66,6 @@ export class SocketGateway implements OnGatewayDisconnect {
   ): Promise<void> {
     // 해당 모집에 있는 모든 사용자의 큐에 넣어주기
     const { content } = data;
-    console.log('client_sent', data);
     const { userId, recruitId } = await this.socketService.getCacheData(
       socket.id,
     );
@@ -78,7 +76,6 @@ export class SocketGateway implements OnGatewayDisconnect {
     chat.recruitId = recruitId;
     chat.content = content;
     chat.createdAt = new Date();
-    console.log('client_sent:queueList', queueList);
     const addWork = [];
     queueList.map((queue: Bull.Queue) => {
       addWork.push(queue.add(chat));
@@ -109,7 +106,6 @@ export class SocketGateway implements OnGatewayDisconnect {
   }
 
   async handleDisconnect(@ConnectedSocket() socket: Socket): Promise<void> {
-    console.log('끊김');
     const { recruitId, userId } = await this.socketService.getCacheData(
       socket.id,
     );
@@ -119,6 +115,5 @@ export class SocketGateway implements OnGatewayDisconnect {
     await this.socketService.delCacheData(socket.id);
     if (!queue) return;
     queue.pause();
-    await this.socketService.delCacheData(socket.id);
   }
 }

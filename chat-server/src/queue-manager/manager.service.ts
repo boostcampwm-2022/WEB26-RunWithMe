@@ -24,9 +24,6 @@ export class ManagerService {
     return queue;
   }
 
-  // 특정 큐에 소켓 전송 이벤트 emit/broadcast하는 걸 여기에 등록해주는 메서드.
-  // registerCallback(name: string, func: Function) {queue.process(func)}
-
   async deleteOneQueue(name: string) {
     const deleteWork = [];
     const keyArr = await this.redisCache.store.keys(`bull:${name}:*`);

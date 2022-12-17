@@ -29,6 +29,8 @@ export const Container = styled.div`
     > div:last-child {
         background-color: ${COLOR.WHITE};
         position: relative;
+        height: 100vh;
+        overflow-y: scroll;
     }
     @media screen and (min-width: 480px) {
         ${flexRowCenter};
@@ -38,8 +40,6 @@ export const Container = styled.div`
             box-shadow: 2px 0 16px rgba(0, 0, 0, 0.25), -2px 0 16px rgba(0, 0, 0, 0.25);
             width: 390px;
             min-width: 390px;
-            height: 100%;
-            overflow-y: scroll;
             -ms-overflow-style: none;
             scrollbar-width: none;
             ::-webkit-scrollbar {

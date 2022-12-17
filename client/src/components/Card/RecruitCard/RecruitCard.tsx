@@ -7,9 +7,10 @@ import { timeDifference } from "#utils/cardUtils";
 
 interface RecruitCardProps {
     data: Recruit;
+    userIdVisible?: boolean;
 }
 
-const RecruitCard = ({ data }: RecruitCardProps) => {
+const RecruitCard = ({ data, userIdVisible = true }: RecruitCardProps) => {
     return (
         <Card to={`/recruit/${data.id}`} path={data.course.path}>
             <SummaryHead>
@@ -30,7 +31,7 @@ const RecruitCard = ({ data }: RecruitCardProps) => {
                     <img width="14" height="14" alt="CLOCK_ICON" src={CLOCK_ICON} />
                     <span>{timeDifference(data.startTime)}</span>
                 </div>
-                <UserIdLabel>{data.userId}</UserIdLabel>
+                <UserIdLabel>{userIdVisible && data.userId}</UserIdLabel>
             </SummaryBody>
         </Card>
     );

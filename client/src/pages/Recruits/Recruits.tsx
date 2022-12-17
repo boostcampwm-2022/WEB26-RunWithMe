@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { ChangeEvent, Suspense, useState } from "react";
 import Header from "#components/Header/Header";
 import SearchBar from "#components/SearchBar/SearchBar";
 import FilterBar from "#components/FilterBar/FilterBar";
@@ -11,6 +11,7 @@ import { LOCATION_ICON, CLOCK_ICON } from "#assets/icons";
 import PlusButton from "#components/PlusButton/PlusButton";
 import RecruitList from "#components/CardList/RecruitList/RecruitList";
 import CardListLoader from "#components/CardList/CardList.loader";
+import { debounce } from "#utils/timerUtils";
 
 const Recruits = () => {
     const [currentDistanceFilter, setCurrentDistanceFilter] = useFilter({ text: "3-5KM", min: 3, max: 5 });
@@ -20,9 +21,9 @@ const Recruits = () => {
     const [availFilter, toggleAvailFilter] = useOnOffFilter(false);
     const [searchContent, setSearchContent] = useState("");
 
-    const handleSearchContentChange = (e: React.FormEvent<HTMLInputElement>) => {
-        setSearchContent(e.currentTarget.value);
-    };
+    const handleSearchContentChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
+        setSearchContent(e.target.value);
+    }, 200);
 
     return (
         <>
@@ -52,6 +53,7 @@ const Recruits = () => {
                     filterIcon={LOCATION_ICON}
                     filterState={currentDistanceFilter}
                     filterOptions={[
+                        { text: "5KM 이상", min: 5, max: Number.MAX_SAFE_INTEGER },
                         { text: "3-5KM", min: 3, max: 5 },
                         { text: "1-3KM", min: 1, max: 3 },
                         { text: "1KM 이내", min: 0, max: 1 },
@@ -63,6 +65,7 @@ const Recruits = () => {
                     filterIcon={CLOCK_ICON}
                     filterState={currentTimeFilter}
                     filterOptions={[
+                        { text: "상관 없음", min: 0, max: 0 },
                         { text: "5시간 이내", min: 0, max: 5 },
                         { text: "3시간 이내", min: 0, max: 3 },
                         { text: "1시간 이내", min: 0, max: 1 },

@@ -27,7 +27,6 @@ export class AppService {
 
   // 30분 전 시작 알림
   createRecruitMessage(body: any) {
-    console.log(body);
     const { recruitId, author, title, hDong, startTime, pathLength } = body;
     const result = {};
 

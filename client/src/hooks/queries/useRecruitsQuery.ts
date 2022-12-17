@@ -18,18 +18,24 @@ const useRecruitsQuery = ({ distance, query, availFilter, authorFilter, titleFil
             param.maxLen = (distance.max * 1000).toString();
             param.minLen = (distance.min * 1000).toString();
         }
-        if (time) {
-            param.time = time.max.toString();
+
+        if (time?.max) {
+            param.hour = time.max.toString();
         }
+
         param.page = page;
         return param;
     };
 
     return useInfiniteQuery(
-        ["recruits", distance?.min, distance?.max, authorFilter, titleFilter, query],
+        ["recruits", distance?.min, distance?.max, authorFilter, titleFilter, query, time],
         ({ pageParam = 1 }) => get("/recruit", recruitQueryParams(pageParam)).then((res) => res.data),
         {
-            getNextPageParam: (lastPage, allPages) => (lastPage ? lastPage?.length > 0 && allPages.length + 1 : 1),
+            getNextPageParam: (lastPage, allPages) => {
+                if (!lastPage) return 1;
+                if (lastPage?.length > 0) return allPages.length + 1;
+                else return undefined;
+            },
             suspense: true,
         },
     );

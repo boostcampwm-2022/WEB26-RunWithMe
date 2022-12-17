@@ -51,6 +51,7 @@ export class SocketGateway implements OnGatewayDisconnect {
           done();
         });
       } catch (err) {}
+      console.log(queue);
       await queue.resume();
     }
     // + 이전 메시지를 리버스 인피니트 스크롤로 보내주기

@@ -66,6 +66,11 @@ export class ManagerService {
   getSocket(name: string): Socket {
     return this.socketMap.get(name);
   }
+  // 온라인인 유저 상태 관리 -> 그래야 send 이벤트를 발생을 시켜서 값을 가져오니깐
+  // 온라인이면 -> 바로 전송
+  // 오프라인이면 -> 큐에 누적
+
+  // 지금 Cache Module에서 사용하는건, 레디스인데, Cache Module 메모리와 레디스를 함께 쓸 순 없을까?
 
   setSocket(userId: string, socket: Socket): void {
     this.socketMap.set(userId, socket);

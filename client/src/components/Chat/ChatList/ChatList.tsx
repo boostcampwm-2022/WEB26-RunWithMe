@@ -9,7 +9,7 @@ import ChatItem from "../ChatItem/ChatItem";
 
 const ChatListContainer = styled.div`
     ${flexColumn({})};
-    flex-direction: column-reverse;
+    /* flex-direction: column-reverse; */
     padding: 15px;
     width: 100%;
     height: inherit;
@@ -22,24 +22,23 @@ const ChatListContainer = styled.div`
 `;
 
 interface ChatListProps {
-    data: ChatResponse[];
-    setChatList: Dispatch<SetStateAction<ChatResponse[]>>;
+    unread: ChatResponse[];
 }
 
-const ChatList = ({ data, setChatList }: ChatListProps) => {
+const ChatList = ({ unread }: ChatListProps) => {
     const { id } = useParams();
     const scrollRef = useRef<HTMLDivElement>(null);
     const { data: chatHistory, fetchNextPage, hasNextPage } = useChatHistoryQuery({ recruitId: Number(id) });
 
     useEffect(() => {
-        if (chatHistory?.pages?.at(-1)?.data === undefined) return;
-        // console.log(chatHistory?.pages?.at(-1)?.data);
-        setChatList((prev) => [...prev, ...(chatHistory?.pages?.at(-1)?.data || [])]);
-    }, [chatHistory]);
+        scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
+    }, [unread]);
 
     useEffect(() => {
-        scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
-    }, [data]);
+        setTimeout(() => {
+            scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
+        }, 100);
+    }, []);
 
     return (
         <ChatListContainer ref={scrollRef}>
@@ -47,10 +46,17 @@ const ChatList = ({ data, setChatList }: ChatListProps) => {
                 loadMore={() => fetchNextPage()}
                 hasMore={hasNextPage}
                 isReverse={true}
-                loader={<div>...loading</div>}
+                style={{ width: "100%" }}
+                threshold={250}
+                useWindow={false}
             >
-                {data.map((el, idx) => (
-                    <ChatItem data={el} key={`${el.recruitId}_${idx}`} />
+                {[
+                    ...(chatHistory?.pages.reduce<ChatResponse[]>((acc, cur) => {
+                        return [...cur.data, ...acc];
+                    }, []) || []),
+                    ...unread,
+                ].map((chat, idx) => (
+                    <ChatItem data={chat} key={`chat_${idx}`} />
                 ))}
             </InfiniteScroll>
         </ChatListContainer>

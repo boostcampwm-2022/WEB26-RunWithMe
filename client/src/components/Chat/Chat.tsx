@@ -29,11 +29,10 @@ const Chat = () => {
         if (!userId) return;
         const socket = io(import.meta.env.VITE_CHAT_URL, { autoConnect: true, reconnection: false });
         socket.emit(SOCKET_EVENT.JOIN, { userId, recruitId: Number(id) });
-        // socket.on(SOCKET_EVENT.SERVER_SENT_RECENT, setChatList);
-        // socket.on(SOCKET_EVENT.SERVER_SENT, (data) => setChatList((prev) => [...prev, data]));
-        socket.on(SOCKET_EVENT.SERVER_SENT_UNREAD, (data) => setChatList((prev) => [...prev, data]));
+        socket.on(SOCKET_EVENT.SERVER_SENT_RECENT, setChatList);
+        socket.on(SOCKET_EVENT.SERVER_SENT, (data) => setChatList((prev) => [...prev, data]));
         socketRef.current = socket;
-        return () => {
+        () => {
             socket.disconnect();
         };
     }, [userId]);
@@ -49,7 +48,7 @@ const Chat = () => {
     return (
         <ChatContainer>
             <ChatRoomSummary id={Number(id)} />
-            <ChatList data={chatList} setChatList={setChatList} />
+            <ChatList data={chatList} />
             <ChatInput sendMessage={sendMessage} />
         </ChatContainer>
     );

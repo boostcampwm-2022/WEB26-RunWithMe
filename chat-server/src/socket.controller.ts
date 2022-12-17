@@ -13,6 +13,24 @@ export class SocketController {
     private socketService: SocketService,
   ) {}
 
+  @Get('chat')
+  async getRecentMessage(@Query() bodyDto: any) {
+    const { userId, recruitId, page } = bodyDto;
+    const unReadCount = this.managerService.getUnReadCount(
+      `${recruitId}:${userId}`,
+    );
+    const data = await this.socketService.getRecentMessage(
+      recruitId,
+      page,
+      unReadCount,
+    );
+    // 스크롤 와중에 나말고 다른 사람이 채팅을 했을 경우 채팅한 개수만큼 offset필요 -> hashMap unReadCount++
+    return {
+      statusCode: 200,
+      data,
+    };
+  }
+
   @Get('unread')
   async getUnreadMessage(@Query() bodyDto: BodyDto) {
     const { recruitId, userId } = bodyDto;

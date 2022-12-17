@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+    mysqldb:
+        container_name: mysqldb
+        image: mysql:8
+        restart: always
+        environment:
+            MYSQL_DATABASE: "test"
+            MYSQL_USER: "user"
+            MYSQL_PASSWORD: "password"
+            MYSQL_ROOT_PASSWORD: "rootpassword"
+            MYSQL_TCP_PORT: 3308
+            TZ: "Asia/Seoul"
+        command:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+        networks:
+            - webnet
+        ports:
+            - "3308:3308"
+        expose:
+            - "3308"
+    redis:
+        container_name: redis
+        image: redis:5
+
+        ports:
+            - "6380:6380"
+        command: redis-server --port 6380
+        networks:
+            - webnet
+networks:
+    webnet:

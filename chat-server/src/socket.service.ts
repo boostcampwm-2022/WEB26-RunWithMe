@@ -3,7 +3,6 @@ import { Cache } from 'cache-manager';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Chat, ChatDocument } from './common/schemas/chat.schema';
-import { ManagerService } from './queue-manager/manager.service';
 
 type CacheValue = {
   userId: string;
@@ -14,7 +13,6 @@ export class SocketService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectModel(Chat.name) private chatModel: Model<ChatDocument>,
-    private managerService: ManagerService,
   ) {}
 
   async getCacheData(socketId: string): Promise<CacheValue> {
@@ -29,17 +27,23 @@ export class SocketService {
     return this.cacheManager.del(`id:${socketId}`);
   }
 
-  async getRecentMessage(recruitId: number, page = 1, unReadCount = 0) {
-    console.log('unreadCount: ', unReadCount);
+  async getRecentMessage(recruitId: number) {
     const response = await this.chatModel
       .find({ recruitId })
       .sort({ createdAt: -1 })
-      .skip((page - 1) * 10 + unReadCount)
       .limit(10);
     return response.reverse();
   }
 
   async saveRecentMessage(chatEntity: Chat) {
     return this.chatModel.create(chatEntity);
+  }
+
+  async getLatestMessage(recruitId: number) {
+    const response = await this.chatModel
+      .find({ recruitId })
+      .sort({ createdAt: -1 })
+      .limit(1);
+    return response[0];
   }
 }

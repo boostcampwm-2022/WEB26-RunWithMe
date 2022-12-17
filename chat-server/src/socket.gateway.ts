@@ -22,7 +22,7 @@ import * as Bull from 'bull';
 export class SocketGateway implements OnGatewayDisconnect {
   constructor(
     private socketService: SocketService,
-    private queueService: ManagerService,
+    private managerService: ManagerService,
   ) {}
 
   @WebSocketServer() public server: Server;
@@ -33,17 +33,25 @@ export class SocketGateway implements OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
   ): Promise<void> {
     const { recruitId, userId } = data;
+    const unReadCount = await this.managerService.getQueueSize(
+      `${recruitId}:${userId}`,
+    );
+
     await this.socketService.setCacheData(socket.id, data);
-    this.queueService.setSocket(userId, socket); // 소켓 인스턴스 저장
-    const queue = this.queueService.getQueue(`${recruitId}:${userId}`);
+
+    this.managerService.setSocket(userId, socket); // 소켓 인스턴스 저장
+    this.managerService.setUnReadCount(`${recruitId}:${userId}`, unReadCount);
+
+    const queue = this.managerService.getQueue(`${recruitId}:${userId}`);
     if (queue) {
       try {
         queue.process((job, done) => {
-          const socketInstance = this.queueService.getSocket(userId);
+          const socketInstance = this.managerService.getSocket(userId);
           socketInstance.emit('server_sent_unread', job.data);
           done();
         });
       } catch (err) {}
+      console.log(queue);
       await queue.resume();
     }
     // + 이전 메시지를 리버스 인피니트 스크롤로 보내주기
@@ -59,7 +67,8 @@ export class SocketGateway implements OnGatewayDisconnect {
     const { userId, recruitId } = await this.socketService.getCacheData(
       socket.id,
     );
-    const queueList = this.queueService.getQueueList(recruitId.toString());
+    const queueList = this.managerService.getQueueList(recruitId.toString());
+    console.log('queueList: ', queueList);
     const chat = new Chat();
     chat.sender = userId;
     chat.recruitId = recruitId;
@@ -69,16 +78,38 @@ export class SocketGateway implements OnGatewayDisconnect {
     queueList.map((queue: Bull.Queue) => {
       addWork.push(queue.add(chat));
     });
+    this.managerService.addUnReadCount(recruitId.toString());
     Promise.all(addWork);
     await this.socketService.saveRecentMessage(chat);
+  }
+
+  @SubscribeMessage('client_sent_history')
+  async handleHistory(
+    @MessageBody() body: { userId: string; page: number; recruitId: number },
+  ) {
+    const { recruitId, userId, page } = body;
+    const unReadCount = this.managerService.getUnReadCount(
+      `${recruitId}:${userId}`,
+    );
+    const data = await this.socketService.getRecentMessage(
+      recruitId,
+      page,
+      unReadCount,
+    );
+    // 스크롤 와중에 나말고 다른 사람이 채팅을 했을 경우 채팅한 개수만큼 offset필요 -> hashMap unReadCount++
+    return {
+      statusCode: 200,
+      data,
+    };
   }
 
   async handleDisconnect(@ConnectedSocket() socket: Socket): Promise<void> {
     const { recruitId, userId } = await this.socketService.getCacheData(
       socket.id,
     );
-    const queue = this.queueService.getQueue(`${recruitId}:${userId}`);
-    this.queueService.deleteSocket(userId);
+    const queue = this.managerService.getQueue(`${recruitId}:${userId}`);
+    this.managerService.deleteSocket(userId);
+    this.managerService.deleteUnReadCount(`${recruitId}:${userId}`);
     await this.socketService.delCacheData(socket.id);
     if (!queue) return;
     queue.pause();

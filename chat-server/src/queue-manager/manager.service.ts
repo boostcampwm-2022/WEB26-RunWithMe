@@ -7,13 +7,14 @@ import { Socket } from 'socket.io';
 export class ManagerService {
   constructor(
     @Inject(CACHE_MANAGER) private redisCache: Cache,
-    @Inject(Map) private qMap: Map<string, Bull.Queue>,
-    @Inject(Map) private sMap: Map<string, Socket>,
+    @Inject(Map) private queueMap: Map<string, Bull.Queue>,
+    @Inject(Map) private socketMap: Map<string, Socket>,
+    @Inject(Map) private unReadCountMap: Map<string, number>,
   ) {}
   async generateQueue(name: string) {
     const queue = new Bull(name);
     queue.pause();
-    this.qMap.set(name, queue);
+    this.queueMap.set(name, queue);
     return queue;
   }
 
@@ -23,7 +24,7 @@ export class ManagerService {
     keyArr.map((key: string) => {
       deleteWork.push(this.redisCache.del(key));
     }); // bull.js Queue 지우는용
-    this.qMap.delete(name); // 매핑된 인스턴스 지우는용
+    this.queueMap.delete(name); // 매핑된 인스턴스 지우는용
     return Promise.all(deleteWork);
   }
 
@@ -33,40 +34,61 @@ export class ManagerService {
     keyArr.map((key: string) => {
       deleteWork.push(this.redisCache.del(key));
     }); // bull.js Queue 지우는용
-    const keys = Array.from(this.qMap.keys()).filter(
+    const keys = Array.from(this.queueMap.keys()).filter(
       (key) => key.split(':')[0] === recruitId,
     );
-    keys.map((key: string) => this.qMap.delete(key)); // 매핑된 모든 인스턴스 지우는용
+    keys.map((key: string) => this.queueMap.delete(key)); // 매핑된 모든 인스턴스 지우는용
   }
 
   // 서버 메모리에서, name(key) 값으로 Queue Instance 가져와서 반환해주기
   getQueue(name: string): Bull.Queue {
-    return this.qMap.get(name);
+    return this.queueMap.get(name);
   }
 
   getQueueList(recruitId: string) {
-    const keys = Array.from(this.qMap.keys()).filter(
+    const keys = Array.from(this.queueMap.keys()).filter(
       (key) => key.split(':')[0] === recruitId,
     );
-    return keys.map((key) => this.qMap.get(key));
+    return keys.map((key) => this.queueMap.get(key));
   }
 
   async getQueueSize(name: string) {
-    const queue = this.qMap.get(name);
+    const queue = this.queueMap.get(name);
     if (!queue) return 0;
     const { waiting } = await queue.getJobCounts();
     return waiting;
   }
 
   getSocket(name: string): Socket {
-    return this.sMap.get(name);
+    return this.socketMap.get(name);
   }
 
   setSocket(userId: string, socket: Socket): void {
-    this.sMap.set(userId, socket);
+    this.socketMap.set(userId, socket);
   }
 
   deleteSocket(userId: string): void {
-    this.sMap.delete(userId);
+    this.socketMap.delete(userId);
+  }
+
+  getUnReadCount(name: string): number {
+    return this.unReadCountMap.get(name);
+  }
+
+  setUnReadCount(name: string, unReadCount: number): void {
+    this.unReadCountMap.set(name, unReadCount);
+  }
+
+  deleteUnReadCount(name: string): void {
+    this.unReadCountMap.delete(name);
+  }
+
+  addUnReadCount(recruitId: string): void {
+    const keys = Array.from(this.unReadCountMap.keys()).filter(
+      (key) => key.split(':')[0] === recruitId,
+    );
+    keys.map((key) => {
+      this.unReadCountMap.set(key, this.unReadCountMap.get(key) + 1);
+    });
   }
 }

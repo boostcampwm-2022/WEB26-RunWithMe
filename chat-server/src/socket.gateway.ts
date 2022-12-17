@@ -35,12 +35,12 @@ export class SocketGateway implements OnGatewayDisconnect {
     const { recruitId, userId } = data;
     const unReadCount = await this.managerService.getQueueSize(
       `${recruitId}:${userId}`,
-    );
+    ); // 안읽은 메시지 수
 
-    await this.socketService.setCacheData(socket.id, data);
+    await this.socketService.setCacheData(socket.id, data); // 해당 소켓아이디가 누구껀지
 
     this.managerService.setSocket(userId, socket); // 소켓 인스턴스 저장
-    this.managerService.setUnReadCount(`${recruitId}:${userId}`, unReadCount);
+    this.managerService.setUnReadCount(`${recruitId}:${userId}`, unReadCount); // 읽지 않은 메시지 수 기억해
 
     const queue = this.managerService.getQueue(`${recruitId}:${userId}`);
     if (queue) {
@@ -51,7 +51,6 @@ export class SocketGateway implements OnGatewayDisconnect {
           done();
         });
       } catch (err) {}
-      console.log(queue);
       await queue.resume();
     }
     // + 이전 메시지를 리버스 인피니트 스크롤로 보내주기
@@ -68,7 +67,6 @@ export class SocketGateway implements OnGatewayDisconnect {
       socket.id,
     );
     const queueList = this.managerService.getQueueList(recruitId.toString());
-    console.log('queueList: ', queueList);
     const chat = new Chat();
     chat.sender = userId;
     chat.recruitId = recruitId;

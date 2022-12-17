@@ -30,7 +30,6 @@ export class SocketService {
   }
 
   async getRecentMessage(recruitId: number, page = 1, unReadCount = 0) {
-    console.log('unreadCount: ', unReadCount);
     const response = await this.chatModel
       .find({ recruitId })
       .sort({ createdAt: -1 })

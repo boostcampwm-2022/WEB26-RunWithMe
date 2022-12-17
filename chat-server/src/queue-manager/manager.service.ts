@@ -2,15 +2,19 @@ import { CACHE_MANAGER, Inject, Injectable, Scope } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import * as Bull from 'bull';
 import { Socket } from 'socket.io';
+import { QueueMapService } from 'src/common/modules/queue-map/queue-map.service';
+import { SocketMapService } from 'src/common/modules/socket-map/socket-map.service';
+import { UnReadMapService } from 'src/common/modules/unread-map/unread-map.service';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class ManagerService {
   constructor(
     @Inject(CACHE_MANAGER) private redisCache: Cache,
-    @Inject(Map) private queueMap: Map<string, Bull.Queue>,
-    @Inject(Map) private socketMap: Map<string, Socket>,
-    @Inject(Map) private unReadCountMap: Map<string, number>,
+    private queueMap: QueueMapService,
+    private socketMap: SocketMapService,
+    private unReadCountMap: UnReadMapService,
   ) {}
+
   async generateQueue(name: string) {
     const queue = new Bull(name);
     queue.pause();

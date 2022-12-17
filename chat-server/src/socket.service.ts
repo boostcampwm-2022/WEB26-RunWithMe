@@ -29,10 +29,12 @@ export class SocketService {
     return this.cacheManager.del(`id:${socketId}`);
   }
 
-  async getRecentMessage(recruitId: number) {
+  async getRecentMessage(recruitId: number, page = 1, unReadCount = 0) {
+    console.log('unreadCount: ', unReadCount);
     const response = await this.chatModel
       .find({ recruitId })
       .sort({ createdAt: -1 })
+      .skip((page - 1) * 10 + unReadCount)
       .limit(10);
     return response.reverse();
   }

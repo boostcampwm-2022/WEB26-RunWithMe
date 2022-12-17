@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ManagerService } from './queue-manager/manager.service';
 import { SocketService } from './socket.service';
 

@@ -1,11 +1,15 @@
 <div align="center">
 
 # 🏃‍♂️RunWithMe🏃‍♂️
-나만의 코스로 달려보고 싶으신가요?
- 
-혼자 뛰는게 지루하신가요?
- 
-**나만의 코스**로 **함께** 달리는 러닝 커뮤니티, <a href="https://runwithme.co.kr/">**RunWithMe**</a>를 시작해보세요!
+나만의 코스로 달려보고 싶으신가요?  
+혼자 뛰는게 지루하신가요?  
+**나만의 코스**로 **함께** 달리는 러닝 커뮤니티, <a href="https://runwithme.co.kr/">**RunWithMe**</a>를 시작해보세요!  
+
+<br/>
+<a href="https://www.youtube.com/watch?v=tgQHAlsQYfs">시연 영상</a> | 
+<a href="https://www.youtube.com/watch?v=YHzn3X8hZsE">발표 영상</a> | 
+<a href="https://github.com/boostcampwm-2022/WEB26-RunWithMe/wiki">Wiki</a> | 
+<a href="https://www.notion.so/Web26-RunWithMe-5781490d8ba54d788133d6841ad66d72">Notion</a>
   
 ## 🛠 기술 스택
 
@@ -36,10 +40,26 @@
 </tr>
 </table>
 
-## 🚀 프로젝트를 소개합니다
-  
-## ⚙️ 주요 기능들을 소개합니다
-  
+## 🚀 프로젝트를 소개합니다     
+        
+## ⚙️ 주요 기능들을 소개합니다  
+
+<div align="left">
+
+#### 나만의 코스를 그려봐요
+![화면 기록 2022-12-18 오후 5 43 34](https://user-images.githubusercontent.com/71205245/208289161-1452341e-a340-4afc-97cb-3a375c5e8482.gif)
+
+#### 함께 뛰고 싶은 사람들을 모집해요
+![화면 기록 2022-12-18 오후 5 43 34](https://user-images.githubusercontent.com/71205245/208289219-10c4e623-c605-40a5-8d8f-55bd1617b599.gif)
+
+#### 참여자들과 채팅을 주고받아요
+![화면 기록 2022-12-18 오후 5 34 02](https://user-images.githubusercontent.com/71205245/208289091-1e0e0813-56be-4a5e-9491-60fb4e109cef.gif)
+
+#### 알람 서비스를 통해 다양한 공지를 받을 수 있어요
+![image](https://user-images.githubusercontent.com/71205245/208289290-e6c370d8-f4ca-4f47-b9a9-29dc6840a267.png)
+
+</div>
+
 ## 🕹 아키텍처
   
 <img width="630" alt="스크린샷 2022-12-15 오후 4 01 06" src="https://user-images.githubusercontent.com/97938489/207812760-d0088060-f825-427a-80d4-3bbceecc53c2.png">

@@ -8,8 +8,7 @@
 <br/>
 <a href="https://www.youtube.com/watch?v=tgQHAlsQYfs">시연 영상</a> | 
 <a href="https://www.youtube.com/watch?v=YHzn3X8hZsE">발표 영상</a> | 
-<a href="https://github.com/boostcampwm-2022/WEB26-RunWithMe/wiki">Wiki</a> | 
-<a href="https://www.notion.so/Web26-RunWithMe-5781490d8ba54d788133d6841ad66d72">Notion</a>
+<a href="https://github.com/boostcampwm-2022/WEB26-RunWithMe/wiki">Wiki</a>  
   
 ## 🛠 기술 스택
 

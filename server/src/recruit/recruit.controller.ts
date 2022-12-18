@@ -244,11 +244,32 @@ export class RecruitController {
         if (!(await this.recruitService.isExistingRecruit(getRecruitRequestDto.getRecruitId()))) {
             return ResponseEntity.NOT_FOUND("존재하지 않는 게시글입니다");
         }
-        const recruitEntity = await this.recruitService.getOne(
-            getRecruitRequestDto.getUserId(),
-            getRecruitRequestDto.getRecruitId(),
-        );
+
+        const userId = getRecruitRequestDto.getUserId();
+        const recruitId = getRecruitRequestDto.getRecruitId();
+
+        const recruitEntity = await this.recruitService.getOne(userId, recruitId);
+        const userEntity = await this.recruitService.getUserByIdx(userId);
         const getRecruitResponseDto = GetRecruitResponseDto.fromEntity(recruitEntity);
+        let pausedCount: number;
+
+        try {
+            const response = await firstValueFrom(
+                this.httpService
+                    .get(`${process.env.CHAT_SERVER_API_URL}/unread?userId=${userEntity.userId}&recruitId=${recruitId}`)
+                    .pipe(
+                        catchError((error: AxiosError) => {
+                            throw error;
+                        }),
+                    ),
+            );
+
+            pausedCount = response.data.data.paused;
+        } catch (err) {
+            pausedCount = 0;
+        }
+
+        getRecruitResponseDto.setPaused(pausedCount);
         return ResponseEntity.OK_WITH_DATA(getRecruitResponseDto);
     }
 }

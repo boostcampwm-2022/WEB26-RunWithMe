@@ -51,7 +51,6 @@ export class SocketGateway implements OnGatewayDisconnect {
           done();
         });
       } catch (err) {}
-      console.log(queue);
       await queue.resume();
     }
     // + 이전 메시지를 리버스 인피니트 스크롤로 보내주기
@@ -81,26 +80,6 @@ export class SocketGateway implements OnGatewayDisconnect {
     Promise.all(addWork);
     await this.socketService.saveRecentMessage(chat);
   }
-
-  // @SubscribeMessage('client_sent_history')
-  // async handleHistory(
-  //   @MessageBody() body: { userId: string; page: number; recruitId: number },
-  // ) {
-  //   const { recruitId, userId, page } = body;
-  //   const unReadCount = this.managerService.getUnReadCount(
-  //     `${recruitId}:${userId}`,
-  //   );
-  //   const data = await this.socketService.getRecentMessage(
-  //     recruitId,
-  //     page,
-  //     unReadCount,
-  //   );
-  //   // 스크롤 와중에 나말고 다른 사람이 채팅을 했을 경우 채팅한 개수만큼 offset필요 -> hashMap unReadCount++
-  //   return {
-  //     statusCode: 200,
-  //     data,
-  //   };
-  // }
 
   async handleDisconnect(@ConnectedSocket() socket: Socket): Promise<void> {
     const { recruitId, userId } = await this.socketService.getCacheData(

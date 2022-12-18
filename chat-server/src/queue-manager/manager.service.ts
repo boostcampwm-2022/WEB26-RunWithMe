@@ -59,8 +59,8 @@ export class ManagerService {
   async getQueueSize(name: string) {
     const queue = this.queueMap.get(name);
     if (!queue) return 0;
-    const { waiting } = await queue.getJobCounts();
-    return waiting;
+    const { paused } = (await queue.getJobCounts()) as any;
+    return paused;
   }
 
   getSocket(name: string): Socket {

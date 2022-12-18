@@ -23,12 +23,13 @@ const ChatListContainer = styled.div`
 
 interface ChatListProps {
     unread: ChatResponse[];
+    paused: number;
 }
 
-const ChatList = ({ unread }: ChatListProps) => {
+const ChatList = ({ unread, paused }: ChatListProps) => {
     const { id } = useParams();
     const scrollRef = useRef<HTMLDivElement>(null);
-    const { data: chatHistory, fetchNextPage, hasNextPage } = useChatHistoryQuery({ recruitId: Number(id) });
+    const { data: chatHistory, fetchNextPage, hasNextPage } = useChatHistoryQuery({ recruitId: Number(id), paused });
 
     useEffect(() => {
         scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);

@@ -1,4 +1,6 @@
 import useRecruitDetailQuery from "#hooks/queries/useRecruitDetailQuery";
+import { RecruitDetail } from "#types/RecruitDetail";
+import { number } from "prop-types";
 import styled from "styled-components";
 import { COLOR } from "styles/color";
 import { fontMedium } from "styles/font";
@@ -19,9 +21,11 @@ const SummaryWrapper = styled.div`
     }
 `;
 
-const ChatRoomSummary = ({ id }: { id: number }) => {
-    const { data } = useRecruitDetailQuery(id);
+interface ChatRoomSummaryProps {
+    data: RecruitDetail;
+}
 
+const ChatRoomSummary = ({ data }: ChatRoomSummaryProps) => {
     return (
         <SummaryWrapper>
             <h2>{data?.title}</h2>

@@ -49,6 +49,13 @@ export class GetRecruitResponseDto {
     @Expose()
     isAuthor: boolean;
 
+    @Expose()
+    paused: number;
+
+    setPaused(paused: number) {
+        this.paused = paused;
+    }
+
     static fromEntity(recruit: any): GetRecruitResponseDto {
         const data = instanceToPlain(recruit);
         return plainToInstance(GetRecruitResponseDto, data, { excludeExtraneousValues: true });

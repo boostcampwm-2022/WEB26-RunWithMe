@@ -6,7 +6,7 @@ import { COLOR } from "styles/color";
 import { flexRow } from "styles/flex";
 
 interface ChatButtonProps {
-    waiting?: number;
+    paused?: number;
 }
 
 const Badge = styled.span`
@@ -23,14 +23,14 @@ const Badge = styled.span`
     font-size: 1.2rem;
 `;
 
-const ChatButton = ({ waiting }: ChatButtonProps) => {
+const ChatButton = ({ paused }: ChatButtonProps) => {
     const { id } = useParams();
     const navigate = useNavigate();
 
     return (
         <Button backgroundColor={COLOR.CHAT_BUTTON} onClick={() => navigate(`/recruit/${id}/chat`)}>
             채팅
-            {!!waiting && <Badge>{waiting > 9 ? "9+" : waiting}</Badge>}
+            {!!paused && <Badge>{paused > 9 ? "9+" : paused}</Badge>}
         </Button>
     );
 };

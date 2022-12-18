@@ -50,7 +50,7 @@ const RecruitContent = ({ onClick, data }: RecruitContentProps) => {
                 </div>
                 <ButtonWrapper>
                     <Button onClick={onClick}>{getButtonText(data)}</Button>
-                    {data.isParticipating && <ChatButton waiting={data.waiting} />}
+                    {data.isParticipating && <ChatButton paused={data.paused} />}
                 </ButtonWrapper>
             </Content>
         </>

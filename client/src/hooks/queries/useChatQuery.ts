@@ -5,7 +5,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 
-const useChatHistoryQuery = ({ recruitId }: { recruitId: number }) => {
+const useChatHistoryQuery = ({ recruitId, paused }: { recruitId: number; paused: number }) => {
     const { userId } = useRecoilValue(userState);
     return useInfiniteQuery(
         ["chats", recruitId],
@@ -17,6 +17,7 @@ const useChatHistoryQuery = ({ recruitId }: { recruitId: number }) => {
                         recruitId,
                         userId,
                         page: pageParam,
+                        paused,
                     },
                 })
                 .then((res) => res.data),

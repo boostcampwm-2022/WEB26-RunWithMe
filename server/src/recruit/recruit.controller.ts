@@ -100,7 +100,7 @@ export class RecruitController {
 
         await firstValueFrom(
             this.httpService
-                .post(`${process.env.NOTI_SERVER_API_URL}/queue/delete/many`, {
+                .post(`${process.env.CHAT_SERVER_API_URL}/queue/delete/many`, {
                     recruitId: deleteRecruitRequestDto.getRecruitId(),
                 })
                 .pipe(
@@ -211,7 +211,7 @@ export class RecruitController {
             this.httpService
                 .post(`${process.env.CHAT_SERVER_API_URL}/queue/delete/one`, {
                     recruitId: unjoinRecruitRequestDto.getRecruitId(),
-                    userId: unjoinRecruitRequestDto.getUserId(),
+                    userId,
                 })
                 .pipe(
                     catchError((error: AxiosError) => {

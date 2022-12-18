@@ -16,7 +16,9 @@ export class ManagerService {
   ) {}
 
   async generateQueue(name: string) {
-    const queue = new Bull(name);
+    const queue = new Bull(name, {
+      defaultJobOptions: { removeOnComplete: true },
+    });
     queue.pause();
     this.queueMap.set(name, queue);
     return queue;

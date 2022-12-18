@@ -11,6 +11,7 @@ import { Chat } from './common/schemas/chat.schema';
 import { ManagerService } from './queue-manager/manager.service';
 import { SocketService } from './socket.service';
 import * as Bull from 'bull';
+
 @WebSocketGateway({
   namespace: 'chat',
   cors: {

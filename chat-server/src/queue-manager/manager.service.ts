@@ -39,7 +39,7 @@ export class ManagerService {
       deleteWork.push(this.redisCache.del(key));
     }); // bull.js Queue 지우는용
     const keys = Array.from(this.queueMap.keys()).filter(
-      (key) => key.split(':')[0] === recruitId,
+      (key: string) => key.split(':')[0] === recruitId,
     );
     keys.map((key: string) => this.queueMap.delete(key)); // 매핑된 모든 인스턴스 지우는용
   }
@@ -51,7 +51,7 @@ export class ManagerService {
 
   getQueueList(recruitId: string) {
     const keys = Array.from(this.queueMap.keys()).filter(
-      (key) => key.split(':')[0] === recruitId,
+      (key: string) => key.split(':')[0] === recruitId,
     );
     return keys.map((key) => this.queueMap.get(key));
   }
@@ -94,7 +94,7 @@ export class ManagerService {
 
   addUnReadCount(recruitId: string): void {
     const keys = Array.from(this.unReadCountMap.keys()).filter(
-      (key) => key.split(':')[0] === recruitId,
+      (key: string) => key.split(':')[0] === recruitId,
     );
     keys.map((key) => {
       this.unReadCountMap.set(key, this.unReadCountMap.get(key) + 1);

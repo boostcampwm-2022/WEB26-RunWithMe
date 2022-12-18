@@ -14,16 +14,11 @@ import { UnjoinRecruitRequestDto } from "./dto/request/unjoin-recruit.request";
 import { HttpService } from "@nestjs/axios";
 import { AxiosError } from "axios";
 import { catchError, firstValueFrom } from "rxjs";
-import { UserService } from "src/user/user.service";
 
 @Controller("recruit")
 @ApiTags("모집글 관리")
 export class RecruitController {
-    constructor(
-        private readonly recruitService: RecruitService,
-        private httpService: HttpService,
-        private userService: UserService,
-    ) {}
+    constructor(private readonly recruitService: RecruitService, private httpService: HttpService) {}
 
     @ApiOperation({ summary: "모집글 조회/검색/필터", description: "등록된 모집글들을 조회/검색/필터링한다" })
     @Get()
@@ -38,23 +33,6 @@ export class RecruitController {
     async create(@Body() createRecruitDto: CreateRecruitRequestDto) {
         const recruitEntity = await this.recruitService.create(createRecruitDto);
         const recruitDetail = await this.recruitService.notiGetOne(createRecruitDto.getUserId(), recruitEntity.id);
-
-        const { id: recruitId, userId: userIdx } = recruitEntity;
-        const userId = await this.userService.getUserIdByUserIdx(userIdx);
-
-        // 메시지 큐 만드는 요청
-        await firstValueFrom(
-            this.httpService
-                .post(`${process.env.CHAT_SERVER_API_URL}/queue`, {
-                    recruitId,
-                    userId,
-                })
-                .pipe(
-                    catchError((error: AxiosError) => {
-                        throw error;
-                    }),
-                ),
-        );
 
         if (recruitDetail.author) {
             await firstValueFrom(
@@ -97,18 +75,6 @@ export class RecruitController {
             deleteRecruitRequestDto.getRecruitId(),
         );
         const users = await this.recruitService.getUsersByRecruitId(deleteRecruitRequestDto.getRecruitId());
-
-        await firstValueFrom(
-            this.httpService
-                .post(`${process.env.NOTI_SERVER_API_URL}/queue/delete/many`, {
-                    recruitId: deleteRecruitRequestDto.getRecruitId(),
-                })
-                .pipe(
-                    catchError((error: AxiosError) => {
-                        throw error;
-                    }),
-                ),
-        );
 
         if (users.length) {
             await firstValueFrom(
@@ -162,20 +128,6 @@ export class RecruitController {
         );
         const user = await this.recruitService.getUserByIdx(joinRecruitRequestDto.getUserId());
         const { email, userId } = user;
-
-        await firstValueFrom(
-            this.httpService
-                .post(`${process.env.CHAT_SERVER_API_URL}/queue`, {
-                    recruitId: joinRecruitRequestDto.getRecruitId(),
-                    userId,
-                })
-                .pipe(
-                    catchError((error: AxiosError) => {
-                        throw error;
-                    }),
-                ),
-        );
-
         if (user) {
             await firstValueFrom(
                 this.httpService
@@ -206,19 +158,6 @@ export class RecruitController {
         );
         const user = await this.recruitService.getUserByIdx(unjoinRecruitRequestDto.getUserId());
         const { email, userId } = user;
-
-        await firstValueFrom(
-            this.httpService
-                .post(`${process.env.CHAT_SERVER_API_URL}/queue/delete/one`, {
-                    recruitId: unjoinRecruitRequestDto.getRecruitId(),
-                    userId: unjoinRecruitRequestDto.getUserId(),
-                })
-                .pipe(
-                    catchError((error: AxiosError) => {
-                        throw error;
-                    }),
-                ),
-        );
 
         if (user) {
             await firstValueFrom(

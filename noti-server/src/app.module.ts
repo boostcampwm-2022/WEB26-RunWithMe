@@ -4,9 +4,9 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
 
-import { DelayedConsumer } from './app.delayed.consumer';
-import { ImmediateConsumer } from './app.immediate.consumer';
-import { MailModule } from './mail/mail.module';
+// import { DelayedConsumer } from './app.delayed.consumer';
+// import { ImmediateConsumer } from './app.immediate.consumer';
+// import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -21,9 +21,8 @@ import { MailModule } from './mail/mail.module';
     }),
     BullModule.registerQueue({ name: 'delayed' }, { name: 'immediate' }),
     CacheModule.register(),
-    MailModule,
   ],
   controllers: [AppController],
-  providers: [AppService, DelayedConsumer, ImmediateConsumer],
+  providers: [AppService],
 })
 export class AppModule {}

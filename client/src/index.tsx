@@ -16,15 +16,13 @@ const queryClient = new QueryClient({
     },
 });
 root.render(
-    <React.StrictMode>
-        <RecoilRoot>
-            <QueryClientProvider client={queryClient}>
-                <BrowserRouter>
-                    <Suspense fallback={<Loading />}>
-                        <App />
-                    </Suspense>
-                </BrowserRouter>
-            </QueryClientProvider>
-        </RecoilRoot>
-    </React.StrictMode>,
+    <RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+                <Suspense fallback={<Loading />}>
+                    <App />
+                </Suspense>
+            </BrowserRouter>
+        </QueryClientProvider>
+    </RecoilRoot>,
 );

@@ -22,21 +22,42 @@ const ChatContainer = styled.div`
 
 const Chat = () => {
     const { userId } = useRecoilValue(userState);
-    const [unread, setUnread] = useState<ChatResponse[]>([]);
     const { id } = useParams();
     const socketRef = useRef<Socket | null>(null);
     const { data } = useRecruitDetailQuery(Number(id));
 
+    const [history, setHistory] = useState<ChatResponse[]>([]);
+    const [unread, setUnread] = useState<ChatResponse[]>([]);
+    const [hasNextPage, setHasNextPage] = useState(true);
+    const pageRef = useRef(1);
+
     useEffect(() => {
         if (!userId) return;
         const socket = io(import.meta.env.VITE_CHAT_URL, { autoConnect: true, reconnection: false });
+        socket.on(SOCKET_EVENT.SERVER_SENT_UNREAD, handleServerSentUnread);
+        socket.on(SOCKET_EVENT.SERVER_SENT_HISTORY, handleServerSentHistory);
         socket.emit(SOCKET_EVENT.JOIN, { userId, recruitId: Number(id) });
-        socket.on(SOCKET_EVENT.SERVER_SENT_UNREAD, (message) => setUnread((prev) => [...prev, message]));
         socketRef.current = socket;
+        requestNextPage();
         return () => {
             socket.disconnect();
         };
     }, [userId]);
+
+    const handleServerSentUnread = useCallback((message: ChatResponse) => {
+        setUnread((prev) => [...prev, message]);
+    }, []);
+
+    const handleServerSentHistory = useCallback((messages: ChatResponse[]) => {
+        setHistory((prev) => [...messages, ...prev]);
+        if (!messages.length) setHasNextPage(false);
+    }, []);
+
+    const requestNextPage = useCallback(() => {
+        if (!socketRef.current) return;
+        socketRef.current.emit(SOCKET_EVENT.HISTORY, { userId, recruitId: id, page: pageRef.current });
+        pageRef.current += 1;
+    }, [socketRef]);
 
     const sendMessage = useCallback(
         (content: string) => {
@@ -51,7 +72,7 @@ const Chat = () => {
     return (
         <ChatContainer>
             <ChatRoomSummary data={data} />
-            <ChatList unread={unread} paused={Number(data.paused)} />
+            <ChatList unread={unread} history={history} hasMore={hasNextPage} loadMore={requestNextPage} />
             <ChatInput sendMessage={sendMessage} />
         </ChatContainer>
     );

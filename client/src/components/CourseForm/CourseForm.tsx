@@ -22,14 +22,11 @@ const CourseForm = () => {
     const [path, setPath] = useState<(kakao.maps.LatLng | kakao.maps.LatLng[])[]>([]);
     const [pathLength, setPathLength] = useState(0);
 
-    // const { WriteMap, pathLength, getPath } = useWriteMap();
-
-    const getExpandedPath = useCallback(() => {
-        return path.reduce<kakao.maps.LatLng[]>((acc, cur) => {
+    const getExpandedPath = () =>
+        path.reduce<kakao.maps.LatLng[]>((acc, cur) => {
             if (Array.isArray(cur)) return [...acc, ...cur];
             return [...acc, cur];
         }, []);
-    }, [path]);
 
     const checkFormValidation = () => {
         if (title && getExpandedPath().length) {

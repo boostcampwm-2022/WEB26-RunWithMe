@@ -31,7 +31,7 @@ const useDrawCurve = ({ container, map, setPath }: UseDrawCruveProps) => {
                 const line = prev.at(-1) as kakao.maps.LatLng[];
                 return [...prev.slice(0, -1), [...line, coordsFromContainerPoint({ map: _map, x, y })]];
             });
-        }, 10),
+        }, 20),
         [map],
     );
 

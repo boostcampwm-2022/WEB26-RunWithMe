@@ -5,8 +5,11 @@ import useRecruitDetailQuery from "#hooks/queries/useRecruitDetailQuery";
 import Header from "#components/Header/Header";
 import RecruitContent from "#components/RecruitContent/RecruitContent";
 import RecruitDetailModal from "#components/RecruitDetailModal/RecruitDetailModal";
+import usePreload from "#hooks/usePreload";
+import { Login, ChatPage } from "#pages/index";
 
 const RecruitDetailPage = () => {
+    usePreload(Login, ChatPage);
     const { id } = useParams();
     const { data: recruit } = useRecruitDetailQuery(Number(id));
     const [modalVisible, setModalVisible] = useState(false);

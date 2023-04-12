@@ -4,4 +4,6 @@ export enum SOCKET_EVENT {
     CLIENT_SENT = "client_sent",
     SERVER_SENT_RECENT = "server_sent_recent",
     SERVER_SENT_UNREAD = "server_sent_unread",
+    HISTORY = "history",
+    SERVER_SENT_HISTORY = "server_sent_history",
 }

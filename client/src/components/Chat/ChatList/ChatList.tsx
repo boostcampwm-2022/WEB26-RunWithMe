@@ -1,8 +1,12 @@
+import { userState } from "#atoms/userState";
+import { SOCKET_EVENT } from "#constants/socketEvents";
 import useChatHistoryQuery from "#hooks/queries/useChatQuery";
 import { ChatResponse } from "#types/Chat";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { flexColumn } from "styles/flex";
 import ChatItem from "../ChatItem/ChatItem";
@@ -23,13 +27,13 @@ const ChatListContainer = styled.div`
 
 interface ChatListProps {
     unread: ChatResponse[];
-    paused: number;
+    history: ChatResponse[];
+    loadMore: () => void;
+    hasMore: boolean;
 }
 
-const ChatList = ({ unread, paused }: ChatListProps) => {
-    const { id } = useParams();
+const ChatList = ({ unread, history, hasMore, loadMore }: ChatListProps) => {
     const scrollRef = useRef<HTMLDivElement>(null);
-    const { data: chatHistory, fetchNextPage, hasNextPage } = useChatHistoryQuery({ recruitId: Number(id), paused });
 
     useEffect(() => {
         scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
@@ -44,19 +48,14 @@ const ChatList = ({ unread, paused }: ChatListProps) => {
     return (
         <ChatListContainer ref={scrollRef}>
             <InfiniteScroll
-                loadMore={() => fetchNextPage()}
-                hasMore={hasNextPage}
+                loadMore={loadMore}
+                hasMore={hasMore}
                 isReverse={true}
                 style={{ width: "100%" }}
                 threshold={250}
                 useWindow={false}
             >
-                {[
-                    ...(chatHistory?.pages.reduce<ChatResponse[]>((acc, cur) => {
-                        return [...cur.data, ...acc];
-                    }, []) || []),
-                    ...unread,
-                ].map((chat, idx) => (
+                {[...history, ...unread].map((chat, idx) => (
                     <ChatItem data={chat} key={`chat_${idx}`} />
                 ))}
             </InfiniteScroll>

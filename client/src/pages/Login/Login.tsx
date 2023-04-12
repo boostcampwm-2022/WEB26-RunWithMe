@@ -3,9 +3,12 @@ import { LogoWrapper } from "./Login.styles";
 import Navigator from "#components/Navigator/Navigator";
 import LoginForm from "#components/LoginForm/LoginForm";
 import useAuth from "#hooks/useAuth";
+import usePreload from "#hooks/usePreload";
+import { SignUp } from "#pages/index";
 
 const Login = () => {
     useAuth(false);
+    usePreload(SignUp);
     return (
         <>
             <Header text="로그인" />

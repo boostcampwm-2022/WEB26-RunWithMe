@@ -10,23 +10,23 @@ export class SocketController {
     private socketService: SocketService,
   ) {}
 
-  @Get('chat')
-  async getRecentMessage(@Query() bodyDto: ChatHistoryDto) {
-    const { userId, recruitId, page, paused } = bodyDto;
-    const unReadCount =
-      this.managerService.getUnReadCount(`${recruitId}:${userId}`) ||
-      Number(paused);
+  // @Get('chat')
+  // async getRecentMessage(@Query() bodyDto: ChatHistoryDto) {
+  //   const { userId, recruitId, page, paused } = bodyDto;
+  //   const unReadCount =
+  //     this.managerService.getUnReadCount(`${recruitId}:${userId}`) ||
+  //     Number(paused);
 
-    const data = await this.socketService.getRecentMessage(
-      parseInt(recruitId),
-      page,
-      unReadCount,
-    );
-    return {
-      statusCode: 200,
-      data,
-    };
-  }
+  //   const data = await this.socketService.getRecentMessage(
+  //     parseInt(recruitId),
+  //     page,
+  //     unReadCount,
+  //   );
+  //   return {
+  //     statusCode: 200,
+  //     data,
+  //   };
+  // }
 
   @Get('unread')
   async getUnreadMessage(@Query() bodyDto: GetChatDto) {

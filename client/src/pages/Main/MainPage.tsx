@@ -4,8 +4,10 @@ import CourseCarousel from "#components/RecommendCourses/CourseCarousel";
 import CourseCarouselLoader from "#components/RecommendCourses/CourseCarousel.loader";
 import RecruitCarousel from "#components/RecruitCarousel/RecruitCarousel";
 import RecruitCarouselLoader from "#components/RecruitCarousel/RecruitCarousel.loader";
+import usePreload from "#hooks/usePreload";
 import { Suspense } from "react";
 import styled from "styled-components";
+import { CourseDetail, Courses, Login, MyPage, RecruitDetail, Recruits } from "#pages/index";
 
 const MainPageContainer = styled.div`
     overflow-x: hidden;
@@ -20,6 +22,7 @@ const MainPageContainer = styled.div`
 `;
 
 const MainPage = () => {
+    usePreload(RecruitDetail, Recruits, MyPage, CourseDetail, Courses, Login);
     return (
         <MainPageContainer>
             <Header isMain={true} text="RunWithMe" />

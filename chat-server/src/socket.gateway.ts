@@ -38,7 +38,6 @@ export class SocketGateway implements OnGatewayDisconnect {
     ); // 안읽은 메시지 수
 
     await this.socketService.setCacheData(socket.id, data); // 해당 소켓아이디가 누구껀지
-
     this.managerService.setSocket(userId, socket); // 소켓 인스턴스 저장
     this.managerService.setUnReadCount(`${recruitId}:${userId}`, unReadCount); // 읽지 않은 메시지 수 기억해
 
@@ -54,6 +53,25 @@ export class SocketGateway implements OnGatewayDisconnect {
       await queue.resume();
     }
     // + 이전 메시지를 리버스 인피니트 스크롤로 보내주기
+  }
+
+  @SubscribeMessage('history')
+  async handleHistory(
+    @MessageBody() data: any,
+    @ConnectedSocket() socket: Socket,
+  ): Promise<void> {
+    const { userId, recruitId, page } = data;
+    const unReadCount = this.managerService.getUnReadCount(
+      `${recruitId}:${userId}`,
+    );
+
+    const messages = await this.socketService.getRecentMessage(
+      parseInt(recruitId),
+      page,
+      unReadCount,
+    );
+
+    socket.emit('server_sent_history', messages);
   }
 
   @SubscribeMessage('client_sent')

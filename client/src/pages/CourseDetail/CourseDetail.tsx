@@ -10,6 +10,8 @@ import CourseContent from "#components/CourseContent/CourseContent";
 import { flexRow } from "styles/flex";
 import CreateRecruitModal from "#components/CreateRecruitForm/CreateRecruitForm";
 import ConfirmModal from "#components/ConfirmModal/ConfirmModal";
+import usePreload from "#hooks/usePreload";
+import { NewCourse } from "#pages/index";
 
 const ButtonWrapper = styled.div`
     ${flexRow({ justifyContent: JUSTIFY_CONTENT.CENTER })};
@@ -18,6 +20,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const CourseDetail = () => {
+    usePreload(NewCourse);
     const { id } = useParams();
     const { data, isLoading } = useCourseDetailQuery(Number(id));
     const [showRecruitModal, setShowRecruitModal] = useState(false);
